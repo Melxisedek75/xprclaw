@@ -1,0 +1,2839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#0c0a1a"/>
+<title>GCSC CLAW — Self-Evolving AI on XPR Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+<style>/* ═══════════════════════════════════════════════════════════════
+   GCSC CLAW · main.css
+   Dark Violet Aesthetic · XPR Network
+═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:        #0c0a1a;
+  --bg2:       #110e25;
+  --bg3:       #16122e;
+  --panel:     #1a1535;
+  --panel2:    #221a44;
+  --border:    rgba(139,92,246,0.18);
+  --border2:   rgba(139,92,246,0.35);
+  --border3:   rgba(139,92,246,0.5);
+  --purple:    #7c3aed;
+  --violet:    #8b5cf6;
+  --lavender:  #a78bfa;
+  --lilac:     #c4b5fd;
+  --pink:      #e879f9;
+  --mint:      #34d399;
+  --red:       #f87171;
+  --gold:      #fbbf24;
+  --white:     #f5f3ff;
+  --muted:     #9d8fcb;
+  --dim:       #6d5fa0;
+  --f-display: 'Syne',sans-serif;
+  --f-body:    'DM Sans',sans-serif;
+  --f-mono:    'Space Mono',monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:var(--f-body);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* Noise texture */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+#app{position:relative;z-index:1;min-height:calc(100vh - 140px);}
+.page{animation:pageIn .4s ease both;}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════════════ NAV ═══════════════ */
+#topnav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 36px;
+  background:rgba(12,10,26,0.78);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+  font-family:var(--f-display);font-weight:800;font-size:1.2rem;
+}
+.logo-icon{
+  width:38px;height:38px;
+  border:2px solid var(--violet);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-mono);font-size:.82rem;
+  color:var(--violet);background:rgba(139,92,246,0.1);
+}
+.logo-icon.small{width:30px;height:30px;font-size:.72rem;}
+.logo-img{
+  width:42px;height:42px;border-radius:10px;
+  object-fit:cover;
+  box-shadow:0 0 14px rgba(232,121,249,0.35),0 0 4px rgba(139,92,246,0.4);
+  border:1px solid rgba(232,121,249,0.25);
+  transition:all .3s;
+}
+.logo-img:hover{
+  box-shadow:0 0 20px rgba(232,121,249,0.55),0 0 8px rgba(139,92,246,0.5);
+  transform:scale(1.05);
+}
+.logo-img.small{width:32px;height:32px;border-radius:8px;}
+.logo-xpr{color:var(--lavender);}
+.logo-claw{color:var(--white);}
+.nav-links{display:flex;gap:22px;align-items:center;}
+.nav-links a{
+  color:var(--muted);font-size:.88rem;cursor:pointer;text-decoration:none;
+  transition:color .2s;position:relative;padding:4px 0;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--lavender);}
+.nav-links a.active::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--violet),var(--pink));border-radius:2px;
+}
+.nav-right{display:flex;align-items:center;gap:14px;}
+.wallet-balance{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(139,92,246,0.12);border:1px solid var(--border2);
+  padding:8px 14px;border-radius:10px;font-size:.85rem;
+  font-family:var(--f-mono);
+}
+.bal-amount{color:var(--lavender);font-weight:700;}
+.bal-symbol{color:var(--muted);font-size:.72rem;}
+.btn-connect{
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  border:none;color:#fff;padding:10px 20px;
+  border-radius:10px;cursor:pointer;font-weight:700;font-size:.88rem;
+  font-family:var(--f-display);
+  box-shadow:0 0 20px rgba(139,92,246,0.4);
+  transition:all .25s;white-space:nowrap;
+}
+.btn-connect:hover{box-shadow:0 0 35px rgba(232,121,249,0.5);transform:translateY(-1px);}
+.btn-connect.connected{background:linear-gradient(135deg,var(--mint),#059669);}
+.hamburger{
+  display:none;background:transparent;border:none;
+  color:var(--lavender);font-size:1.4rem;cursor:pointer;padding:6px;
+}
+
+/* ═══════════════ LANDING HERO ═══════════════ */
+.hero{
+  min-height:calc(100vh - 70px);padding:120px 24px 80px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;position:relative;
+}
+.hero::before{
+  content:'';position:absolute;width:700px;height:700px;
+  background:radial-gradient(circle,rgba(124,58,237,0.18) 0%,transparent 70%);
+  top:-100px;left:50%;transform:translateX(-50%);pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(232,121,249,0.1) 0%,transparent 70%);
+  bottom:0;right:-100px;pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(139,92,246,0.12);border:1px solid var(--border2);
+  border-radius:100px;padding:6px 16px;
+  font-size:.76rem;color:var(--lavender);
+  font-family:var(--f-mono);margin-bottom:28px;letter-spacing:.05em;
+  animation:fadeDown .6s ease both;
+}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px var(--mint);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-title{
+  font-family:var(--f-display);font-weight:800;
+  font-size:clamp(3rem,9vw,7rem);line-height:1.0;letter-spacing:-.02em;
+  animation:fadeUp .7s .1s ease both;
+}
+.hero-title .line1{color:var(--white);display:block;}
+.hero-title .line2{
+  display:block;
+  background:linear-gradient(135deg,var(--violet) 0%,var(--pink) 50%,var(--lavender) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200% auto;animation:shimmer 4s linear infinite;
+}
+@keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
+.hero-sub{
+  font-size:clamp(1rem,2.4vw,1.18rem);
+  color:var(--muted);max-width:620px;line-height:1.7;
+  margin:22px auto 36px;font-weight:300;
+  animation:fadeUp .7s .2s ease both;
+}
+.hero-sub strong{color:var(--lavender);font-weight:500;}
+.hero-price-card{
+  background:rgba(26,21,53,0.8);border:1px solid var(--border2);
+  border-radius:20px;padding:22px 38px;margin-bottom:28px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 40px rgba(139,92,246,0.15),inset 0 1px 0 rgba(255,255,255,0.05);
+  animation:fadeUp .7s .3s ease both;
+}
+.price-row{display:flex;align-items:center;gap:12px;margin-bottom:4px;}
+.xpr-icon{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.8rem;font-family:var(--f-mono);color:#fff;
+  box-shadow:0 0 16px rgba(139,92,246,0.5);
+}
+.price-amount{font-family:var(--f-display);font-weight:800;font-size:2rem;color:var(--lavender);}
+.price-note{font-size:.8rem;color:var(--muted);text-align:center;}
+.hero-actions{display:flex;flex-direction:column;align-items:center;gap:12px;animation:fadeUp .7s .4s ease both;}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--purple) 0%,var(--pink) 100%);
+  border:none;color:#fff;
+  padding:15px 42px;border-radius:12px;
+  cursor:pointer;font-weight:700;font-size:1rem;
+  font-family:var(--f-display);
+  box-shadow:0 0 28px rgba(139,92,246,0.5),0 4px 18px rgba(0,0,0,0.3);
+  transition:all .3s;min-width:260px;
+  position:relative;overflow:hidden;
+}
+.btn-primary::after{
+  content:'';position:absolute;inset:-50%;
+  background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.12) 50%,transparent 60%);
+  transform:translateX(-100%) rotate(45deg);transition:transform .5s;
+}
+.btn-primary:hover::after{transform:translateX(100%) rotate(45deg);}
+.btn-primary:hover{
+  box-shadow:0 0 45px rgba(232,121,249,0.6),0 4px 28px rgba(0,0,0,0.4);
+  transform:translateY(-2px);
+}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-secondary{
+  background:transparent;border:1px solid var(--border2);color:var(--lavender);
+  padding:14px 42px;border-radius:12px;
+  cursor:pointer;font-weight:600;font-size:.92rem;
+  font-family:var(--f-display);transition:all .3s;
+  backdrop-filter:blur(8px);min-width:260px;
+}
+.btn-secondary:hover{background:rgba(139,92,246,0.1);border-color:var(--violet);}
+.btn-sm{padding:8px 18px;font-size:.82rem;min-width:auto;}
+.btn-danger{
+  background:linear-gradient(135deg,var(--red),#dc2626);color:#fff;border:none;
+  padding:10px 22px;border-radius:10px;cursor:pointer;font-weight:700;font-size:.85rem;
+  font-family:var(--f-display);transition:all .25s;
+}
+.btn-danger:hover{box-shadow:0 0 20px rgba(248,113,113,0.4);}
+
+/* ═══════════════ STATS BAR ═══════════════ */
+.stats-bar{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:0;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:rgba(17,14,37,0.6);backdrop-filter:blur(12px);
+  position:relative;z-index:1;
+}
+.stat-item{
+  flex:1;min-width:140px;max-width:220px;
+  padding:18px 22px;text-align:center;
+  border-right:1px solid var(--border);
+}
+.stat-item:last-child{border-right:none;}
+.stat-num{
+  font-family:var(--f-display);font-weight:800;font-size:1.55rem;
+  background:linear-gradient(135deg,var(--lavender),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-label{font-size:.72rem;color:var(--muted);margin-top:3px;font-family:var(--f-mono);letter-spacing:.04em;}
+
+/* ═══════════════ SECTIONS ═══════════════ */
+section{padding:70px 24px;position:relative;z-index:1;}
+.section-tag{
+  font-family:var(--f-mono);font-size:.7rem;
+  color:var(--violet);letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:10px;display:block;
+}
+.section-title{
+  font-family:var(--f-display);font-weight:800;
+  font-size:clamp(1.7rem,4vw,2.6rem);
+  line-height:1.15;margin-bottom:14px;
+}
+.section-title span{
+  background:linear-gradient(135deg,var(--lavender),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.section-sub{color:var(--muted);max-width:560px;line-height:1.7;font-size:.98rem;font-weight:300;}
+.container{max-width:1200px;margin:0 auto;}
+
+/* ═══════════════ CARDS ═══════════════ */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:40px;}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:40px;}
+
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:18px;padding:24px;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 12px 36px rgba(139,92,246,0.15);}
+.card-num{font-family:var(--f-mono);font-size:.7rem;color:var(--violet);letter-spacing:.1em;margin-bottom:12px;}
+.card-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(232,121,249,0.1));
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;margin-bottom:14px;
+}
+.card-title{font-family:var(--f-display);font-weight:700;font-size:1.02rem;margin-bottom:6px;}
+.card-desc{font-size:.85rem;color:var(--muted);line-height:1.6;font-weight:300;}
+
+/* Agent cards */
+.agent-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:14px;padding:22px 18px;text-align:center;
+  transition:all .3s;
+}
+.agent-card:hover{border-color:var(--border3);transform:translateY(-3px);}
+.agent-abbr{
+  font-family:var(--f-display);font-weight:800;font-size:1.5rem;
+  background:linear-gradient(135deg,var(--violet),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:4px;
+}
+.agent-name{font-size:.78rem;font-family:var(--f-mono);color:var(--muted);margin-bottom:8px;letter-spacing:.04em;}
+.agent-desc{font-size:.8rem;color:var(--muted);line-height:1.5;font-weight:300;}
+
+/* Token card */
+.token-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px;}
+@media(max-width:680px){.token-grid{grid-template-columns:1fr;}}
+.token-card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:26px;}
+.token-card-title{font-family:var(--f-display);font-weight:800;font-size:1.25rem;margin-bottom:4px;}
+.token-card-sub{font-size:.8rem;color:var(--muted);margin-bottom:18px;}
+.token-rows{display:flex;flex-direction:column;gap:9px;}
+.token-row{
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(139,92,246,0.06);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;
+}
+.token-row-label{font-size:.82rem;color:var(--muted);}
+.token-row-val{font-family:var(--f-mono);font-size:.8rem;color:var(--lavender);font-weight:700;}
+.burn-bar{margin-top:14px;background:rgba(255,255,255,0.05);border-radius:100px;height:6px;overflow:hidden;}
+.burn-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--purple),var(--pink));animation:barGrow 1.5s .5s ease both;transform-origin:left;}
+@keyframes barGrow{from{width:0%}to{width:70%}}
+
+/* Loop */
+.loop-flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;margin-top:40px;}
+.loop-node{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 14px;min-width:100px;text-align:center;}
+.loop-icon-wrap{
+  width:52px;height:52px;border-radius:15px;
+  background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(232,121,249,0.1));
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+  box-shadow:0 0 14px rgba(139,92,246,0.15);
+}
+.loop-label{font-size:.74rem;color:var(--muted);font-family:var(--f-mono);letter-spacing:.04em;}
+.loop-arrow{font-size:1.2rem;color:var(--violet);padding:0 4px;animation:arrowPulse 1.8s ease infinite;}
+@keyframes arrowPulse{0%,100%{opacity:.4;transform:translateX(0)}50%{opacity:1;transform:translateX(4px)}}
+
+/* Tiers */
+.tiers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:40px;}
+.tier-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:20px;padding:28px 22px;position:relative;overflow:hidden;transition:all .35s;
+}
+.tier-card.featured{border-color:var(--violet);box-shadow:0 0 36px rgba(139,92,246,0.25);}
+.tier-badge{
+  position:absolute;top:14px;right:14px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  font-size:.66rem;padding:4px 10px;border-radius:100px;
+  font-family:var(--f-mono);letter-spacing:.08em;font-weight:700;
+}
+.tier-name{font-family:var(--f-display);font-weight:800;font-size:1.15rem;color:var(--lavender);margin-bottom:4px;}
+.tier-price{font-family:var(--f-display);font-weight:800;font-size:2.1rem;margin-bottom:4px;}
+.tier-period{font-size:.8rem;color:var(--muted);margin-bottom:14px;}
+.tier-bonus{
+  font-family:var(--f-mono);font-size:.72rem;color:var(--mint);margin-bottom:18px;
+  background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);
+  border-radius:8px;padding:6px 10px;display:inline-block;
+}
+.tier-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:22px;}
+.tier-features li{font-size:.84rem;color:var(--muted);display:flex;align-items:center;gap:8px;font-weight:300;}
+.tier-features li::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--violet),var(--pink));}
+.tier-features li.active{color:var(--white);}
+.btn-tier{
+  width:100%;background:rgba(139,92,246,0.12);border:1px solid var(--border2);color:var(--lavender);
+  padding:11px;border-radius:11px;cursor:pointer;font-weight:700;font-size:.88rem;font-family:var(--f-display);transition:all .25s;
+}
+.btn-tier:hover{background:rgba(139,92,246,0.25);}
+.tier-card.featured .btn-tier{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;box-shadow:0 0 18px rgba(139,92,246,0.35);}
+
+/* CTA */
+.cta-section{background:var(--bg2);text-align:center;padding:90px 24px;}
+.cta-cards{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:36px;position:relative;z-index:1;}
+.cta-mini{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px 20px;min-width:150px;text-align:center;}
+.cta-mini-val{font-family:var(--f-display);font-weight:800;font-size:1.25rem;color:var(--lavender);}
+.cta-mini-label{font-size:.72rem;color:var(--muted);font-family:var(--f-mono);margin-top:3px;}
+
+/* ═══════════════ DASHBOARD ═══════════════ */
+.dash-page{padding:100px 24px 60px;max-width:1400px;margin:0 auto;}
+.dash-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:32px;}
+.dash-greeting h1{font-family:var(--f-display);font-weight:800;font-size:2.1rem;margin-bottom:4px;}
+.dash-greeting p{color:var(--muted);font-size:.92rem;}
+.dash-actions{display:flex;gap:10px;flex-wrap:wrap;}
+
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:28px;}
+.dash-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;
+  transition:all .25s;
+}
+.dash-card:hover{border-color:var(--border2);}
+.dash-card-label{font-size:.74rem;color:var(--muted);font-family:var(--f-mono);letter-spacing:.04em;margin-bottom:10px;}
+.dash-card-value{font-family:var(--f-display);font-weight:800;font-size:1.9rem;margin-bottom:4px;}
+.dash-card-value.accent{background:linear-gradient(135deg,var(--lavender),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.dash-card-value.mint{color:var(--mint);}
+.dash-card-trend{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.trend-up{color:var(--mint);}
+.trend-down{color:var(--red);}
+
+.dash-row{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-bottom:22px;}
+@media(max-width:900px){.dash-row{grid-template-columns:1fr;}}
+
+.dash-panel{
+  background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:22px;
+}
+.dash-panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.dash-panel-title{font-family:var(--f-display);font-weight:700;font-size:1.1rem;}
+.dash-panel-sub{font-size:.76rem;color:var(--muted);font-family:var(--f-mono);}
+
+/* Chart */
+.chart-wrap{
+  position:relative;height:240px;width:100%;
+  background:linear-gradient(180deg,rgba(139,92,246,0.04) 0%,transparent 100%);
+  border-radius:10px;padding:10px;
+}
+.chart-svg{width:100%;height:100%;}
+.chart-grid{stroke:var(--border);stroke-width:.5;}
+.chart-line{fill:none;stroke:url(#chartGrad);stroke-width:2;filter:drop-shadow(0 0 8px rgba(139,92,246,0.4));}
+.chart-area{fill:url(#areaGrad);opacity:.4;}
+.chart-label{fill:var(--muted);font-size:10px;font-family:var(--f-mono);}
+
+/* Activity list */
+.activity-list{display:flex;flex-direction:column;gap:10px;max-height:320px;overflow-y:auto;}
+.activity-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 12px;background:rgba(139,92,246,0.04);
+  border:1px solid var(--border);border-radius:10px;
+  transition:background .2s;
+}
+.activity-item:hover{background:rgba(139,92,246,0.1);}
+.activity-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;
+}
+.activity-main{flex:1;min-width:0;}
+.activity-title{font-size:.85rem;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.activity-meta{font-size:.72rem;color:var(--muted);font-family:var(--f-mono);}
+.activity-value{font-size:.82rem;font-weight:700;color:var(--mint);font-family:var(--f-mono);}
+.activity-value.neg{color:var(--red);}
+
+/* Agents grid (dashboard) */
+.agents-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+.agent-box{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;
+  transition:all .25s;cursor:pointer;
+}
+.agent-box:hover{border-color:var(--border2);transform:translateY(-2px);}
+.agent-avatar{
+  width:44px;height:44px;border-radius:11px;
+  background:linear-gradient(135deg,var(--violet),var(--pink));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-display);font-weight:800;font-size:.85rem;color:#fff;flex-shrink:0;
+}
+.agent-box-info{flex:1;min-width:0;}
+.agent-box-name{font-size:.88rem;font-weight:700;margin-bottom:2px;}
+.agent-box-status{font-size:.72rem;color:var(--mint);font-family:var(--f-mono);}
+.agent-box-status.idle{color:var(--muted);}
+
+/* ═══════════════ CHAT ═══════════════ */
+.chat-page{
+  padding:90px 0 0;max-width:1100px;margin:0 auto;height:100vh;
+  display:grid;grid-template-columns:260px 1fr;gap:0;
+}
+@media(max-width:820px){.chat-page{grid-template-columns:1fr;}.chat-sidebar{display:none;}}
+
+.chat-sidebar{
+  background:var(--bg2);border-right:1px solid var(--border);
+  padding:20px 14px;overflow-y:auto;
+}
+.chat-sidebar-title{font-size:.74rem;color:var(--muted);font-family:var(--f-mono);letter-spacing:.08em;margin-bottom:12px;padding:0 8px;}
+.chat-thread{
+  display:flex;align-items:center;gap:10px;padding:10px;
+  border-radius:10px;cursor:pointer;transition:background .2s;margin-bottom:4px;
+}
+.chat-thread:hover,.chat-thread.active{background:rgba(139,92,246,0.15);}
+.thread-avatar{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--violet),var(--pink));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;}
+.thread-info{flex:1;min-width:0;}
+.thread-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.thread-last{font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.chat-main{display:flex;flex-direction:column;height:100%;background:var(--bg);}
+.chat-header{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;}
+.chat-avatar{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--violet),var(--pink));display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:800;font-size:.95rem;}
+.chat-head-info h3{font-family:var(--f-display);font-weight:700;font-size:1rem;margin-bottom:2px;}
+.chat-head-info p{font-size:.76rem;color:var(--mint);font-family:var(--f-mono);}
+
+.chat-messages{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px;}
+.msg{max-width:75%;display:flex;flex-direction:column;gap:4px;animation:msgIn .3s ease both;}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{align-self:flex-end;align-items:flex-end;}
+.msg.bot{align-self:flex-start;align-items:flex-start;}
+.msg-bubble{
+  padding:12px 16px;border-radius:14px;font-size:.92rem;line-height:1.55;
+}
+.msg.user .msg-bubble{
+  background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;
+  border-bottom-right-radius:4px;
+}
+.msg.bot .msg-bubble{
+  background:var(--panel);border:1px solid var(--border);
+  border-bottom-left-radius:4px;
+}
+.msg-meta{font-size:.68rem;color:var(--muted);font-family:var(--f-mono);padding:0 6px;}
+.msg-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.msg-action{
+  background:rgba(139,92,246,0.15);border:1px solid var(--border2);color:var(--lavender);
+  padding:6px 12px;border-radius:8px;font-size:.78rem;cursor:pointer;
+  font-family:var(--f-body);transition:all .2s;
+}
+.msg-action:hover{background:rgba(139,92,246,0.3);}
+
+.typing-indicator{display:flex;gap:4px;align-items:center;padding:12px 16px;}
+.typing-indicator span{width:7px;height:7px;border-radius:50%;background:var(--lavender);animation:typing 1.2s infinite;}
+.typing-indicator span:nth-child(2){animation-delay:.2s;}
+.typing-indicator span:nth-child(3){animation-delay:.4s;}
+@keyframes typing{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+.chat-input-wrap{padding:16px 24px;border-top:1px solid var(--border);background:var(--bg2);}
+.chat-input-row{display:flex;gap:10px;align-items:flex-end;}
+.chat-input{
+  flex:1;background:var(--panel);border:1px solid var(--border);
+  border-radius:14px;padding:12px 16px;color:var(--white);
+  font-family:var(--f-body);font-size:.92rem;resize:none;
+  min-height:44px;max-height:120px;outline:none;transition:border-color .2s;
+}
+.chat-input:focus{border-color:var(--violet);}
+.chat-send{
+  background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;
+  border:none;padding:12px 18px;border-radius:12px;cursor:pointer;
+  font-family:var(--f-display);font-weight:700;font-size:.9rem;
+  box-shadow:0 0 18px rgba(139,92,246,0.4);transition:all .25s;white-space:nowrap;
+}
+.chat-send:hover{box-shadow:0 0 28px rgba(232,121,249,0.5);}
+.chat-send:disabled{opacity:.5;cursor:not-allowed;}
+.chat-suggestions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.chat-suggestion{
+  background:rgba(139,92,246,0.08);border:1px solid var(--border);
+  padding:6px 12px;border-radius:100px;font-size:.78rem;cursor:pointer;
+  color:var(--muted);transition:all .2s;
+}
+.chat-suggestion:hover{background:rgba(139,92,246,0.18);color:var(--lavender);border-color:var(--border2);}
+
+/* ═══════════════ TRADING ═══════════════ */
+.trading-page{padding:100px 24px 60px;max-width:1400px;margin:0 auto;}
+.trading-grid{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:24px;}
+@media(max-width:1024px){.trading-grid{grid-template-columns:1fr;}}
+
+.trade-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:var(--panel);border:1px solid var(--border);border-radius:14px;
+  padding:14px 20px;margin-bottom:18px;flex-wrap:wrap;
+}
+.pair-selector{display:flex;align-items:center;gap:10px;}
+.pair-icon{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#f7931a,#627eea);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;}
+.pair-info h4{font-family:var(--f-display);font-size:1rem;font-weight:700;}
+.pair-info .pair-price{font-family:var(--f-mono);font-size:.82rem;color:var(--mint);}
+.bot-status-indicator{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:.82rem;}
+.bot-status-dot{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint);animation:pulse 2s infinite;}
+.bot-status-dot.off{background:var(--muted);box-shadow:none;animation:none;}
+
+.trade-chart-panel{
+  background:var(--panel);border:1px solid var(--border);border-radius:14px;
+  padding:20px;min-height:380px;
+}
+.trade-chart-wrap{height:360px;position:relative;margin-top:12px;}
+
+.trade-tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--border);}
+.trade-tab{
+  background:transparent;border:none;color:var(--muted);
+  padding:8px 16px;cursor:pointer;font-size:.85rem;font-family:var(--f-display);font-weight:600;
+  border-bottom:2px solid transparent;transition:all .2s;
+}
+.trade-tab:hover{color:var(--lavender);}
+.trade-tab.active{color:var(--lavender);border-bottom-color:var(--violet);}
+
+.trade-sidebar{display:flex;flex-direction:column;gap:14px;}
+
+.bot-panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;}
+.bot-panel-title{font-family:var(--f-display);font-weight:700;font-size:.95rem;margin-bottom:12px;}
+.bot-metric{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+.bot-metric:last-child{border-bottom:none;}
+.bot-metric-label{font-size:.78rem;color:var(--muted);}
+.bot-metric-val{font-family:var(--f-mono);font-size:.82rem;font-weight:700;color:var(--lavender);}
+.bot-metric-val.mint{color:var(--mint);}
+.bot-metric-val.red{color:var(--red);}
+
+.signal-feed{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;}
+.signal-item{
+  background:rgba(139,92,246,0.05);border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;
+}
+.signal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.signal-type{font-family:var(--f-mono);font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.signal-type.buy{background:rgba(52,211,153,0.15);color:var(--mint);}
+.signal-type.sell{background:rgba(248,113,113,0.15);color:var(--red);}
+.signal-type.hold{background:rgba(139,92,246,0.15);color:var(--lavender);}
+.signal-time{font-size:.7rem;color:var(--muted);font-family:var(--f-mono);}
+.signal-body{font-size:.8rem;color:var(--muted);line-height:1.4;}
+
+.positions-table{
+  background:var(--panel);border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;margin-top:18px;
+}
+.pt-head{
+  display:grid;grid-template-columns:1fr 100px 120px 100px 100px 90px;
+  padding:12px 18px;background:rgba(139,92,246,0.08);
+  font-size:.74rem;font-family:var(--f-mono);color:var(--muted);letter-spacing:.04em;
+}
+.pt-row{
+  display:grid;grid-template-columns:1fr 100px 120px 100px 100px 90px;
+  padding:12px 18px;border-top:1px solid var(--border);
+  font-size:.85rem;align-items:center;
+}
+.pt-row:hover{background:rgba(139,92,246,0.04);}
+.pt-pair{font-weight:700;}
+.pt-side{font-family:var(--f-mono);font-size:.74rem;padding:3px 8px;border-radius:100px;width:fit-content;}
+.pt-side.long{background:rgba(52,211,153,0.15);color:var(--mint);}
+.pt-side.short{background:rgba(248,113,113,0.15);color:var(--red);}
+.pt-pnl{font-family:var(--f-mono);font-weight:700;}
+
+@media(max-width:820px){
+  .pt-head,.pt-row{grid-template-columns:1fr 80px 100px;font-size:.78rem;}
+  .pt-head span:nth-child(n+4),.pt-row span:nth-child(n+4){display:none;}
+}
+
+.bot-info-box{
+  background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);
+  border-radius:12px;padding:14px;margin-top:18px;font-size:.82rem;color:var(--gold);line-height:1.5;
+}
+.bot-info-box strong{color:var(--white);display:block;margin-bottom:4px;font-family:var(--f-display);}
+
+/* ═══════════════ STAKING ═══════════════ */
+.staking-page{padding:100px 24px 60px;max-width:1100px;margin:0 auto;}
+.stake-hero{
+  background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(232,121,249,0.08));
+  border:1px solid var(--border2);border-radius:20px;padding:32px;margin-bottom:24px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.stake-hero::before{
+  content:'';position:absolute;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(124,58,237,0.2) 0%,transparent 70%);
+  top:-100px;right:-100px;pointer-events:none;
+}
+.stake-hero-label{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);letter-spacing:.1em;margin-bottom:8px;}
+.stake-hero-apy{font-family:var(--f-display);font-weight:800;font-size:4rem;line-height:1;margin-bottom:4px;background:linear-gradient(135deg,var(--violet),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stake-hero-sub{font-size:.95rem;color:var(--muted);}
+
+.stake-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:22px;}
+.stake-positions{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:22px;}
+
+.position-item{
+  background:rgba(139,92,246,0.05);border:1px solid var(--border);
+  border-radius:12px;padding:16px;margin-bottom:10px;
+  display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:14px;align-items:center;
+}
+@media(max-width:680px){.position-item{grid-template-columns:1fr 1fr;}}
+.pos-label{font-size:.72rem;color:var(--muted);font-family:var(--f-mono);margin-bottom:2px;}
+.pos-value{font-family:var(--f-mono);font-weight:700;font-size:.92rem;}
+.pos-value.accent{color:var(--lavender);}
+.pos-value.mint{color:var(--mint);}
+
+.stake-preview{
+  background:rgba(139,92,246,0.06);border:1px solid var(--border);
+  border-radius:12px;padding:14px;margin-bottom:14px;
+}
+.sp-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.84rem;}
+.sp-row span:first-child{color:var(--muted);}
+.sp-val{font-family:var(--f-mono);font-weight:700;}
+.sp-val.sp-accent{color:var(--lavender);}
+
+.input-hint{font-size:.74rem;color:var(--muted);font-family:var(--f-mono);margin-top:4px;}
+
+/* ═══════════════ MARKETPLACE ═══════════════ */
+.marketplace-page{padding:100px 24px 60px;max-width:1400px;margin:0 auto;}
+.market-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.filter-btn{
+  background:rgba(139,92,246,0.08);border:1px solid var(--border);
+  padding:8px 18px;border-radius:100px;cursor:pointer;
+  color:var(--muted);font-size:.84rem;transition:all .2s;
+}
+.filter-btn:hover,.filter-btn.active{
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;border-color:transparent;
+}
+
+.skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.skill-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:16px;padding:20px;position:relative;overflow:hidden;
+  transition:all .3s;cursor:pointer;
+}
+.skill-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+.skill-cat{
+  display:inline-block;font-family:var(--f-mono);font-size:.7rem;
+  padding:3px 10px;border-radius:100px;margin-bottom:10px;
+  background:rgba(139,92,246,0.15);color:var(--lavender);letter-spacing:.04em;
+}
+.skill-title{font-family:var(--f-display);font-weight:700;font-size:1.05rem;margin-bottom:6px;}
+.skill-desc{font-size:.84rem;color:var(--muted);line-height:1.55;margin-bottom:14px;min-height:44px;}
+.skill-meta{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--border);}
+.skill-price{font-family:var(--f-mono);font-weight:700;color:var(--lavender);font-size:.9rem;}
+.skill-uses{font-size:.72rem;color:var(--muted);font-family:var(--f-mono);}
+.skill-creator{display:flex;align-items:center;gap:8px;font-size:.74rem;color:var(--muted);margin-bottom:10px;}
+.creator-avatar{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--pink));}
+.skill-rating{color:var(--gold);font-size:.8rem;}
+
+/* ═══════════════ NETWORK BAR ═══════════════ */
+.network-bar{
+  background:var(--bg3);border-top:1px solid var(--border);padding:12px 36px;
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:24px;
+  font-family:var(--f-mono);font-size:.7rem;color:var(--muted);
+}
+.net-item{display:flex;align-items:center;gap:6px;}
+.net-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 6px var(--mint);animation:pulse 2s infinite;}
+
+/* ═══════════════ FOOTER ═══════════════ */
+#topfooter{
+  padding:50px 36px 20px;border-top:1px solid var(--border);background:var(--bg2);
+}
+.footer-grid{
+  max-width:1200px;margin:0 auto;display:grid;
+  grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:30px;
+}
+@media(max-width:820px){.footer-grid{grid-template-columns:1fr 1fr;gap:24px;}}
+.footer-logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:1.1rem;margin-bottom:10px;}
+.footer-tag{color:var(--muted);font-size:.82rem;line-height:1.55;max-width:280px;}
+.footer-title{font-family:var(--f-display);font-weight:700;font-size:.92rem;color:var(--white);margin-bottom:12px;}
+#topfooter a{
+  display:block;color:var(--muted);font-size:.82rem;text-decoration:none;
+  padding:4px 0;cursor:pointer;transition:color .2s;
+}
+#topfooter a:hover{color:var(--lavender);}
+.footer-bottom{
+  max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:10px;padding-top:20px;border-top:1px solid var(--border);
+  font-size:.76rem;color:var(--muted);font-family:var(--f-mono);
+}
+.net-indicator{display:flex;align-items:center;gap:6px;}
+
+/* ═══════════════ MODAL ═══════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(12,10,26,0.85);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;padding:20px;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:22px;padding:32px;max-width:440px;width:100%;
+  box-shadow:0 0 80px rgba(139,92,246,0.3);
+  transform:translateY(16px);transition:transform .3s;
+  max-height:90vh;overflow-y:auto;
+}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-title{font-family:var(--f-display);font-weight:800;font-size:1.3rem;margin-bottom:6px;}
+.modal-sub{font-size:.84rem;color:var(--muted);margin-bottom:22px;line-height:1.6;}
+.wallet-options{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.wallet-btn{
+  display:flex;align-items:center;gap:14px;
+  background:rgba(139,92,246,0.08);border:1px solid var(--border);
+  border-radius:12px;padding:13px 16px;cursor:pointer;transition:all .25s;
+}
+.wallet-btn:hover{border-color:var(--violet);background:rgba(139,92,246,0.15);}
+.wallet-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0;
+}
+.wallet-name{font-weight:700;font-size:.9rem;font-family:var(--f-display);}
+.wallet-desc{font-size:.74rem;color:var(--muted);}
+.modal-close{
+  width:100%;background:transparent;border:1px solid var(--border);
+  color:var(--muted);padding:10px;border-radius:10px;cursor:pointer;
+  font-size:.84rem;transition:all .25s;
+}
+.modal-close:hover{border-color:var(--violet);color:var(--lavender);}
+.deploy-form{display:flex;flex-direction:column;gap:12px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:.74rem;color:var(--muted);font-family:var(--f-mono);letter-spacing:.05em;}
+.form-input,.form-select{
+  background:rgba(139,92,246,0.06);border:1px solid var(--border);
+  border-radius:10px;padding:11px 14px;color:var(--white);font-size:.88rem;
+  font-family:var(--f-body);outline:none;transition:border-color .2s;
+}
+.form-input:focus,.form-select:focus{border-color:var(--violet);}
+.form-select option{background:var(--panel);}
+
+/* ═══════════════ TOAST ═══════════════ */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:300;
+  background:var(--panel);border:1px solid var(--border2);
+  border-radius:12px;padding:14px 20px;
+  font-size:.86rem;color:var(--white);
+  box-shadow:0 0 30px rgba(139,92,246,0.3);
+  transform:translateX(140%);transition:transform .3s;
+  max-width:320px;line-height:1.5;
+}
+.toast.show{transform:translateX(0);}
+.toast-title{font-family:var(--f-display);font-weight:700;margin-bottom:3px;color:var(--lavender);}
+
+/* ═══════════════ ANIMATIONS ═══════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media(max-width:900px){
+  #topnav{padding:14px 20px;}
+  .nav-links{
+    display:none;position:absolute;top:100%;left:0;right:0;
+    background:var(--panel);border-bottom:1px solid var(--border);
+    flex-direction:column;padding:16px;gap:0;
+  }
+  .nav-links.open{display:flex;}
+  .nav-links a{padding:12px;border-bottom:1px solid var(--border);width:100%;text-align:center;}
+  .nav-links a:last-child{border-bottom:none;}
+  .hamburger{display:inline-block;}
+  .wallet-balance{display:none !important;}
+  .hero-title{font-size:clamp(2.4rem,11vw,4rem);}
+  .stat-item{min-width:50%;border-right:none;border-bottom:1px solid var(--border);}
+  .network-bar{padding:12px 20px;gap:14px;}
+  #topfooter{padding:40px 20px 20px;}
+  .dash-page,.trading-page,.staking-page,.marketplace-page{padding:90px 16px 40px;}
+}
+@media(max-width:480px){
+  .btn-primary,.btn-secondary{width:100%;max-width:320px;}
+  .tier-card{padding:22px 18px;}
+  .modal{padding:22px 18px;}
+  .chat-messages{padding:16px;}
+  .chat-input-wrap{padding:14px 16px;}
+  .chat-header{padding:14px 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="topnav">
+  <div class="nav-logo" onclick="navigate('landing')">
+    <img class="logo-img" src="data:image/jpeg;base64,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" alt="GCSC CLAW"/>
+    <span><span class="logo-xpr">GCSC</span><span class="logo-claw">CLAW</span></span>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <a onclick="navigate('landing')" data-page="landing">Home</a>
+    <a onclick="navigate('dashboard')" data-page="dashboard">Dashboard</a>
+    <a onclick="navigate('chat')" data-page="chat">AI Secretary</a>
+    <a onclick="navigate('trading')" data-page="trading">Trading Bot</a>
+    <a onclick="navigate('staking')" data-page="staking">Staking</a>
+    <a onclick="navigate('marketplace')" data-page="marketplace">Skills</a>
+  </div>
+  <div class="nav-right">
+    <div class="wallet-balance" id="walletBalance" style="display:none;">
+      <span class="bal-amount">0</span><span class="bal-symbol">$XLAW</span>
+    </div>
+    <button class="btn-connect" id="connectBtn" onclick="openConnectModal()">Connect Wallet</button>
+    <button class="hamburger" onclick="toggleMobileNav()" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<!-- ═══════════════ PAGES CONTAINER ═══════════════ -->
+<main id="app"></main>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer id="topfooter">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <img class="logo-img small" src="data:image/jpeg;base64,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" alt="GCSC CLAW"/>
+        <span><span class="logo-xpr">GCSC</span><span class="logo-claw">CLAW</span></span>
+      </div>
+      <p class="footer-tag">Self-Evolving AI Economic System on XPR Network</p>
+    </div>
+    <div>
+      <div class="footer-title">Product</div>
+      <a onclick="navigate('dashboard')">Dashboard</a>
+      <a onclick="navigate('chat')">AI Secretary</a>
+      <a onclick="navigate('trading')">Trading Bot</a>
+      <a onclick="navigate('staking')">Staking</a>
+    </div>
+    <div>
+      <div class="footer-title">Protocol</div>
+      <a onclick="navigate('marketplace')">Skill Marketplace</a>
+      <a href="#tokenomics" onclick="navigate('landing');setTimeout(()=>scrollToId('tokenomics'),100)">Tokenomics</a>
+      <a href="#tiers" onclick="navigate('landing');setTimeout(()=>scrollToId('tiers'),100)">Tiers</a>
+    </div>
+    <div>
+      <div class="footer-title">Resources</div>
+      <a href="https://github.com/Melxisedek75/gcsc-website" target="_blank">GitHub</a>
+      <a href="mailto:gcscdao@gmail.com">Contact</a>
+      <a onclick="showToast('White Paper','Loading v1.0…')">White Paper v1.0</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 GCSC CLAW · proton-tsc contracts · XPR Network</span>
+    <span class="net-indicator"><span class="net-dot"></span>XPR Mainnet · Block <span id="footBlock">—</span></span>
+  </div>
+</footer>
+
+<!-- ═══════════════ MODALS ═══════════════ -->
+<div class="modal-overlay" id="connectModal" onclick="closeOnOverlay(event,'connectModal')">
+  <div class="modal">
+    <div class="modal-title">Connect Wallet</div>
+    <div class="modal-sub">Connect your XPR Network wallet to deploy agents, stake $XLAW, and access your Secretary NFT.</div>
+    <div class="wallet-options">
+      <div class="wallet-btn" onclick="connectWallet('WebAuth')">
+        <div class="wallet-icon">🔐</div>
+        <div>
+          <div class="wallet-name">WebAuth</div>
+          <div class="wallet-desc">Biometric + NFC · Recommended for XPR</div>
+        </div>
+      </div>
+      <div class="wallet-btn" onclick="connectWallet('Proton Wallet')">
+        <div class="wallet-icon">⚡</div>
+        <div>
+          <div class="wallet-name">Proton Wallet</div>
+          <div class="wallet-desc">Official XPR Network wallet</div>
+        </div>
+      </div>
+      <div class="wallet-btn" onclick="connectWallet('Metal Pay')">
+        <div class="wallet-icon">🔗</div>
+        <div>
+          <div class="wallet-name">Metal Pay</div>
+          <div class="wallet-desc">Cross-chain via Metal Blockchain</div>
+        </div>
+      </div>
+    </div>
+    <button class="modal-close" onclick="closeModal('connectModal')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="deployModal" onclick="closeOnOverlay(event,'deployModal')">
+  <div class="modal">
+    <div class="modal-title">Deploy Your Agent</div>
+    <div class="modal-sub">Configure your private AI agent on XPR Network. 20 $XLAW entry + 15 $XLAW credit included.</div>
+    <div class="deploy-form">
+      <div class="form-group">
+        <label class="form-label">AGENT NAME</label>
+        <input class="form-input" placeholder="e.g. MyConstructionAgent" id="agentName"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">PRIMARY USE CASE</label>
+        <select class="form-select" id="agentUse">
+          <option>Construction Estimation</option>
+          <option>Legal Document Drafting</option>
+          <option>Contractor Matching</option>
+          <option>Risk Analysis</option>
+          <option>Escrow Management</option>
+          <option>Compliance Monitoring</option>
+          <option>Trading Bot Integration</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">MEMBERSHIP TIER</label>
+        <select class="form-select" id="agentTier">
+          <option>ASSOCIATE — $49/mo</option>
+          <option selected>COUNSEL — $99/mo</option>
+          <option>PARTNER — $199/mo</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">XPR WALLET ADDRESS</label>
+        <input class="form-input" placeholder="yourname.xpr" id="agentWallet"/>
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:4px;" onclick="deployAgent()">Deploy on XPR Network →</button>
+      <button class="modal-close" onclick="closeModal('deployModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="stakeModal" onclick="closeOnOverlay(event,'stakeModal')">
+  <div class="modal">
+    <div class="modal-title">Stake $XLAW</div>
+    <div class="modal-sub">Lock your $XLAW for 30 days and earn 12% APY from platform revenue.</div>
+    <div class="deploy-form">
+      <div class="form-group">
+        <label class="form-label">AMOUNT TO STAKE</label>
+        <input class="form-input" type="number" placeholder="0.00" id="stakeAmount"/>
+        <div class="input-hint">Balance: <span id="stakeBal">10,000</span> $XLAW</div>
+      </div>
+      <div class="stake-preview">
+        <div class="sp-row"><span>Lock Period</span><span class="sp-val">30 Days</span></div>
+        <div class="sp-row"><span>APY</span><span class="sp-val sp-accent">12.00%</span></div>
+        <div class="sp-row"><span>Est. Rewards (30d)</span><span class="sp-val" id="stakeReward">0 $XLAW</span></div>
+        <div class="sp-row"><span>Unlock Date</span><span class="sp-val" id="stakeUnlock">—</span></div>
+      </div>
+      <button class="btn-primary" style="width:100%;" onclick="executeStake()">Confirm Stake</button>
+      <button class="modal-close" onclick="closeModal('stakeModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="skillModal" onclick="closeOnOverlay(event,'skillModal')">
+  <div class="modal">
+    <div id="skillModalContent"></div>
+    <button class="modal-close" style="margin-top:16px;" onclick="closeModal('skillModal')">Close</button>
+  </div>
+</div>
+
+<!-- ═══════════════ TOAST ═══════════════ -->
+<div class="toast" id="toast">
+  <div class="toast-title" id="toastTitle"></div>
+  <div id="toastMsg"></div>
+</div>
+
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// Mock Data — GCSC CLAW
+// In production, this data comes from XPR Network blockchain
+// and the Python trading bot backend (see backend/trading-bot/)
+// ═══════════════════════════════════════════════════════════════
+
+window.MockData = {
+
+  // ─── USER ──────────────────────────────────────────────────
+  user: {
+    name: 'Builder',
+    wallet: 'gcscdao.xpr',
+    tier: 'COUNSEL',
+    xlawBalance: 12500,
+    xusdcBalance: 340.50,
+    stakedAmount: 5000,
+    memberSince: '2025-01-15',
+    reputation: 87,
+  },
+
+  // ─── AGENTS ────────────────────────────────────────────────
+  agents: [
+    { id:'a1', name:'ConstructionOne',   type:'LDA',   status:'active',    lastRun:'2 min ago',  skills:12, executions:847 },
+    { id:'a2', name:'LegalAssistant',    type:'DAA',   status:'active',    lastRun:'5 min ago',  skills:8,  executions:423 },
+    { id:'a3', name:'ComplianceAgent',   type:'KYC-A', status:'idle',      lastRun:'1 hr ago',   skills:5,  executions:156 },
+    { id:'a4', name:'EscrowManager',     type:'EFA',   status:'active',    lastRun:'12 min ago', skills:7,  executions:289 },
+  ],
+
+  // ─── ACTIVITY FEED ─────────────────────────────────────────
+  activity: [
+    { icon:'⚡', title:'Contract #4471 drafted by LDA agent',      meta:'2 min ago · 0.5 $XLAW burned',  value:'-0.5', type:'spend' },
+    { icon:'🔥', title:'Skill "Cost Estimator v3" created',         meta:'8 min ago · auto-generated',     value:'+20',  type:'earn' },
+    { icon:'💸', title:'Staking rewards claimed',                    meta:'14 min ago · 30-day cycle',      value:'+50',  type:'earn' },
+    { icon:'🏪', title:'Skill "Risk Score Pro" purchased by user',   meta:'32 min ago · marketplace',       value:'+12',  type:'earn' },
+    { icon:'⚖️', title:'Dispute #892 resolved by DAA agent',         meta:'1 hr ago · DAO vote',            value:'-2.0', type:'spend' },
+    { icon:'🔐', title:'Escrow deposit confirmed',                    meta:'2 hr ago · $15,000 USDC',        value:'-0.3', type:'spend' },
+    { icon:'✓',  title:'KYC verification complete for client',       meta:'3 hr ago · WebAuth + NFC',       value:'-1.0', type:'spend' },
+    { icon:'📊', title:'Contractor matching report generated',       meta:'4 hr ago · CMA + REA',           value:'-0.8', type:'spend' },
+  ],
+
+  // ─── CHAT THREADS ──────────────────────────────────────────
+  chatThreads: [
+    { id:'t1', name:'LDA Secretary',  abbr:'LDA',   last:'Contract #4471 is ready for review' },
+    { id:'t2', name:'DAA Arbitrator', abbr:'DAA',   last:'Dispute resolution — waiting for vote' },
+    { id:'t3', name:'KYC Compliance', abbr:'KYC',   last:'All licenses verified successfully' },
+    { id:'t4', name:'EFA Escrow',     abbr:'EFA',   last:'Escrow released to contractor' },
+    { id:'t5', name:'REA Regulatory', abbr:'REA',   last:'New regulation detected in CA' },
+  ],
+
+  // ─── SKILLS MARKETPLACE ────────────────────────────────────
+  skills: [
+    { id:'sk1', cat:'Construction', title:'Cost Estimator Pro',         desc:'Auto-generates detailed cost breakdowns from project scope. Trained on 2,400+ projects.', price:15, uses:1842, creator:'builder.xpr',       rating:4.9 },
+    { id:'sk2', cat:'Legal',        title:'Contract Drafter v4',        desc:'Multi-jurisdiction contract generator with automatic compliance checks.', price:25, uses:923, creator:'legalpro.xpr',      rating:4.8 },
+    { id:'sk3', cat:'Risk',         title:'Risk Score ML',              desc:'Machine learning risk assessment for counterparties and contracts.', price:12, uses:2156, creator:'riskguru.xpr',      rating:4.7 },
+    { id:'sk4', cat:'Real Estate',  title:'Property Valuator',          desc:'Instant property valuation using comparables, trends, and AI analysis.', price:20, uses:687, creator:'realproplus.xpr',    rating:4.9 },
+    { id:'sk5', cat:'Trading',      title:'Trend Detector',             desc:'Identifies trending vs ranging market regimes using HMM classifier.', price:30, uses:445, creator:'quantdao.xpr',      rating:4.6 },
+    { id:'sk6', cat:'Trading',      title:'News Impact Analyzer',       desc:'Filters market-moving news from noise using LLM-based classification.', price:35, uses:312, creator:'newsalpha.xpr',     rating:4.8 },
+    { id:'sk7', cat:'Compliance',   title:'License Verifier',           desc:'Real-time contractor license verification across all 50 US states.', price:8, uses:4210, creator:'compliancehub.xpr', rating:4.9 },
+    { id:'sk8', cat:'Construction', title:'Contractor Matcher',         desc:'NLP + geo-matching to find best contractors for specific project types.', price:18, uses:1067, creator:'buildconnect.xpr',  rating:4.7 },
+    { id:'sk9', cat:'Legal',        title:'Dispute Analyzer',           desc:'Predicts dispute outcomes based on historical DAO arbitration data.', price:22, uses:564, creator:'arbitrate.xpr',     rating:4.8 },
+  ],
+
+  // ─── STAKING POSITIONS ─────────────────────────────────────
+  stakePositions: [
+    { id:'sp1', amount:3000, lockedOn:'2025-08-20', unlockOn:'2025-09-19', apy:12, earned:87.45, status:'active' },
+    { id:'sp2', amount:2000, lockedOn:'2025-09-01', unlockOn:'2025-10-01', apy:12, earned:42.30, status:'active' },
+  ],
+
+  // ─── TRADING BOT (mock data that simulates backend) ────────
+  trading: {
+    status: 'running', // running | paused | stopped
+    mode: 'trend-following',
+    pair: 'BTC/USDT',
+    balance: 10000,
+    equity: 10834.52,
+    dayPnl: 234.12,
+    totalPnl: 834.52,
+    winRate: 62.5,
+    sharpe: 1.43,
+    maxDrawdown: -4.2,
+    openPositions: [
+      { pair:'BTC/USDT', side:'long',  entry:62340, current:62890, size:0.05, pnl:27.50,  pnlPct:0.88 },
+      { pair:'ETH/USDT', side:'long',  entry:2445,  current:2478,  size:0.8,  pnl:26.40,  pnlPct:1.35 },
+      { pair:'SOL/USDT', side:'short', entry:145.2, current:142.8, size:10,   pnl:24.00,  pnlPct:1.65 },
+    ],
+    recentSignals: [
+      { type:'buy',  pair:'BTC/USDT', time:'2m ago',  body:'Trend module: breakout above VWAP confirmed. Strength 0.74 (calibrated).' },
+      { type:'hold', pair:'ETH/USDT', time:'5m ago',  body:'Regime detector: trending. Context agent: no risk flags. Holding position.' },
+      { type:'sell', pair:'DOGE/USDT',time:'12m ago', body:'Mean-reversion module: RSI extreme reached 78. Exit signal. Strength 0.68.' },
+      { type:'hold', pair:'SOL/USDT', time:'18m ago', body:'Short position performing. Trailing stop adjusted to -142.5.' },
+      { type:'buy',  pair:'LINK/USDT',time:'25m ago', body:'News agent: bullish partnership announcement. Event-driven entry. Strength 0.81.' },
+    ],
+    // Simulated price history for chart (last 60 points)
+    priceHistory: (() => {
+      const pts = []; let p = 62000;
+      for (let i = 0; i < 60; i++) {
+        p += (Math.random() - 0.48) * 150;
+        pts.push(Math.round(p));
+      }
+      return pts;
+    })(),
+    // Equity curve (30 points)
+    equityCurve: (() => {
+      const pts = []; let v = 10000;
+      for (let i = 0; i < 30; i++) {
+        v += (Math.random() - 0.35) * 80;
+        pts.push(Math.round(v * 100) / 100);
+      }
+      return pts;
+    })(),
+  },
+
+  // ─── AGENT CHAT SAMPLE RESPONSES ───────────────────────────
+  chatResponses: {
+    default: [
+      "I've reviewed the request. Based on your active contracts, I recommend proceeding with caution.",
+      "Analyzing the context now. Your reputation score supports this transaction.",
+      "Done. I've logged this to your on-chain history. 0.5 $XLAW burned per execution.",
+      "I found 3 relevant skills in the marketplace that could handle this automatically. Shall I apply them?",
+    ],
+    contract: [
+      "Contract draft is ready. Key terms: 60-day term, milestone-based payments, escrow via EFA agent.\n\nEstimated cost: 1.2 $XLAW to finalize on-chain.",
+      "I've identified 2 compliance issues in the counterparty's profile. Want me to request additional verification via KYC-A?",
+    ],
+    reminder: [
+      "Contract #4471 expires in 8 days. The contractor has not yet signed the completion certificate.\n\nOptions:",
+      "You have 3 pending deadlines this week:\n• Contract #4471 — Oct 22\n• Escrow release #8921 — Oct 24\n• License renewal — Oct 26",
+    ],
+    risk: [
+      "Risk Analysis Complete:\n\n• Counterparty score: 72/100 (good)\n• Jurisdiction: compliant\n• Historical dispute rate: 2.1%\n\nRecommendation: Proceed with standard escrow terms.",
+    ],
+  },
+
+};
+
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// Wallet Service — XPR Network Integration
+// 
+// In production, uses @proton/web-sdk for real wallet connection.
+// For MVP/demo, we simulate the connection flow.
+// 
+// To enable real XPR:
+//   npm install @proton/web-sdk
+//   import { ConnectWallet } from '@proton/web-sdk';
+// ═══════════════════════════════════════════════════════════════
+
+window.WalletService = (function() {
+
+  const STATE = {
+    connected: false,
+    wallet: null,
+    address: null,
+    balance: 0,
+  };
+
+  const listeners = [];
+
+  function onChange(fn) { listeners.push(fn); }
+  function emit() { listeners.forEach(fn => fn(STATE)); }
+
+  /**
+   * Connect wallet (WebAuth, Proton Wallet, Metal Pay)
+   * Production: uses @proton/web-sdk ConnectWallet()
+   */
+  async function connect(walletName) {
+    // Simulate XPR Network connection flow
+    // In production this would be:
+    //
+    //   const { session, link } = await ConnectWallet({
+    //     linkOptions: {
+    //       endpoints: ['https://proton.eosusa.io'],
+    //       chainId: '384da888112027f0321850a169f737c33e53b388aad48b5adace4bab97f437e0',
+    //     },
+    //     transportOptions: { requestAccount: 'gcsctoken111' },
+    //     selectorOptions: { appName: 'GCSC CLAW' },
+    //   });
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        STATE.connected = true;
+        STATE.wallet = walletName;
+        STATE.address = MockData.user.wallet;
+        STATE.balance = MockData.user.xlawBalance;
+        emit();
+        resolve(STATE);
+      }, 1500);
+    });
+  }
+
+  function disconnect() {
+    STATE.connected = false;
+    STATE.wallet = null;
+    STATE.address = null;
+    STATE.balance = 0;
+    emit();
+  }
+
+  function getState() { return { ...STATE }; }
+
+  /**
+   * Sign a transaction (deploy agent, stake, purchase skill)
+   * Production: uses session.transact() from @proton/web-sdk
+   */
+  async function sign(action, data) {
+    if (!STATE.connected) throw new Error('Wallet not connected');
+
+    // In production:
+    //
+    //   const result = await session.transact({
+    //     actions: [{
+    //       account: 'gcsctoken111',
+    //       name: action,
+    //       authorization: [{ actor: STATE.address, permission: 'active' }],
+    //       data: data,
+    //     }]
+    //   }, { blocksBehind: 3, expireSeconds: 30 });
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          txId: '0x' + Array(16).fill(0).map(() => Math.floor(Math.random()*16).toString(16)).join(''),
+          blockNum: 47283900 + Math.floor(Math.random()*100),
+          status: 'executed',
+          action,
+          data,
+        });
+      }, 1800);
+    });
+  }
+
+  return { connect, disconnect, sign, getState, onChange };
+})();
+
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// Chain Service — XPR Network queries
+// Provides blockchain state (block height, contract reads)
+// ═══════════════════════════════════════════════════════════════
+
+window.ChainService = (function() {
+
+  // XPR Network RPC endpoints (production)
+  const ENDPOINTS = {
+    mainnet: 'https://proton.eosusa.io',
+    testnet: 'https://testnet.proton.pink.gg',
+  };
+
+  // Deployed contracts (from White Paper)
+  const CONTRACTS = {
+    token:      'gcsctoken111',  // Main $XLAW token (DEPLOYED)
+    membership: 'gcscmember11',  // Membership tiers
+    realty:     'gcscrealty11',  // Real Estate DAO
+    staking:    'gcscstake111',  // Staking 12% APY
+    insurance:  'gcscinsure11',  // Insurance
+    treasury:   'gcsctreasry1',  // Treasury DAO
+    leadership: 'gcsclead1111',  // Governance
+    ticket:     'gcscticket1',   // Lottery
+    bounty:     'gcscbounty1',   // Bounty system
+  };
+
+  let currentBlock = 47283900;
+
+  // Simulates live block height updates
+  // Production: fetches from https://proton.eosusa.io/v1/chain/get_info
+  function getBlockHeight() {
+    currentBlock += Math.floor(Math.random() * 3) + 1;
+    return currentBlock;
+  }
+
+  /**
+   * Read table from contract
+   * Production: uses /v1/chain/get_table_rows
+   */
+  async function readTable(contract, table, scope) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Return mock data — production would query actual chain
+        resolve({ rows: [], more: false });
+      }, 400);
+    });
+  }
+
+  /**
+   * Get token balance
+   * Production: queries accounts table on gcsctoken111
+   */
+  async function getBalance(address) {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(MockData.user.xlawBalance), 300);
+    });
+  }
+
+  return {
+    ENDPOINTS,
+    CONTRACTS,
+    getBlockHeight,
+    readTable,
+    getBalance,
+  };
+})();
+
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// Trading Bot Service
+//
+// In production, connects to the Python backend via REST + WebSocket.
+// See: backend/trading-bot/ for the architecture.
+//
+// Endpoints:
+//   GET  /api/bot/status         — bot state + metrics
+//   GET  /api/bot/positions      — open positions
+//   GET  /api/bot/signals        — recent signals (LLM + ML output)
+//   POST /api/bot/start          — start trading
+//   POST /api/bot/pause          — pause (close nothing)
+//   POST /api/bot/stop           — emergency stop (close all)
+//   WS   /ws/bot                 — live price + signal stream
+//
+// For MVP, we use mock data and simulate live updates.
+// ═══════════════════════════════════════════════════════════════
+
+window.TradingBotService = (function() {
+
+  const API_BASE = '/api/bot'; // production: https://api.xprclaw.com/bot
+  let state = JSON.parse(JSON.stringify(MockData.trading));
+  const listeners = [];
+
+  function onUpdate(fn) { listeners.push(fn); }
+  function emit() { listeners.forEach(fn => fn(state)); }
+
+  async function getStatus() {
+    // Production: return fetch(`${API_BASE}/status`).then(r => r.json());
+    return Promise.resolve({ ...state });
+  }
+
+  async function start() {
+    state.status = 'running';
+    emit();
+    return { ok: true };
+  }
+
+  async function pause() {
+    state.status = 'paused';
+    emit();
+    return { ok: true };
+  }
+
+  async function stop() {
+    state.status = 'stopped';
+    state.openPositions = [];
+    emit();
+    return { ok: true };
+  }
+
+  async function closePosition(pair) {
+    state.openPositions = state.openPositions.filter(p => p.pair !== pair);
+    emit();
+    return { ok: true };
+  }
+
+  // Simulates live price tick (as if WebSocket feed)
+  function startLiveFeed() {
+    setInterval(() => {
+      if (state.status !== 'running') return;
+
+      // Update price history
+      const last = state.priceHistory[state.priceHistory.length - 1];
+      const next = Math.round(last + (Math.random() - 0.48) * 150);
+      state.priceHistory.push(next);
+      if (state.priceHistory.length > 60) state.priceHistory.shift();
+
+      // Update positions' current price + pnl
+      state.openPositions.forEach(p => {
+        const change = (Math.random() - 0.5) * 0.003;
+        p.current = Math.round(p.current * (1 + change) * 100) / 100;
+        const multiplier = p.side === 'long' ? 1 : -1;
+        p.pnlPct = Math.round(((p.current - p.entry) / p.entry) * 100 * multiplier * 100) / 100;
+        p.pnl = Math.round(p.pnlPct * p.entry * p.size / 100 * 100) / 100;
+      });
+
+      // Update equity
+      const totalPnl = state.openPositions.reduce((s, p) => s + p.pnl, 0);
+      state.equity = Math.round((state.balance + totalPnl) * 100) / 100;
+      state.dayPnl = Math.round((state.equity - state.balance) * 100) / 100;
+
+      emit();
+    }, 2500);
+  }
+
+  // Occasionally inject new signals (simulates LLM + ML pipeline output)
+  function startSignalSimulator() {
+    setInterval(() => {
+      if (state.status !== 'running') return;
+      if (Math.random() > 0.7) return; // 30% chance per cycle
+
+      const pairs = ['BTC/USDT','ETH/USDT','SOL/USDT','DOGE/USDT','LINK/USDT'];
+      const types = ['buy','sell','hold'];
+      const bodies = [
+        'Trend module: breakout confirmed. Calibrated strength 0.72.',
+        'Regime: trending. Context agent: no risk flags.',
+        'Mean-reversion: RSI extreme. Exit signal. Strength 0.65.',
+        'News agent: bullish announcement detected. Event-driven entry.',
+        'Risk engine: correlation limit reached. No new trades.',
+        'Shadow trading: signal matches backtest expectations.',
+      ];
+
+      state.recentSignals.unshift({
+        type: types[Math.floor(Math.random()*3)],
+        pair: pairs[Math.floor(Math.random()*pairs.length)],
+        time: 'just now',
+        body: bodies[Math.floor(Math.random()*bodies.length)],
+      });
+      if (state.recentSignals.length > 12) state.recentSignals.pop();
+
+      emit();
+    }, 8000);
+  }
+
+  return {
+    getStatus, start, pause, stop, closePosition,
+    onUpdate, startLiveFeed, startSignalSimulator,
+  };
+})();
+
+</script>
+<script>
+// ═══════════════ LANDING PAGE ═══════════════
+window.Pages = window.Pages || {};
+window.Pages.landing = function() {
+  return `
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      LIVE ON XPR NETWORK · TESTNET ACTIVE
+    </div>
+    <div class="hero-title">
+      <span class="line1">Deploy Your</span>
+      <span class="line2">GCSCClaw.</span>
+    </div>
+    <p class="hero-sub">
+      Pre-trained on <strong>XPR Network</strong> and 10+ ecosystems — skip the trial and error.
+      <strong>Private AI agents</strong>, no rate limits.
+      Pay as you go. <strong>Gets smarter every session.</strong>
+    </p>
+    <div class="hero-price-card">
+      <div class="price-row">
+        <div class="xpr-icon">XPR</div>
+        <div class="price-amount">20 $XLAW</div>
+      </div>
+      <div class="price-note">private cloud agent + 15 $XLAW credit</div>
+    </div>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="openDeployModal()">Deploy Your Agent</button>
+      <button class="btn-secondary" onclick="scrollToId('how')">See How It Works</button>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-num" id="statAgents">0</div><div class="stat-label">AGENTS DEPLOYED</div></div>
+    <div class="stat-item"><div class="stat-num" id="statSkills">0</div><div class="stat-label">SKILLS CREATED</div></div>
+    <div class="stat-item"><div class="stat-num" id="statBurned">0</div><div class="stat-label">$XLAW BURNED</div></div>
+    <div class="stat-item"><div class="stat-num" id="statBlock">—</div><div class="stat-label">XPR BLOCK HEIGHT</div></div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="container">
+      <span class="section-tag reveal">How it works</span>
+      <h2 class="section-title reveal">Self-Evolving AI <span>Economic Loop</span></h2>
+      <p class="section-sub reveal">Every AI execution generates a reusable skill. Every skill reduces cost. Every cost reduction attracts more usage. The loop never stops.</p>
+      <div class="grid-3">
+        <div class="card reveal"><div class="card-num">STEP 01</div><div class="card-icon">⚡</div><div class="card-title">Request Execution</div><div class="card-desc">Send any business task — contract generation, cost estimation, risk analysis. The CLAW orchestrator routes it instantly.</div></div>
+        <div class="card reveal"><div class="card-num">STEP 02</div><div class="card-icon">🧠</div><div class="card-title">Memory & Learning</div><div class="card-desc">Every interaction stored in 3-layer memory (Session + SQLite + Qdrant). Patterns are detected automatically.</div></div>
+        <div class="card reveal"><div class="card-num">STEP 03</div><div class="card-icon">🔧</div><div class="card-title">Skill Auto-Creation</div><div class="card-desc">After 3+ similar tasks, the platform packages the workflow into a reusable skill — 10x cheaper to execute.</div></div>
+        <div class="card reveal"><div class="card-num">STEP 04</div><div class="card-icon">🔥</div><div class="card-title">Token Burn</div><div class="card-desc">60–80% of every $XLAW spent is burned permanently. More usage = more scarcity = organic price appreciation.</div></div>
+        <div class="card reveal"><div class="card-num">STEP 05</div><div class="card-icon">🏪</div><div class="card-title">Skill Marketplace</div><div class="card-desc">Publish your skills. Earn 20% of every purchase. The other 60% is burned, 20% goes to the system.</div></div>
+        <div class="card reveal"><div class="card-num">STEP 06</div><div class="card-icon">🔄</div><div class="card-title">Repeat & Scale</div><div class="card-desc">The system improves itself. You own the value you create. No central control. No rate limits.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENTS -->
+  <section id="agents" style="background:var(--bg2);">
+    <div class="container">
+      <span class="section-tag reveal">AI Agents</span>
+      <h2 class="section-title reveal">Five Specialized <span>AI Agents</span></h2>
+      <p class="section-sub reveal">Your Secretary NFT interfaces all five agents. One conversation — five capabilities. Always on, always learning.</p>
+      <div class="grid-4">
+        <div class="agent-card reveal"><div class="agent-abbr">LDA</div><div class="agent-name">Legal Document Agent</div><div class="agent-desc">Generates and analyzes contracts. NLP + template engine.</div></div>
+        <div class="agent-card reveal"><div class="agent-abbr">DAA</div><div class="agent-name">Dispute Arbitration Agent</div><div class="agent-desc">DAO-based dispute resolution. Multi-sig + voting.</div></div>
+        <div class="agent-card reveal"><div class="agent-abbr">KYC-A</div><div class="agent-name">Identity & Compliance</div><div class="agent-desc">WebAuth + biometric + NFC. License verification.</div></div>
+        <div class="agent-card reveal"><div class="agent-abbr">EFA</div><div class="agent-name">Escrow & Fund Agent</div><div class="agent-desc">Smart contract escrow for every deal. 0.5–2% fee.</div></div>
+        <div class="agent-card reveal"><div class="agent-abbr">REA</div><div class="agent-name">Regulatory Enforcement</div><div class="agent-desc">Monitors legal changes. Web scraping + NLP.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOKENOMICS -->
+  <section id="tokenomics">
+    <div class="container">
+      <span class="section-tag reveal">Token Economy</span>
+      <h2 class="section-title reveal">$XLAW <span>Tokenomics</span></h2>
+      <p class="section-sub reveal">Two-token system. Real utility-driven burn. Every execution reduces supply.</p>
+      <div class="token-grid">
+        <div class="token-card reveal">
+          <div class="token-card-title">$XLAW Token</div>
+          <div class="token-card-sub">Governance + Utility — XPR Network</div>
+          <div class="token-rows">
+            <div class="token-row"><span class="token-row-label">Max Supply</span><span class="token-row-val">1,000,000,000</span></div>
+            <div class="token-row"><span class="token-row-label">Staking APY</span><span class="token-row-val">12%</span></div>
+            <div class="token-row"><span class="token-row-label">Lock Period</span><span class="token-row-val">30 Days</span></div>
+            <div class="token-row"><span class="token-row-label">Burn Rate</span><span class="token-row-val">60–80% per call</span></div>
+            <div class="token-row"><span class="token-row-label">Deployed</span><span class="token-row-val">gcsctoken111</span></div>
+          </div>
+          <div class="burn-bar"><div class="burn-fill"></div></div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:6px;font-family:var(--f-mono);">70% BURN RATE ACTIVE</div>
+        </div>
+        <div class="token-card reveal">
+          <div class="token-card-title">Revenue Distribution</div>
+          <div class="token-card-sub">Per transaction type on XPR Network</div>
+          <div class="token-rows">
+            <div class="token-row"><span class="token-row-label">Subscriptions</span><span class="token-row-val">30% Stakers / 40% Ops</span></div>
+            <div class="token-row"><span class="token-row-label">Skill Sales</span><span class="token-row-val">60% Burn / 20% Creator</span></div>
+            <div class="token-row"><span class="token-row-label">Lead Token</span><span class="token-row-val">50% Burn / 50% Treasury</span></div>
+            <div class="token-row"><span class="token-row-label">Escrow Fee</span><span class="token-row-val">70% Protocol / 20% DAO</span></div>
+            <div class="token-row"><span class="token-row-label">Insurance</span><span class="token-row-val">60% Reserve / 30% Stakers</span></div>
+          </div>
+          <div style="margin-top:14px;padding:10px;background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:10px;font-size:.78rem;color:var(--mint);font-family:var(--f-mono);">
+            ✓ XUSDC stablecoin for stable settlements
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECONOMIC LOOP -->
+  <section style="overflow:hidden;">
+    <div class="container" style="text-align:center;">
+      <span class="section-tag reveal">The Flywheel</span>
+      <h2 class="section-title reveal">Self-<span>Reinforcing</span> Loop</h2>
+      <p class="section-sub reveal" style="margin:0 auto;">The more it's used, the cheaper it gets. The cheaper it gets, the more it's used.</p>
+      <div class="loop-flow reveal">
+        <div class="loop-node"><div class="loop-icon-wrap">⚡</div><div class="loop-label">AI USAGE</div></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node"><div class="loop-icon-wrap">💸</div><div class="loop-label">$XLAW SPENT</div></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node"><div class="loop-icon-wrap">🔥</div><div class="loop-label">TOKEN BURN</div></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node"><div class="loop-icon-wrap">📉</div><div class="loop-label">SCARCITY</div></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node"><div class="loop-icon-wrap">🔧</div><div class="loop-label">NEW SKILLS</div></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node"><div class="loop-icon-wrap">📈</div><div class="loop-label">EFFICIENCY</div></div>
+        <div class="loop-arrow">↩</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIERS -->
+  <section id="tiers" style="background:var(--bg2);">
+    <div class="container">
+      <span class="section-tag reveal">Membership</span>
+      <h2 class="section-title reveal">Choose Your <span>Secretary Tier</span></h2>
+      <p class="section-sub reveal">Your Secretary NFT is your on-chain identity, reputation, and AI interface. It grows with you.</p>
+      <div class="tiers-grid">
+        <div class="tier-card reveal">
+          <div class="tier-name">ASSOCIATE</div>
+          <div class="tier-price">$49</div>
+          <div class="tier-period">per month</div>
+          <div class="tier-bonus">+50M $XLAW entry bonus</div>
+          <ul class="tier-features">
+            <li class="active">1 Secretary NFT</li>
+            <li class="active">AI Secretary 24/7</li>
+            <li class="active">Basic contract templates</li>
+            <li class="active">Deadline reminders</li>
+            <li>AI Compliance Agent</li>
+            <li>Escrow deposits</li>
+            <li>DAO voting</li>
+          </ul>
+          <button class="btn-tier" onclick="deployTier('ASSOCIATE','49')">Get Started</button>
+        </div>
+        <div class="tier-card featured reveal">
+          <div class="tier-badge">POPULAR</div>
+          <div class="tier-name">COUNSEL</div>
+          <div class="tier-price">$99</div>
+          <div class="tier-period">per month</div>
+          <div class="tier-bonus">+150M $XLAW entry bonus</div>
+          <ul class="tier-features">
+            <li class="active">3 Secretary NFTs</li>
+            <li class="active">AI Secretary 24/7</li>
+            <li class="active">Advanced contract library</li>
+            <li class="active">AI Compliance Agent</li>
+            <li class="active">Escrow deposits</li>
+            <li class="active">Priority arbitration</li>
+            <li>DAO voting</li>
+          </ul>
+          <button class="btn-tier" onclick="deployTier('COUNSEL','99')">Get Started</button>
+        </div>
+        <div class="tier-card reveal">
+          <div class="tier-name">PARTNER</div>
+          <div class="tier-price">$199</div>
+          <div class="tier-period">per month</div>
+          <div class="tier-bonus">+350M $XLAW entry bonus</div>
+          <ul class="tier-features">
+            <li class="active">7 Secretary NFTs</li>
+            <li class="active">All 5 AI Agents</li>
+            <li class="active">Full contract library</li>
+            <li class="active">AI Compliance Agent</li>
+            <li class="active">Escrow deposits</li>
+            <li class="active">DAO voting rights</li>
+            <li class="active">Direct dev updates</li>
+          </ul>
+          <button class="btn-tier" onclick="deployTier('PARTNER','199')">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPLOY CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <span class="section-tag" style="display:block;">Deploy Now</span>
+      <h2 class="section-title reveal">Your Agent. <span>Your Rules.</span><br>Your Chain.</h2>
+      <p class="section-sub reveal" style="margin:0 auto 30px;">Connect your WebAuth wallet, choose a tier, deploy your AI agent on XPR Network.</p>
+      <div class="cta-cards reveal">
+        <div class="cta-mini"><div class="cta-mini-val">20 $XLAW</div><div class="cta-mini-label">ENTRY PRICE</div></div>
+        <div class="cta-mini"><div class="cta-mini-val">+15 $XLAW</div><div class="cta-mini-label">CREDIT BONUS</div></div>
+        <div class="cta-mini"><div class="cta-mini-val">12% APY</div><div class="cta-mini-label">STAKING YIELD</div></div>
+        <div class="cta-mini"><div class="cta-mini-val">XPR</div><div class="cta-mini-label">NETWORK</div></div>
+      </div>
+      <div style="margin-top:36px;">
+        <button class="btn-primary" onclick="openDeployModal()">Deploy Your Agent</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- NETWORK STATUS -->
+  <div class="network-bar">
+    <div class="net-item"><span class="net-dot"></span>XPR MAINNET: ONLINE</div>
+    <div class="net-item"><span class="net-dot"></span>CONTRACT: gcsctoken111</div>
+    <div class="net-item"><span class="net-dot"></span>DEX: SimpleDEX ACTIVE</div>
+    <div class="net-item"><span class="net-dot"></span>WEBAUTH: ENABLED</div>
+    <div class="net-item"><span class="net-dot"></span>AGENTS: RUNNING</div>
+  </div>
+</div>
+  `;
+};
+
+window.Pages.landingInit = function() {
+  // Animated counters
+  function animateCount(id, target) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let start = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      start = Math.min(start + step, target);
+      el.textContent = Math.floor(start).toLocaleString();
+      if (start >= target) clearInterval(timer);
+    }, 30);
+  }
+  setTimeout(() => {
+    animateCount('statAgents', 247);
+    animateCount('statSkills', 1382);
+    animateCount('statBurned', 8419234);
+  }, 500);
+
+  function updateBlock() {
+    const el = document.getElementById('statBlock');
+    if (el) el.textContent = ChainService.getBlockHeight().toLocaleString();
+  }
+  updateBlock();
+  window._landingBlockInterval = setInterval(updateBlock, 3000);
+
+  // Scroll reveals
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 50);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: .12 });
+  revealEls.forEach(el => obs.observe(el));
+};
+
+window.Pages.landingCleanup = function() {
+  clearInterval(window._landingBlockInterval);
+};
+
+</script>
+<script>
+// ═══════════════ DASHBOARD PAGE ═══════════════
+window.Pages = window.Pages || {};
+
+window.Pages.dashboard = function() {
+  const u = MockData.user;
+
+  const statsHtml = `
+    <div class="dash-grid">
+      <div class="dash-card">
+        <div class="dash-card-label">$XLAW BALANCE</div>
+        <div class="dash-card-value accent">${u.xlawBalance.toLocaleString()}</div>
+        <div class="dash-card-trend trend-up">▲ +120 (24h)</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-label">STAKED</div>
+        <div class="dash-card-value">${u.stakedAmount.toLocaleString()}</div>
+        <div class="dash-card-trend">12% APY · earning +1.64 $XLAW/day</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-label">REPUTATION</div>
+        <div class="dash-card-value mint">${u.reputation}<span style="font-size:1rem;color:var(--muted);">/100</span></div>
+        <div class="dash-card-trend trend-up">▲ +3 this week</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-label">TIER</div>
+        <div class="dash-card-value" style="font-size:1.6rem;">${u.tier}</div>
+        <div class="dash-card-trend">Member since ${new Date(u.memberSince).toLocaleDateString('en-US',{month:'short',year:'numeric'})}</div>
+      </div>
+    </div>
+  `;
+
+  const activityHtml = MockData.activity.map(a => `
+    <div class="activity-item">
+      <div class="activity-icon">${a.icon}</div>
+      <div class="activity-main">
+        <div class="activity-title">${a.title}</div>
+        <div class="activity-meta">${a.meta}</div>
+      </div>
+      <div class="activity-value ${a.type==='spend'?'neg':''}">${a.value} $XLAW</div>
+    </div>
+  `).join('');
+
+  const agentsHtml = MockData.agents.map(a => `
+    <div class="agent-box" onclick="navigate('chat')">
+      <div class="agent-avatar">${a.type}</div>
+      <div class="agent-box-info">
+        <div class="agent-box-name">${a.name}</div>
+        <div class="agent-box-status ${a.status==='active'?'':'idle'}">● ${a.status} · ${a.executions} executions</div>
+      </div>
+    </div>
+  `).join('');
+
+  return `
+<div class="page dash-page">
+  <div class="dash-header">
+    <div class="dash-greeting">
+      <h1>Welcome back, ${u.name}</h1>
+      <p>Wallet: ${u.wallet} · Here's what's happening on your account</p>
+    </div>
+    <div class="dash-actions">
+      <button class="btn-secondary btn-sm" onclick="navigate('staking')">Stake $XLAW</button>
+      <button class="btn-primary btn-sm" onclick="openDeployModal()">Deploy Agent</button>
+    </div>
+  </div>
+
+  ${statsHtml}
+
+  <div class="dash-row">
+    <div class="dash-panel">
+      <div class="dash-panel-header">
+        <div>
+          <div class="dash-panel-title">$XLAW Balance (30 days)</div>
+          <div class="dash-panel-sub">Accrued via staking + skill sales</div>
+        </div>
+        <button class="btn-secondary btn-sm" onclick="navigate('staking')">Manage</button>
+      </div>
+      <div class="chart-wrap">
+        ${buildChart()}
+      </div>
+    </div>
+    <div class="dash-panel">
+      <div class="dash-panel-header">
+        <div class="dash-panel-title">Recent Activity</div>
+      </div>
+      <div class="activity-list">
+        ${activityHtml}
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-panel">
+    <div class="dash-panel-header">
+      <div>
+        <div class="dash-panel-title">Your AI Agents</div>
+        <div class="dash-panel-sub">Tap to chat with any agent</div>
+      </div>
+      <button class="btn-primary btn-sm" onclick="openDeployModal()">+ New Agent</button>
+    </div>
+    <div class="agents-row">${agentsHtml}</div>
+  </div>
+</div>
+  `;
+};
+
+function buildChart() {
+  // Generate equity curve chart (SVG-based)
+  const data = [];
+  let v = 10000;
+  for (let i = 0; i < 30; i++) {
+    v += (Math.random() - 0.35) * 120;
+    data.push(v);
+  }
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min;
+  const w = 100, h = 100;
+  const pts = data.map((d, i) => {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - ((d - min) / range) * (h - 10) - 5;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const areaPts = `0,${h} ${pts} ${w},${h}`;
+
+  return `
+    <svg class="chart-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="chartGrad" x1="0" x2="1">
+          <stop offset="0%" stop-color="#8b5cf6"/>
+          <stop offset="100%" stop-color="#e879f9"/>
+        </linearGradient>
+        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8b5cf6" stop-opacity=".5"/>
+          <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <line class="chart-grid" x1="0" y1="25" x2="100" y2="25"/>
+      <line class="chart-grid" x1="0" y1="50" x2="100" y2="50"/>
+      <line class="chart-grid" x1="0" y1="75" x2="100" y2="75"/>
+      <polygon class="chart-area" points="${areaPts}"/>
+      <polyline class="chart-line" points="${pts}"/>
+    </svg>
+  `;
+}
+
+window.Pages.dashboardInit = function() {};
+window.Pages.dashboardCleanup = function() {};
+
+</script>
+<script>
+// ═══════════════ CHAT PAGE ═══════════════
+window.Pages = window.Pages || {};
+
+window.Pages.chat = function() {
+  const threads = MockData.chatThreads;
+  const active = threads[0];
+
+  const sidebarHtml = threads.map((t, i) => `
+    <div class="chat-thread ${i===0?'active':''}" onclick="switchThread('${t.id}','${t.abbr}','${t.name}')">
+      <div class="thread-avatar">${t.abbr}</div>
+      <div class="thread-info">
+        <div class="thread-name">${t.name}</div>
+        <div class="thread-last">${t.last}</div>
+      </div>
+    </div>
+  `).join('');
+
+  return `
+<div class="page chat-page">
+  <aside class="chat-sidebar">
+    <div class="chat-sidebar-title">AGENTS</div>
+    ${sidebarHtml}
+    <div style="margin-top:24px;padding:12px;background:rgba(139,92,246,0.08);border:1px solid var(--border);border-radius:10px;font-size:.78rem;color:var(--muted);line-height:1.5;">
+      <div style="font-family:var(--f-display);font-weight:700;color:var(--lavender);margin-bottom:4px;">Cost per message</div>
+      ~0.3–0.8 $XLAW · 60% burned, 40% to ops
+    </div>
+  </aside>
+
+  <div class="chat-main">
+    <div class="chat-header">
+      <div class="chat-avatar" id="chatAvatar">LDA</div>
+      <div class="chat-head-info">
+        <h3 id="chatHeadName">LDA Secretary</h3>
+        <p>● Active · Last updated: just now</p>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">
+        <div class="msg-bubble">Hello, <strong>${MockData.user.name}</strong>. I'm your LDA Secretary — I handle all your legal document work on XPR Network.<br><br>How can I help you today?</div>
+        <div class="msg-meta">LDA · just now</div>
+      </div>
+      <div class="msg bot">
+        <div class="msg-bubble">I noticed Contract #4471 expires in 8 days. The contractor hasn't signed the completion certificate yet. Want me to take action?</div>
+        <div class="msg-actions">
+          <button class="msg-action" onclick="sendSuggestion('Send reminder to contractor')">Send reminder</button>
+          <button class="msg-action" onclick="sendSuggestion('Open arbitration case')">Open arbitration case</button>
+          <button class="msg-action" onclick="sendSuggestion('Extend contract by 14 days')">Extend 14 days</button>
+        </div>
+        <div class="msg-meta">LDA · 2 min ago</div>
+      </div>
+    </div>
+
+    <div class="chat-input-wrap">
+      <div class="chat-suggestions">
+        <div class="chat-suggestion" onclick="sendSuggestion('Draft a new NDA contract')">+ Draft NDA</div>
+        <div class="chat-suggestion" onclick="sendSuggestion('Show me all active contracts')">Active contracts</div>
+        <div class="chat-suggestion" onclick="sendSuggestion('Analyze risk on Contract #4471')">Risk analysis</div>
+        <div class="chat-suggestion" onclick="sendSuggestion('What are my deadlines this week?')">This week's deadlines</div>
+      </div>
+      <div class="chat-input-row">
+        <textarea class="chat-input" id="chatInput" placeholder="Ask your AI secretary anything..." rows="1" onkeydown="handleChatKey(event)"></textarea>
+        <button class="chat-send" id="chatSend" onclick="sendMessage()">Send →</button>
+      </div>
+    </div>
+  </div>
+</div>
+  `;
+};
+
+window.Pages.chatInit = function() {
+  // Auto-resize textarea
+  const input = document.getElementById('chatInput');
+  if (input) {
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    });
+  }
+  // Scroll to bottom
+  scrollChatToBottom();
+};
+
+window.Pages.chatCleanup = function() {};
+
+window.handleChatKey = function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+};
+
+window.sendMessage = function() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  appendMessage('user', text);
+  input.value = '';
+  input.style.height = 'auto';
+
+  // Simulate typing indicator
+  const messages = document.getElementById('chatMessages');
+  const typingEl = document.createElement('div');
+  typingEl.className = 'msg bot';
+  typingEl.id = 'typingIndicator';
+  typingEl.innerHTML = `<div class="msg-bubble" style="padding:0;"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+  messages.appendChild(typingEl);
+  scrollChatToBottom();
+
+  // Generate response based on keywords
+  setTimeout(() => {
+    const typing = document.getElementById('typingIndicator');
+    if (typing) typing.remove();
+    const reply = generateBotReply(text);
+    appendMessage('bot', reply.text, reply.actions);
+  }, 1200 + Math.random() * 800);
+};
+
+window.sendSuggestion = function(text) {
+  const input = document.getElementById('chatInput');
+  input.value = text;
+  sendMessage();
+};
+
+window.switchThread = function(id, abbr, name) {
+  document.querySelectorAll('.chat-thread').forEach(t => t.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('chatAvatar').textContent = abbr;
+  document.getElementById('chatHeadName').textContent = name;
+  document.getElementById('chatMessages').innerHTML = `
+    <div class="msg bot">
+      <div class="msg-bubble">Switched to <strong>${name}</strong>. How can I help you?</div>
+      <div class="msg-meta">${abbr} · just now</div>
+    </div>
+  `;
+};
+
+function appendMessage(role, text, actions = null) {
+  const messages = document.getElementById('chatMessages');
+  if (!messages) return;
+  const el = document.createElement('div');
+  el.className = 'msg ' + role;
+  const actionsHtml = actions ? `<div class="msg-actions">${actions.map(a => `<button class="msg-action" onclick="sendSuggestion('${a.replace(/'/g,"\\'")}')">${a}</button>`).join('')}</div>` : '';
+  el.innerHTML = `
+    <div class="msg-bubble">${text.replace(/\n/g, '<br>')}</div>
+    ${actionsHtml}
+    <div class="msg-meta">${role === 'user' ? 'You' : 'LDA'} · just now</div>
+  `;
+  messages.appendChild(el);
+  scrollChatToBottom();
+}
+
+function generateBotReply(userText) {
+  const lower = userText.toLowerCase();
+  if (lower.includes('contract') || lower.includes('draft') || lower.includes('nda')) {
+    return {
+      text: "I'll draft that contract now. Based on your past contracts, I'll use your standard template with these adjustments:\n\n• 60-day term\n• Milestone-based payments\n• Escrow via EFA agent\n• Compliance check via KYC-A\n\nEstimated cost: 1.2 $XLAW. Ready to proceed?",
+      actions: ['Yes, generate now', 'Show me template first', 'Cancel']
+    };
+  }
+  if (lower.includes('deadline') || lower.includes('week')) {
+    return {
+      text: "Here are your 3 pending deadlines this week:\n\n• <strong>Contract #4471</strong> — Oct 22 (expires)\n• <strong>Escrow release #8921</strong> — Oct 24 ($15K)\n• <strong>License renewal</strong> — Oct 26\n\nWant me to send reminders to all counterparties?",
+      actions: ['Send all reminders', 'Show details', 'Not now']
+    };
+  }
+  if (lower.includes('risk')) {
+    return {
+      text: "Risk Analysis for Contract #4471:\n\n• Counterparty score: <strong>72/100</strong> (good)\n• Jurisdiction: compliant (California)\n• Historical dispute rate: 2.1%\n• Payment delay history: 0\n\nRecommendation: Proceed with standard escrow terms. Low risk profile.",
+      actions: ['Apply standard terms', 'Increase escrow', 'Full report']
+    };
+  }
+  if (lower.includes('reminder') || lower.includes('send')) {
+    return {
+      text: "Done. Reminder sent to contractor via WebAuth-signed message. They have been asked to sign the completion certificate within 48 hours.\n\nTransaction: <code>0xa3f2...e891</code>\nCost: 0.4 $XLAW (60% burned)",
+      actions: null
+    };
+  }
+  if (lower.includes('active') || lower.includes('show')) {
+    return {
+      text: "You have <strong>4 active contracts</strong>:\n\n• #4471 — Construction (expires 8d)\n• #4490 — NDA with Acme Corp\n• #4512 — Service agreement\n• #4531 — Partnership deal\n\nTotal value: $847,200 · 2 require action this week.",
+      actions: ['View all', 'Export as PDF', 'Filter active']
+    };
+  }
+  if (lower.includes('arbitration') || lower.includes('dispute')) {
+    return {
+      text: "Opening dispute case via DAA agent. Proposed resolution path:\n\n1. Freeze escrow funds\n2. Notify both parties (48h response)\n3. DAO vote if no resolution\n\nCost: 2.0 $XLAW filing fee. 50% burned, 50% to Treasury. Proceed?",
+      actions: ['Open case now', 'Try negotiation first', 'Cancel']
+    };
+  }
+  if (lower.includes('extend')) {
+    return {
+      text: "I'll extend Contract #4471 by 14 days. New expiry: Nov 5.\n\nThis requires:\n• Counterparty signature\n• 0.3 $XLAW fee\n• On-chain update via gcsctoken111\n\nSend extension request?",
+      actions: ['Yes, send request', 'Change terms first', 'Cancel']
+    };
+  }
+  // Default
+  const defaults = MockData.chatResponses.default;
+  return { text: defaults[Math.floor(Math.random()*defaults.length)], actions: null };
+}
+
+function scrollChatToBottom() {
+  const messages = document.getElementById('chatMessages');
+  if (messages) messages.scrollTop = messages.scrollHeight;
+}
+
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// TRADING BOT PAGE
+// 
+// UI frontend for the Python day-trading bot (see backend/trading-bot/).
+// Architecture follows the 10-layer design:
+//   Layer 1: Data (WebSocket to exchange)
+//   Layer 2: Feature Store
+//   Layer 3: Signal Layer (Trend + Mean-Rev + Event-Driven)
+//   Layer 4: Regime Detector (HMM)
+//   Layer 5: LLM Agents (News + Context + Trade Reviewer)
+//   Layer 6: Orchestrator (rule-based, not AI)
+//   Layer 7: Risk Engine (gate, not vote)
+//   Layer 8: Execution
+//   Layer 9: Backtest & Validation
+//   Layer 10: Observability
+// ═══════════════════════════════════════════════════════════════
+
+window.Pages = window.Pages || {};
+
+window.Pages.trading = function() {
+  const t = MockData.trading;
+
+  return `
+<div class="page trading-page">
+  <div class="dash-header">
+    <div class="dash-greeting">
+      <h1>Trading Bot</h1>
+      <p>Self-hosted day-trading bot · Hybrid ML + LLM architecture · <strong style="color:var(--lavender);">Layer-based design</strong></p>
+    </div>
+    <div class="dash-actions">
+      <button class="btn-secondary btn-sm" onclick="showBacktest()">Backtest</button>
+      <button id="botToggleBtn" class="btn-primary btn-sm" onclick="toggleBot()">${t.status==='running'?'Pause Bot':'Start Bot'}</button>
+      <button class="btn-danger" onclick="emergencyStop()">Emergency Stop</button>
+    </div>
+  </div>
+
+  <div class="trade-toolbar">
+    <div class="pair-selector">
+      <div class="pair-icon">₿</div>
+      <div class="pair-info">
+        <h4>BTC/USDT</h4>
+        <div class="pair-price" id="pairPrice">$${t.priceHistory[t.priceHistory.length-1].toLocaleString()}</div>
+      </div>
+    </div>
+    <div class="bot-status-indicator">
+      <span class="bot-status-dot" id="botDot"></span>
+      <span id="botStatus">Bot ${t.status.toUpperCase()} · ${t.mode}</span>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+    <div class="dash-card">
+      <div class="dash-card-label">EQUITY</div>
+      <div class="dash-card-value accent" id="equityVal">$${t.equity.toLocaleString()}</div>
+      <div class="dash-card-trend ${t.dayPnl>=0?'trend-up':'trend-down'}" id="dayPnlTrend">${t.dayPnl>=0?'▲':'▼'} $${Math.abs(t.dayPnl).toFixed(2)} (today)</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">TOTAL P&L</div>
+      <div class="dash-card-value mint">+$${t.totalPnl.toFixed(2)}</div>
+      <div class="dash-card-trend">Since deploy · net of fees</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">WIN RATE</div>
+      <div class="dash-card-value">${t.winRate}%</div>
+      <div class="dash-card-trend">Sharpe: ${t.sharpe} · MaxDD: ${t.maxDrawdown}%</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">OPEN POSITIONS</div>
+      <div class="dash-card-value">${t.openPositions.length}</div>
+      <div class="dash-card-trend">Max: 5 · Risk gate: OK</div>
+    </div>
+  </div>
+
+  <div class="trading-grid">
+    <div>
+      <div class="trade-chart-panel">
+        <div class="trade-tabs">
+          <button class="trade-tab active">Price (1m)</button>
+          <button class="trade-tab">Equity Curve</button>
+          <button class="trade-tab">Indicators</button>
+        </div>
+        <div class="trade-chart-wrap" id="priceChart">${buildPriceChart()}</div>
+      </div>
+
+      <div class="positions-table">
+        <div class="pt-head">
+          <span>PAIR</span><span>SIDE</span><span>ENTRY</span><span>P&L $</span><span>P&L %</span><span></span>
+        </div>
+        <div id="positionsBody">
+          ${buildPositionsRows()}
+        </div>
+      </div>
+
+      <div class="bot-info-box">
+        <strong>⚠ Day-Trading Bot · Architecture Notes</strong>
+        This interface monitors a Python bot that must run as a separate backend service (see <code>backend/trading-bot/</code>). Real signals are generated by classical ML (LightGBM on calibrated features). LLM agents (News + Context + Trade Reviewer) act as filters, not signal generators. Risk engine is a <em>gate</em>, not a voter. Before running with real capital: minimum 2 weeks of shadow trading, walk-forward validation, and backtest-to-live slippage sanity check. Expected edge on first iteration: 20–30%.
+      </div>
+    </div>
+
+    <div class="trade-sidebar">
+      <div class="bot-panel">
+        <div class="bot-panel-title">Bot Metrics</div>
+        <div class="bot-metric"><span class="bot-metric-label">Mode</span><span class="bot-metric-val">Trend-Following</span></div>
+        <div class="bot-metric"><span class="bot-metric-label">Regime</span><span class="bot-metric-val mint" id="regimeVal">TRENDING</span></div>
+        <div class="bot-metric"><span class="bot-metric-label">Context Flag</span><span class="bot-metric-val mint">CLEAR</span></div>
+        <div class="bot-metric"><span class="bot-metric-label">Signal Strength</span><span class="bot-metric-val">0.74 / 1.0</span></div>
+        <div class="bot-metric"><span class="bot-metric-label">Latency (tick→order)</span><span class="bot-metric-val">142ms</span></div>
+        <div class="bot-metric"><span class="bot-metric-label">Fill Rate</span><span class="bot-metric-val">98.2%</span></div>
+      </div>
+
+      <div class="bot-panel">
+        <div class="bot-panel-title">Risk Gate</div>
+        <div class="bot-metric"><span class="bot-metric-label">Day Loss Limit</span><span class="bot-metric-val mint">-2.0% (ok)</span></div>
+        <div class="bot-metric"><span class="bot-metric-label">Position Size</span><span class="bot-metric-val">Kelly × 0.25</span></div>
+        <div class="bot-metric"><span class="bot-metric-label">Max Concurrent</span><span class="bot-metric-val">${t.openPositions.length} / 5</span></div>
+        <div class="bot-metric"><span class="bot-metric-label">Kill Switch</span><span class="bot-metric-val mint">ARMED</span></div>
+        <div class="bot-metric"><span class="bot-metric-label">Anomaly Detector</span><span class="bot-metric-val mint">OK</span></div>
+      </div>
+
+      <div class="bot-panel">
+        <div class="bot-panel-title">Signal Feed (LLM + ML)</div>
+        <div class="signal-feed" id="signalFeed">
+          ${buildSignalFeed()}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  `;
+};
+
+function buildPriceChart() {
+  const data = MockData.trading.priceHistory;
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min || 1;
+  const w = 100, h = 100;
+  const pts = data.map((d, i) => {
+    const x = (i / (data.length - 1)) * w;
+    const y = h - ((d - min) / range) * (h - 10) - 5;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const areaPts = `0,${h} ${pts} ${w},${h}`;
+  return `
+    <svg class="chart-svg" viewBox="0 0 100 100" preserveAspectRatio="none" style="height:100%;">
+      <defs>
+        <linearGradient id="priceGrad" x1="0" x2="1">
+          <stop offset="0%" stop-color="#8b5cf6"/>
+          <stop offset="100%" stop-color="#e879f9"/>
+        </linearGradient>
+        <linearGradient id="priceArea" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8b5cf6" stop-opacity=".4"/>
+          <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <line class="chart-grid" x1="0" y1="25" x2="100" y2="25"/>
+      <line class="chart-grid" x1="0" y1="50" x2="100" y2="50"/>
+      <line class="chart-grid" x1="0" y1="75" x2="100" y2="75"/>
+      <polygon fill="url(#priceArea)" points="${areaPts}"/>
+      <polyline fill="none" stroke="url(#priceGrad)" stroke-width="2" points="${pts}"/>
+    </svg>
+  `;
+}
+
+function buildPositionsRows() {
+  return MockData.trading.openPositions.map((p, i) => `
+    <div class="pt-row" data-idx="${i}">
+      <span class="pt-pair">${p.pair}</span>
+      <span><span class="pt-side ${p.side}">${p.side.toUpperCase()}</span></span>
+      <span class="pt-pnl">$${p.entry}</span>
+      <span class="pt-pnl ${p.pnl>=0?'trend-up':'trend-down'}">${p.pnl>=0?'+':''}$${p.pnl.toFixed(2)}</span>
+      <span class="pt-pnl ${p.pnlPct>=0?'trend-up':'trend-down'}">${p.pnlPct>=0?'+':''}${p.pnlPct}%</span>
+      <span><button class="btn-danger" style="padding:4px 10px;font-size:.72rem;" onclick="closePos('${p.pair}')">Close</button></span>
+    </div>
+  `).join('');
+}
+
+function buildSignalFeed() {
+  return MockData.trading.recentSignals.map(s => `
+    <div class="signal-item">
+      <div class="signal-head">
+        <span class="signal-type ${s.type}">${s.type.toUpperCase()} ${s.pair}</span>
+        <span class="signal-time">${s.time}</span>
+      </div>
+      <div class="signal-body">${s.body}</div>
+    </div>
+  `).join('');
+}
+
+window.Pages.tradingInit = function() {
+  // Start simulated live feed
+  if (!window._botFeedStarted) {
+    TradingBotService.startLiveFeed();
+    TradingBotService.startSignalSimulator();
+    window._botFeedStarted = true;
+  }
+
+  // Update UI on bot state changes
+  TradingBotService.onUpdate((state) => {
+    const equityEl = document.getElementById('equityVal');
+    const pairPriceEl = document.getElementById('pairPrice');
+    const positionsEl = document.getElementById('positionsBody');
+    const signalFeedEl = document.getElementById('signalFeed');
+    const priceChartEl = document.getElementById('priceChart');
+    const botStatusEl = document.getElementById('botStatus');
+    const botDotEl = document.getElementById('botDot');
+    const dayPnlTrend = document.getElementById('dayPnlTrend');
+
+    if (equityEl) equityEl.textContent = '$' + state.equity.toLocaleString();
+    if (pairPriceEl) pairPriceEl.textContent = '$' + state.priceHistory[state.priceHistory.length-1].toLocaleString();
+    if (positionsEl) positionsEl.innerHTML = buildPositionsRows();
+    if (signalFeedEl) signalFeedEl.innerHTML = buildSignalFeed();
+    if (priceChartEl) priceChartEl.innerHTML = buildPriceChart();
+    if (botStatusEl) botStatusEl.textContent = 'Bot ' + state.status.toUpperCase() + ' · ' + state.mode;
+    if (botDotEl) botDotEl.className = 'bot-status-dot ' + (state.status === 'running' ? '' : 'off');
+    if (dayPnlTrend) {
+      dayPnlTrend.className = 'dash-card-trend ' + (state.dayPnl >= 0 ? 'trend-up' : 'trend-down');
+      dayPnlTrend.textContent = (state.dayPnl >= 0 ? '▲' : '▼') + ' $' + Math.abs(state.dayPnl).toFixed(2) + ' (today)';
+    }
+  });
+};
+
+window.Pages.tradingCleanup = function() {};
+
+window.toggleBot = async function() {
+  const state = await TradingBotService.getStatus();
+  const btn = document.getElementById('botToggleBtn');
+  if (state.status === 'running') {
+    await TradingBotService.pause();
+    if (btn) btn.textContent = 'Start Bot';
+    showToast('Bot Paused', 'Trading bot paused. Open positions remain.');
+  } else {
+    await TradingBotService.start();
+    if (btn) btn.textContent = 'Pause Bot';
+    showToast('Bot Started', 'Live trading resumed on XPR + exchange backend.');
+  }
+};
+
+window.emergencyStop = async function() {
+  if (!confirm('Emergency stop will close ALL positions at market. Continue?')) return;
+  await TradingBotService.stop();
+  const btn = document.getElementById('botToggleBtn');
+  if (btn) btn.textContent = 'Start Bot';
+  showToast('⚠ Emergency Stop', 'All positions closed. Bot stopped. Review log before restart.');
+};
+
+window.closePos = async function(pair) {
+  await TradingBotService.closePosition(pair);
+  showToast('Position Closed', pair + ' closed at market.');
+};
+
+window.showBacktest = function() {
+  showToast('Backtest Engine', 'Walk-forward validation: 6mo train → 1mo test. Out-of-sample Sharpe: 1.43. See docs/BACKTEST.md.');
+};
+
+</script>
+<script>
+// ═══════════════ STAKING PAGE ═══════════════
+window.Pages = window.Pages || {};
+
+window.Pages.staking = function() {
+  const u = MockData.user;
+  const positions = MockData.stakePositions;
+  const totalStaked = positions.reduce((s, p) => s + p.amount, 0);
+  const totalEarned = positions.reduce((s, p) => s + p.earned, 0);
+
+  const positionsHtml = positions.length ? positions.map(p => `
+    <div class="position-item">
+      <div>
+        <div class="pos-label">STAKED</div>
+        <div class="pos-value accent">${p.amount.toLocaleString()} $XLAW</div>
+      </div>
+      <div>
+        <div class="pos-label">EARNED</div>
+        <div class="pos-value mint">+${p.earned.toFixed(2)} $XLAW</div>
+      </div>
+      <div>
+        <div class="pos-label">UNLOCK</div>
+        <div class="pos-value">${p.unlockOn}</div>
+      </div>
+      <div>
+        <button class="btn-secondary btn-sm" onclick="claimRewards('${p.id}')">Claim</button>
+      </div>
+    </div>
+  `).join('') : `<p style="color:var(--muted);text-align:center;padding:30px;">No active stakes. Start earning 12% APY.</p>`;
+
+  return `
+<div class="page staking-page">
+  <div class="dash-greeting" style="margin-bottom:24px;">
+    <h1>Staking</h1>
+    <p>Lock your $XLAW for 30 days and earn yield from platform revenue.</p>
+  </div>
+
+  <div class="stake-hero">
+    <div class="stake-hero-label">CURRENT APY</div>
+    <div class="stake-hero-apy">12%</div>
+    <div class="stake-hero-sub">30-day lock · Rewards from 30% of subscription + insurance revenue</div>
+    <div style="margin-top:22px;position:relative;z-index:1;">
+      <button class="btn-primary" onclick="openStakeModal()">+ Stake $XLAW</button>
+    </div>
+  </div>
+
+  <div class="stake-grid">
+    <div class="dash-card">
+      <div class="dash-card-label">TOTAL STAKED</div>
+      <div class="dash-card-value accent">${totalStaked.toLocaleString()}</div>
+      <div class="dash-card-trend">$XLAW locked</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">TOTAL EARNED</div>
+      <div class="dash-card-value mint">+${totalEarned.toFixed(2)}</div>
+      <div class="dash-card-trend">$XLAW lifetime rewards</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">DAILY REWARD</div>
+      <div class="dash-card-value">${(totalStaked * 0.12 / 365).toFixed(2)}</div>
+      <div class="dash-card-trend">$XLAW/day estimated</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">ACTIVE POSITIONS</div>
+      <div class="dash-card-value">${positions.length}</div>
+      <div class="dash-card-trend">Max: unlimited</div>
+    </div>
+  </div>
+
+  <div class="stake-positions">
+    <div class="dash-panel-header">
+      <div class="dash-panel-title">Your Staking Positions</div>
+      <div class="dash-panel-sub">Contract: gcscstake111</div>
+    </div>
+    ${positionsHtml}
+  </div>
+
+  <div class="bot-info-box" style="margin-top:18px;">
+    <strong>How staking works</strong>
+    Stakers receive 30% of platform subscription revenue + 30% of insurance premiums, distributed proportionally. Rewards compound daily. Lock period is 30 days minimum — early unlock incurs a 10% penalty. All distributions happen on-chain via <code>gcscstake111</code>.
+  </div>
+</div>
+  `;
+};
+
+window.Pages.stakingInit = function() {};
+window.Pages.stakingCleanup = function() {};
+
+window.openStakeModal = function() {
+  if (!WalletService.getState().connected) {
+    showToast('Wallet Required', 'Connect your XPR wallet first.');
+    openConnectModal();
+    return;
+  }
+  document.getElementById('stakeBal').textContent = MockData.user.xlawBalance.toLocaleString();
+  const input = document.getElementById('stakeAmount');
+  input.value = '';
+  input.oninput = () => {
+    const amt = parseFloat(input.value) || 0;
+    const reward = (amt * 0.12 / 365) * 30;
+    document.getElementById('stakeReward').textContent = reward.toFixed(2) + ' $XLAW';
+    const d = new Date();
+    d.setDate(d.getDate() + 30);
+    document.getElementById('stakeUnlock').textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+  document.getElementById('stakeModal').classList.add('open');
+};
+
+window.executeStake = async function() {
+  const amt = parseFloat(document.getElementById('stakeAmount').value) || 0;
+  if (amt <= 0) {
+    showToast('Invalid Amount', 'Enter an amount greater than zero.');
+    return;
+  }
+  if (amt > MockData.user.xlawBalance) {
+    showToast('Insufficient Balance', 'You do not have enough $XLAW.');
+    return;
+  }
+  closeModal('stakeModal');
+  showToast('Signing...', 'Please approve the transaction in your wallet.');
+  try {
+    const tx = await WalletService.sign('stake', { amount: amt, lock_days: 30 });
+    showToast('✓ Stake Confirmed', `${amt.toLocaleString()} $XLAW staked · Tx: ${tx.txId.slice(0,10)}...`);
+    // Update mock
+    MockData.user.xlawBalance -= amt;
+    MockData.user.stakedAmount += amt;
+    const d = new Date();
+    const unlock = new Date(); unlock.setDate(d.getDate() + 30);
+    MockData.stakePositions.push({
+      id: 'sp' + Date.now(),
+      amount: amt,
+      lockedOn: d.toISOString().slice(0,10),
+      unlockOn: unlock.toISOString().slice(0,10),
+      apy: 12, earned: 0, status: 'active',
+    });
+    updateBalanceDisplay();
+    navigate('staking');
+  } catch (e) {
+    showToast('Error', e.message);
+  }
+};
+
+window.claimRewards = async function(id) {
+  const pos = MockData.stakePositions.find(p => p.id === id);
+  if (!pos) return;
+  showToast('Claiming...', `Claiming ${pos.earned.toFixed(2)} $XLAW rewards`);
+  try {
+    await WalletService.sign('claim', { position_id: id });
+    MockData.user.xlawBalance += pos.earned;
+    showToast('✓ Claimed', `+${pos.earned.toFixed(2)} $XLAW added to your balance`);
+    pos.earned = 0;
+    updateBalanceDisplay();
+    navigate('staking');
+  } catch (e) {
+    showToast('Error', e.message);
+  }
+};
+
+</script>
+<script>
+// ═══════════════ SKILL MARKETPLACE PAGE ═══════════════
+window.Pages = window.Pages || {};
+
+let currentFilter = 'all';
+
+window.Pages.marketplace = function() {
+  return `
+<div class="page marketplace-page">
+  <div class="dash-greeting" style="margin-bottom:24px;">
+    <h1>Skill Marketplace</h1>
+    <p>Buy, sell, and publish AI workflows. 60% burn · 20% creator · 20% system.</p>
+  </div>
+
+  <div class="dash-grid">
+    <div class="dash-card">
+      <div class="dash-card-label">SKILLS AVAILABLE</div>
+      <div class="dash-card-value accent">${MockData.skills.length}</div>
+      <div class="dash-card-trend">+3 published today</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">TOTAL USES</div>
+      <div class="dash-card-value">${MockData.skills.reduce((s,k)=>s+k.uses,0).toLocaleString()}</div>
+      <div class="dash-card-trend trend-up">▲ 12,450 this week</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">AVG PRICE</div>
+      <div class="dash-card-value">${Math.round(MockData.skills.reduce((s,k)=>s+k.price,0)/MockData.skills.length)} $XLAW</div>
+      <div class="dash-card-trend">Per execution</div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-label">TOP CREATOR</div>
+      <div class="dash-card-value" style="font-size:1.3rem;">builder.xpr</div>
+      <div class="dash-card-trend mint">+4,892 $XLAW earned</div>
+    </div>
+  </div>
+
+  <div class="market-filters" id="marketFilters">
+    <div class="filter-btn ${currentFilter==='all'?'active':''}" onclick="filterSkills('all')">All</div>
+    <div class="filter-btn ${currentFilter==='Construction'?'active':''}" onclick="filterSkills('Construction')">Construction</div>
+    <div class="filter-btn ${currentFilter==='Legal'?'active':''}" onclick="filterSkills('Legal')">Legal</div>
+    <div class="filter-btn ${currentFilter==='Risk'?'active':''}" onclick="filterSkills('Risk')">Risk</div>
+    <div class="filter-btn ${currentFilter==='Real Estate'?'active':''}" onclick="filterSkills('Real Estate')">Real Estate</div>
+    <div class="filter-btn ${currentFilter==='Trading'?'active':''}" onclick="filterSkills('Trading')">Trading</div>
+    <div class="filter-btn ${currentFilter==='Compliance'?'active':''}" onclick="filterSkills('Compliance')">Compliance</div>
+    <button class="btn-primary btn-sm" style="margin-left:auto;" onclick="publishSkill()">+ Publish Skill</button>
+  </div>
+
+  <div class="skill-grid" id="skillGrid">
+    ${buildSkillGrid()}
+  </div>
+
+  <div class="bot-info-box" style="margin-top:22px;">
+    <strong>How it works</strong>
+    Skills are on-chain assets in the Skill Registry. When a user purchases a skill, 60% of the payment is burned (deflationary pressure), 20% goes to the skill creator, 20% to system ops. Skills are ranked by usage count, success rate, efficiency, and speed.
+  </div>
+</div>
+  `;
+};
+
+function buildSkillGrid() {
+  let skills = MockData.skills;
+  if (currentFilter !== 'all') {
+    skills = skills.filter(s => s.cat === currentFilter);
+  }
+  if (!skills.length) {
+    return '<p style="color:var(--muted);text-align:center;padding:60px;grid-column:1/-1;">No skills in this category yet.</p>';
+  }
+  return skills.map(s => `
+    <div class="skill-card" onclick="openSkill('${s.id}')">
+      <div class="skill-cat">${s.cat.toUpperCase()}</div>
+      <div class="skill-title">${s.title}</div>
+      <div class="skill-desc">${s.desc}</div>
+      <div class="skill-creator">
+        <div class="creator-avatar"></div>
+        <span>${s.creator}</span>
+        <span class="skill-rating" style="margin-left:auto;">★ ${s.rating}</span>
+      </div>
+      <div class="skill-meta">
+        <span class="skill-price">${s.price} $XLAW</span>
+        <span class="skill-uses">${s.uses.toLocaleString()} uses</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.Pages.marketplaceInit = function() {};
+window.Pages.marketplaceCleanup = function() {};
+
+window.filterSkills = function(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('#marketFilters .filter-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('skillGrid').innerHTML = buildSkillGrid();
+};
+
+window.openSkill = function(id) {
+  const s = MockData.skills.find(x => x.id === id);
+  if (!s) return;
+  const content = `
+    <div class="skill-cat">${s.cat.toUpperCase()}</div>
+    <div class="modal-title">${s.title}</div>
+    <div class="modal-sub">${s.desc}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div style="background:rgba(139,92,246,0.08);border:1px solid var(--border);border-radius:10px;padding:10px;">
+        <div style="font-size:.72rem;color:var(--muted);font-family:var(--f-mono);margin-bottom:3px;">PRICE</div>
+        <div style="font-family:var(--f-display);font-weight:800;color:var(--lavender);">${s.price} $XLAW</div>
+      </div>
+      <div style="background:rgba(139,92,246,0.08);border:1px solid var(--border);border-radius:10px;padding:10px;">
+        <div style="font-size:.72rem;color:var(--muted);font-family:var(--f-mono);margin-bottom:3px;">USES</div>
+        <div style="font-family:var(--f-display);font-weight:800;">${s.uses.toLocaleString()}</div>
+      </div>
+      <div style="background:rgba(139,92,246,0.08);border:1px solid var(--border);border-radius:10px;padding:10px;">
+        <div style="font-size:.72rem;color:var(--muted);font-family:var(--f-mono);margin-bottom:3px;">RATING</div>
+        <div style="font-family:var(--f-display);font-weight:800;color:var(--gold);">★ ${s.rating}/5</div>
+      </div>
+      <div style="background:rgba(139,92,246,0.08);border:1px solid var(--border);border-radius:10px;padding:10px;">
+        <div style="font-size:.72rem;color:var(--muted);font-family:var(--f-mono);margin-bottom:3px;">CREATOR</div>
+        <div style="font-family:var(--f-mono);font-weight:700;font-size:.82rem;">${s.creator}</div>
+      </div>
+    </div>
+    <div style="background:rgba(139,92,246,0.06);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px;font-size:.82rem;">
+      <div style="color:var(--muted);font-family:var(--f-mono);font-size:.72rem;margin-bottom:6px;">DISTRIBUTION</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span>🔥 Burn</span><span>60%</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span>👤 Creator</span><span>20%</span></div>
+      <div style="display:flex;justify-content:space-between;"><span>⚙️ System</span><span>20%</span></div>
+    </div>
+    <button class="btn-primary" style="width:100%;" onclick="purchaseSkill('${s.id}')">Purchase for ${s.price} $XLAW</button>
+  `;
+  document.getElementById('skillModalContent').innerHTML = content;
+  document.getElementById('skillModal').classList.add('open');
+};
+
+window.purchaseSkill = async function(id) {
+  const s = MockData.skills.find(x => x.id === id);
+  if (!s) return;
+  if (!WalletService.getState().connected) {
+    closeModal('skillModal');
+    showToast('Wallet Required', 'Connect your XPR wallet first.');
+    openConnectModal();
+    return;
+  }
+  if (MockData.user.xlawBalance < s.price) {
+    showToast('Insufficient Balance', 'Not enough $XLAW.');
+    return;
+  }
+  closeModal('skillModal');
+  showToast('Purchasing...', `Signing transaction for ${s.title}`);
+  try {
+    const tx = await WalletService.sign('purchase_skill', { skill_id: id, amount: s.price });
+    MockData.user.xlawBalance -= s.price;
+    s.uses += 1;
+    updateBalanceDisplay();
+    showToast('✓ Skill Purchased', `${s.title} added to your skills · Tx: ${tx.txId.slice(0,10)}...`);
+  } catch (e) {
+    showToast('Error', e.message);
+  }
+};
+
+window.publishSkill = function() {
+  if (!WalletService.getState().connected) {
+    showToast('Wallet Required', 'Connect your XPR wallet first.');
+    openConnectModal();
+    return;
+  }
+  showToast('Coming Soon', 'Skill publisher UI is under development. Skills are currently auto-generated after 3+ repeated tasks.');
+};
+
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// GCSC CLAW · Main App
+// SPA router + global handlers
+// ═══════════════════════════════════════════════════════════════
+
+let currentPage = 'landing';
+let currentCleanup = null;
+
+// ─── ROUTER ──────────────────────────────────────────────────────
+window.navigate = function(page) {
+  // Cleanup previous page
+  if (currentCleanup && typeof currentCleanup === 'function') {
+    try { currentCleanup(); } catch(e) { console.warn(e); }
+  }
+
+  // Render new page
+  const app = document.getElementById('app');
+  const renderFn = window.Pages[page];
+  if (!renderFn) {
+    console.error('Page not found:', page);
+    return;
+  }
+
+  app.innerHTML = renderFn();
+  currentPage = page;
+
+  // Update active nav
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === page);
+  });
+
+  // Close mobile nav
+  document.getElementById('navLinks').classList.remove('open');
+
+  // Init page
+  const initFn = window.Pages[page + 'Init'];
+  if (initFn && typeof initFn === 'function') {
+    try { initFn(); } catch(e) { console.error(e); }
+  }
+
+  // Store cleanup
+  currentCleanup = window.Pages[page + 'Cleanup'];
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Update URL hash (optional, for bookmarks)
+  history.replaceState(null, '', '#' + page);
+};
+
+window.scrollToId = function(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+};
+
+// ─── MODALS ──────────────────────────────────────────────────────
+window.openConnectModal = function() {
+  document.getElementById('connectModal').classList.add('open');
+};
+window.openDeployModal = function() {
+  if (!WalletService.getState().connected) {
+    showToast('Wallet Required', 'Please connect your XPR wallet first.');
+    openConnectModal();
+    return;
+  }
+  document.getElementById('deployModal').classList.add('open');
+};
+window.closeModal = function(id) {
+  document.getElementById(id).classList.remove('open');
+};
+window.closeOnOverlay = function(e, id) {
+  if (e.target.id === id) closeModal(id);
+};
+
+// ─── WALLET ──────────────────────────────────────────────────────
+window.connectWallet = async function(name) {
+  closeModal('connectModal');
+  showToast('Connecting…', 'Establishing secure connection to XPR Network…');
+  try {
+    await WalletService.connect(name);
+    const btn = document.getElementById('connectBtn');
+    btn.textContent = '● ' + MockData.user.wallet;
+    btn.classList.add('connected');
+    updateBalanceDisplay();
+    showToast('✓ Wallet Connected', name + ' connected to XPR Network. Welcome to GCSC CLAW.');
+  } catch(e) {
+    showToast('Connection Failed', e.message);
+  }
+};
+
+window.updateBalanceDisplay = function() {
+  const bal = document.getElementById('walletBalance');
+  const amt = bal?.querySelector('.bal-amount');
+  if (WalletService.getState().connected) {
+    if (bal) bal.style.display = 'flex';
+    if (amt) amt.textContent = MockData.user.xlawBalance.toLocaleString();
+  } else {
+    if (bal) bal.style.display = 'none';
+  }
+};
+
+// ─── DEPLOY AGENT ────────────────────────────────────────────────
+window.deployAgent = async function() {
+  const name = document.getElementById('agentName').value.trim();
+  const wallet = document.getElementById('agentWallet').value.trim();
+  const tier = document.getElementById('agentTier').value;
+  const use = document.getElementById('agentUse').value;
+  if (!name) { showToast('Missing Field', 'Please enter an agent name.'); return; }
+  if (!wallet) { showToast('Missing Field', 'Please enter your XPR wallet address.'); return; }
+  closeModal('deployModal');
+  showToast('Deploying…', 'Submitting transaction to XPR Network (gcscmember11)…');
+  try {
+    const tx = await WalletService.sign('deploy_agent', { name, use_case: use, tier, wallet });
+    showToast('🚀 Agent Deployed!', `"${name}" is live on XPR Network. Tier: ${tier.split('—')[0].trim()}. +15 $XLAW credit applied. Tx: ${tx.txId.slice(0,10)}...`);
+    // Add to mock data
+    MockData.agents.unshift({
+      id: 'a' + Date.now(),
+      name,
+      type: tier.includes('PARTNER') ? 'ALL' : 'LDA',
+      status: 'active',
+      lastRun: 'just now',
+      skills: 0,
+      executions: 0,
+    });
+  } catch(e) {
+    showToast('Deploy Failed', e.message);
+  }
+};
+
+window.deployTier = function(tier, price) {
+  if (!WalletService.getState().connected) {
+    showToast('Wallet Required', 'Please connect your XPR wallet first.');
+    openConnectModal();
+    return;
+  }
+  document.getElementById('agentTier').value = `${tier} — $${price}/mo`;
+  openDeployModal();
+};
+
+// ─── TOAST ───────────────────────────────────────────────────────
+let toastTimer;
+window.showToast = function(title, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
+};
+
+// ─── MOBILE NAV ──────────────────────────────────────────────────
+window.toggleMobileNav = function() {
+  document.getElementById('navLinks').classList.toggle('open');
+};
+
+// ─── KEYBOARD ────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    ['connectModal', 'deployModal', 'stakeModal', 'skillModal'].forEach(closeModal);
+  }
+});
+
+// ─── FOOTER BLOCK TICKER ─────────────────────────────────────────
+setInterval(() => {
+  const el = document.getElementById('footBlock');
+  if (el) el.textContent = ChainService.getBlockHeight().toLocaleString();
+}, 3000);
+
+// ─── INITIAL RENDER ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.slice(1);
+  const validPages = ['landing','dashboard','chat','trading','staking','marketplace'];
+  const initialPage = validPages.includes(hash) ? hash : 'landing';
+  navigate(initialPage);
+});
+
+// Also init on window load for safety
+if (document.readyState === 'loading') {
+  // Will fire DOMContentLoaded
+} else {
+  // Already loaded
+  setTimeout(() => navigate('landing'), 50);
+}
+
+</script>
+</body>
+</html>

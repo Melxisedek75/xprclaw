@@ -1,0 +1,65 @@
+{
+  "name": "GCSC CLAW — Self-Evolving AI on XPR Network",
+  "short_name": "GCSC CLAW",
+  "description": "Self-Evolving AI Economic System on XPR Network. Private AI agents, $XLAW staking, skill marketplace, trading bot.",
+  "start_url": "./xprclaw_standalone.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0c0a1a",
+  "theme_color": "#0c0a1a",
+  "categories": ["finance", "business", "productivity", "utilities"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "url": "./xprclaw_standalone.html#dashboard",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "AI Secretary",
+      "short_name": "Chat",
+      "url": "./xprclaw_standalone.html#chat",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Trading Bot",
+      "short_name": "Trading",
+      "url": "./xprclaw_standalone.html#trading",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Staking",
+      "short_name": "Stake",
+      "url": "./xprclaw_standalone.html#staking",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
