@@ -1,0 +1,30 @@
+{
+  "name": "xprclaw-download",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GCSC CLAW download & install landing page (PWA). Static site, no build step required.",
+  "scripts": {
+    "dev": "npx serve . -l 8000",
+    "serve": "npx serve . -l 8000",
+    "preview": "npx serve . -l 8000",
+    "lighthouse": "npx lighthouse http://localhost:8000 --view"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Melxisedek75/xprclaw.git"
+  },
+  "keywords": [
+    "pwa",
+    "xpr",
+    "proton",
+    "defi",
+    "ai-agents",
+    "gcsc",
+    "xlaw"
+  ],
+  "author": "GCSC CLAW <gcscdao@gmail.com>",
+  "license": "MIT"
+}
