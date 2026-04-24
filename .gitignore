@@ -1,0 +1,56 @@
+# Local extraction of source zip
+_extracted/
+
+# Claude Code session / agent scratch
+.claude/
+
+# Node / package managers
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnp
+.pnp.js
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Build / cache
+dist/
+build/
+.cache/
+.parcel-cache/
+.vite/
+.next/
+.nuxt/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.swp
+*.swo
+.idea/
+.vscode/
+*.code-workspace
+
+# Logs
+*.log
+logs/
+
+# Python (for backend-related work if checked in later)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Temp
+tmp/
+temp/
