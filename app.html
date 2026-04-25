@@ -230,7 +230,16 @@ h1 {
       <h3>🤖 AI Agents</h3>
       <p>Five autonomous agents (LDA, DAA, KYC-A, EFA, REA) analyzing market conditions and making trading decisions.</p>
       <div style="margin-top:16px;padding:12px;background:rgba(139,92,246,0.1);border-radius:8px;font-size:0.85rem;color:var(--lavender);">
-        Status: <span id="agentStatus">Connecting to backend...</span>
+        Status: <span id="agentStatus">Waiting for simulation...</span>
+      </div>
+      <button onclick="runSimulation()" style="display:block;margin-top:12px;width:100%;">
+        <span id="simBtnText">Run Simulation</span>
+        <span id="simLoading" style="display:none;margin-left:6px;">⏳</span>
+      </button>
+      <div id="simResult" style="display:none;margin-top:12px;padding:12px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:8px;font-size:0.85rem;">
+        <div><strong>Decision:</strong> <span id="simDecision">—</span></div>
+        <div><strong>Confidence:</strong> <span id="simConfidence">—</span></div>
+        <div style="margin-top:8px;color:var(--muted);"><span id="simRationale">—</span></div>
       </div>
     </div>
 
@@ -260,6 +269,7 @@ h1 {
 
 <script src="./src/config.js"></script>
 <script src="./src/wallet.js"></script>
+<script src="./src/api-client.js"></script>
 <script>
 // Use wallet module from src/wallet.js
 async function connectWallet() {
@@ -298,21 +308,22 @@ async function connectWallet() {
   }
 }
 
-// Check adapter health using CONFIG
+// Check adapter health using API Client
 async function checkAdapterHealth() {
   try {
-    const url = window.getAdapterUrl(CONFIG.ADAPTER_HEALTH_ENDPOINT);
-    const resp = await fetch(url, { mode: 'no-cors', timeout: CONFIG.ADAPTER_TIMEOUT_MS });
-    if (resp.ok || resp.status === 0) {
-      document.getElementById('adapterStatus').textContent = 'Online ✓';
+    const health = await window.ApiClient.getHealth();
+    if (health.status === 'ok') {
+      document.getElementById('adapterStatus').textContent = 'Online ✓ (v' + health.version + ')';
       document.getElementById('adapterStatus').style.color = 'var(--mint)';
-      console.log('Adapter health check passed:', url);
+      console.log('Adapter online:', health);
+    } else {
+      throw new Error(health.error || 'Unknown status');
     }
   } catch (e) {
     const devMsg = window.isDevelopment() ? 'local dev: run docker-compose up' : 'backend not available';
     document.getElementById('adapterStatus').textContent = 'Offline (' + devMsg + ')';
     document.getElementById('adapterStatus').style.color = '#fca5a5';
-    console.warn('Adapter health check failed:', e.message);
+    console.warn('Adapter offline:', e.message);
   }
 }
 
@@ -321,6 +332,64 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   });
+}
+
+// Run simulation with market data
+async function runSimulation() {
+  const btn = document.getElementById('simBtnText');
+  const loading = document.getElementById('simLoading');
+  const resultDiv = document.getElementById('simResult');
+  const decisionEl = document.getElementById('simDecision');
+  const confidenceEl = document.getElementById('simConfidence');
+  const rationaleEl = document.getElementById('simRationale');
+  const agentStatus = document.getElementById('agentStatus');
+
+  btn.disabled = true;
+  loading.style.display = 'inline-block';
+  resultDiv.style.display = 'none';
+
+  try {
+    // Market state (XPR Network)
+    const marketState = {
+      xpr_price_usd: 0.0042,
+      staking_apy: 0.085,
+      loan_apy: 0.061,
+      metalx_xpr_usd_spread_bps: 23,
+      treasury_xpr: 1250000,
+      open_loan_xpr: 300000,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Run full flow
+    agentStatus.textContent = 'Running simulation...';
+    const flow = await window.ApiClient.runFullFlow(marketState, 'staking_optimization');
+
+    if (flow.error) {
+      agentStatus.textContent = 'Error: ' + flow.error;
+      agentStatus.style.color = '#fca5a5';
+      return;
+    }
+
+    // Show results
+    decisionEl.textContent = flow.decision.toUpperCase();
+    decisionEl.style.color = flow.decision === 'proceed' ? 'var(--mint)' : flow.decision === 'abort' ? '#fca5a5' : 'var(--lavender)';
+    confidenceEl.textContent = (flow.confidence * 100).toFixed(0) + '%';
+    rationaleEl.textContent = flow.rationale;
+
+    resultDiv.style.display = 'block';
+    agentStatus.textContent = '✓ Simulation complete';
+    agentStatus.style.color = 'var(--mint)';
+
+    console.log('Simulation result:', flow.result);
+
+  } catch (e) {
+    agentStatus.textContent = 'Simulation failed: ' + e.message;
+    agentStatus.style.color = '#fca5a5';
+    console.error('Simulation error:', e);
+  } finally {
+    btn.disabled = false;
+    loading.style.display = 'none';
+  }
 }
 
 // Init on load
