@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCSC CLAW — Deep Space</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#03010a;color:#fff;font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+.bg-orb{position:fixed;top:20%;left:50%;transform:translate(-50%,-50%);width:900px;height:900px;background:radial-gradient(circle,rgba(109,40,217,0.15) 0%,transparent 65%);pointer-events:none;z-index:0;}
+canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:0 56px;height:70px;background:rgba(3,1,10,0.65);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05);}
+.nlogo{display:flex;align-items:center;gap:10px;font-size:1.05rem;font-weight:800;letter-spacing:-0.02em;}
+.nlogo-icon{width:36px;height:36px;background:linear-gradient(135deg,#7c3aed,#4338ca);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.pill{font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px;border:1px solid;letter-spacing:0.06em;}
+.pill-v{color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.07);}
+.pill-b{color:#f0abfc;border-color:rgba(240,171,252,0.3);background:rgba(240,171,252,0.07);}
+
+.hero{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:110px 24px 60px;text-align:center;}
+.tag{font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(167,139,250,0.7);margin-bottom:36px;display:flex;align-items:center;gap:8px;}
+.tdot{width:5px;height:5px;border-radius:50%;background:#a78bfa;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 6px #a78bfa;}50%{opacity:.3;box-shadow:none;}}
+
+/* ═══════════ 3D CRAB SVG ═══════════ */
+.crab-scene{width:260px;height:260px;margin:0 auto 50px;position:relative;perspective:800px;}
+.crab-wrap{width:100%;height:100%;animation:float3d 5s ease-in-out infinite;transform-style:preserve-3d;}
+@keyframes float3d{
+  0%{transform:translateY(0) rotateY(-8deg) rotateX(6deg);}
+  50%{transform:translateY(-18px) rotateY(8deg) rotateX(-4deg);}
+  100%{transform:translateY(0) rotateY(-8deg) rotateX(6deg);}
+}
+.crab-glow-base{position:absolute;inset:-30px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.5) 0%,rgba(79,70,229,0.2) 40%,transparent 70%);filter:blur(24px);animation:gpulse 4s ease-in-out infinite;}
+@keyframes gpulse{0%,100%{opacity:.8;}50%{opacity:1;}}
+
+svg.crab{width:100%;height:100%;filter:drop-shadow(0 0 16px rgba(167,139,250,0.8)) drop-shadow(0 0 40px rgba(109,40,217,0.5));}
+
+/* Body parts colors */
+.c-body{fill:url(#bodyGrad);}
+.c-shell{fill:url(#shellGrad);opacity:.9;}
+.c-claw{fill:url(#clawGrad);}
+.c-leg{fill:url(#legGrad);}
+.c-eye{fill:#e879f9;}
+.c-eye-glow{fill:rgba(232,121,249,0.3);}
+.c-highlight{fill:rgba(255,255,255,0.18);}
+.c-dark{fill:rgba(30,10,60,0.6);}
+.c-stripe{fill:rgba(167,139,250,0.15);}
+
+h1{font-size:clamp(2.8rem,6.5vw,5rem);font-weight:900;line-height:1.02;letter-spacing:-0.05em;margin-bottom:20px;}
+.grad-text{background:linear-gradient(135deg,#c4b5fd 0%,#818cf8 50%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.desc{font-size:1.05rem;color:rgba(255,255,255,0.4);max-width:500px;margin:0 auto 44px;line-height:1.8;}
+.btns{display:flex;gap:14px;justify-content:center;}
+.btn-a{padding:14px 40px;border-radius:100px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-weight:700;font-size:14px;border:none;cursor:pointer;box-shadow:0 0 28px rgba(124,58,237,0.5);transition:all .25s;}
+.btn-a:hover{box-shadow:0 0 44px rgba(124,58,237,0.7);transform:translateY(-2px);}
+.btn-b{padding:14px 40px;border-radius:100px;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.55);font-weight:600;font-size:14px;border:1px solid rgba(255,255,255,0.1);cursor:pointer;}
+.srow{display:flex;gap:0;margin-top:72px;border:1px solid rgba(255,255,255,0.06);border-radius:18px;overflow:hidden;background:rgba(255,255,255,0.015);}
+.sitem{flex:1;padding:24px 32px;border-right:1px solid rgba(255,255,255,0.06);text-align:center;}
+.sitem:last-child{border:none;}
+.sv{font-size:1.7rem;font-weight:800;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sl{font-size:10px;color:rgba(255,255,255,0.28);text-transform:uppercase;letter-spacing:.12em;margin-top:4px;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="bg-orb"></div>
+<nav>
+  <div class="nlogo">
+    <div class="nlogo-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3C8 3 5 6 5 10c0 2 .8 3.8 2 5l-2 4h14l-2-4c1.2-1.2 2-3 2-5 0-4-3-7-7-7z" fill="white" opacity=".9"/></svg>
+    </div>
+    <span><span style="color:#a78bfa">GCSC</span> CLAW</span>
+  </div>
+  <div style="display:flex;gap:8px"><span class="pill pill-v">XPR TESTNET</span><span class="pill pill-b">PRIVATE BETA</span></div>
+</nav>
+
+<div class="hero">
+  <div class="tag"><span class="tdot"></span>Self-Evolving AI Economic Loop</div>
+
+  <div class="crab-scene">
+    <div class="crab-glow-base"></div>
+    <div class="crab-wrap">
+      <svg class="crab" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bodyGrad" cx="45%" cy="35%">
+            <stop offset="0%" stop-color="#9333ea"/>
+            <stop offset="60%" stop-color="#6d28d9"/>
+            <stop offset="100%" stop-color="#3b0764"/>
+          </radialGradient>
+          <radialGradient id="shellGrad" cx="40%" cy="30%">
+            <stop offset="0%" stop-color="#a855f7"/>
+            <stop offset="100%" stop-color="#4c1d95"/>
+          </radialGradient>
+          <linearGradient id="clawGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#c084fc"/>
+            <stop offset="100%" stop-color="#7c3aed"/>
+          </linearGradient>
+          <linearGradient id="legGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#a78bfa"/>
+            <stop offset="100%" stop-color="#5b21b6"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- BACK LEGS left -->
+        <rect class="c-leg" x="22" y="108" width="7" height="36" rx="3.5" transform="rotate(-20 25 108)"/>
+        <rect class="c-leg" x="28" y="112" width="7" height="34" rx="3.5" transform="rotate(-10 31 112)"/>
+        <rect class="c-leg" x="34" y="114" width="7" height="30" rx="3.5" transform="rotate(2 37 114)"/>
+
+        <!-- BACK LEGS right -->
+        <rect class="c-leg" x="171" y="108" width="7" height="36" rx="3.5" transform="rotate(20 175 108)"/>
+        <rect class="c-leg" x="165" y="112" width="7" height="34" rx="3.5" transform="rotate(10 169 112)"/>
+        <rect class="c-leg" x="159" y="114" width="7" height="30" rx="3.5" transform="rotate(-2 163 114)"/>
+
+        <!-- LEFT BIG CLAW arm -->
+        <rect class="c-claw" x="8" y="78" width="42" height="11" rx="5.5" transform="rotate(-15 8 78)"/>
+        <!-- left claw top -->
+        <ellipse class="c-claw" cx="10" cy="68" rx="12" ry="8" transform="rotate(-30 10 68)"/>
+        <!-- left claw bottom -->
+        <ellipse class="c-claw" cx="16" cy="82" rx="10" ry="6" transform="rotate(-10 16 82)"/>
+        <!-- claw gap -->
+        <path d="M4 72 Q12 75 16 78" stroke="rgba(30,10,60,0.7)" stroke-width="2.5" fill="none"/>
+
+        <!-- RIGHT BIG CLAW arm -->
+        <rect class="c-claw" x="150" y="78" width="42" height="11" rx="5.5" transform="rotate(15 192 78)"/>
+        <!-- right claw top -->
+        <ellipse class="c-claw" cx="190" cy="68" rx="12" ry="8" transform="rotate(30 190 68)"/>
+        <!-- right claw bottom -->
+        <ellipse class="c-claw" cx="184" cy="82" rx="10" ry="6" transform="rotate(10 184 82)"/>
+        <path d="M196 72 Q188 75 184 78" stroke="rgba(30,10,60,0.7)" stroke-width="2.5" fill="none"/>
+
+        <!-- MAIN BODY -->
+        <ellipse class="c-body" cx="100" cy="115" rx="58" ry="40"/>
+
+        <!-- SHELL / CARAPACE -->
+        <ellipse class="c-shell" cx="100" cy="100" rx="52" ry="38"/>
+
+        <!-- Shell ridges -->
+        <ellipse class="c-stripe" cx="100" cy="98" rx="40" ry="28"/>
+        <ellipse class="c-stripe" cx="100" cy="96" rx="28" ry="18"/>
+
+        <!-- Shell highlight (3D effect) -->
+        <ellipse class="c-highlight" cx="88" cy="86" rx="18" ry="11" transform="rotate(-15 88 86)"/>
+
+        <!-- Shell dark shadow bottom -->
+        <ellipse class="c-dark" cx="100" cy="115" rx="45" ry="18"/>
+
+        <!-- EYES stalks -->
+        <rect fill="#6d28d9" x="78" y="68" width="6" height="14" rx="3"/>
+        <rect fill="#6d28d9" x="116" y="68" width="6" height="14" rx="3"/>
+        <!-- EYE glow -->
+        <circle class="c-eye-glow" cx="81" cy="66" r="10"/>
+        <circle class="c-eye-glow" cx="119" cy="66" r="10"/>
+        <!-- EYES -->
+        <circle class="c-eye" cx="81" cy="66" r="7" filter="url(#glow)"/>
+        <circle class="c-eye" cx="119" cy="66" r="7" filter="url(#glow)"/>
+        <!-- Eye shine -->
+        <circle fill="rgba(255,255,255,0.7)" cx="83" cy="63" r="2.5"/>
+        <circle fill="rgba(255,255,255,0.7)" cx="121" cy="63" r="2.5"/>
+
+        <!-- ANTENNAE -->
+        <line x1="81" y1="59" x2="55" y2="32" stroke="#c084fc" stroke-width="1.8" stroke-linecap="round" opacity=".7"/>
+        <line x1="119" y1="59" x2="145" y2="32" stroke="#c084fc" stroke-width="1.8" stroke-linecap="round" opacity=".7"/>
+        <circle fill="#e879f9" cx="55" cy="32" r="3"/>
+        <circle fill="#e879f9" cx="145" cy="32" r="3"/>
+
+        <!-- MOUTH / MANDIBLES -->
+        <path d="M91 118 Q100 124 109 118" stroke="#c084fc" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+      </svg>
+    </div>
+  </div>
+
+  <h1>The AI Agent<br><span class="grad-text">That Trades For You</span></h1>
+  <p class="desc">Autonomous trading intelligence on XPR Network. Stake $XLAW, deploy your agent, compound returns — 24/7, without lifting a finger.</p>
+  <div class="btns">
+    <button class="btn-a">Join Private Beta</button>
+    <button class="btn-b">Whitepaper →</button>
+  </div>
+  <div class="srow">
+    <div class="sitem"><div class="sv">AI</div><div class="sl">Claude Engine</div></div>
+    <div class="sitem"><div class="sv">24/7</div><div class="sl">Always On</div></div>
+    <div class="sitem"><div class="sv">$XLAW</div><div class="sl">Stake to Unlock</div></div>
+    <div class="sitem"><div class="sv">XPR</div><div class="sl">Network</div></div>
+  </div>
+</div>
+<script>
+const c=document.getElementById('c'),x=c.getContext('2d');
+let W,H,pts=[];
+function init(){W=c.width=innerWidth;H=c.height=innerHeight;pts=Array.from({length:90},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.2,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,a:Math.random()*6.28}));}
+function draw(){x.clearRect(0,0,W,H);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=.006;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle=`rgba(${Math.random()>.5?'167,139,250':'96,165,250'},${.1+Math.sin(p.a)*.08})`;x.fill();});requestAnimationFrame(draw);}
+init();draw();addEventListener('resize',init);
+</script>
+</body>
+</html>
