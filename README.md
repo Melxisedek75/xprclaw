@@ -1,83 +1,187 @@
-# GCSC CLAW — Download & Install
+# GCSC CLAW — Self-Evolving AI on XPR Network
 
-Public landing page to install **GCSC CLAW** as a Progressive Web App on iOS, Android, and desktop — no app stores required.
+Self-Evolving AI Economic Loop: autonomous agents + multi-agent simulator + trading bot for XPR Network. Private beta waitlist opening Q2 2026.
 
-> **Status:** Private Beta — Q2 2026
-> **Network:** XPR (Proton) · **Token:** `$XLAW` · **Audience:** B2B Enterprises
+> **Status:** Private Beta — Q2 2026  
+> **Network:** XPR (Proton) · **Token:** `$XLAW` · **Audience:** B2B Enterprises, Crypto Funds
 
-**Live:** `https://melxisedek75.github.io/xprclaw/` *(replace with actual URL after deploy)*
-
----
-
-## What's here
-
-| File | Purpose |
-|---|---|
-| `index.html` | Public landing page (PWA install + downloads) |
-| `xprclaw_standalone.html` | The app itself (opens after install) |
-| `manifest.json` | PWA configuration |
-| `sw.js` | Service Worker (offline cache) |
-| `icon-192.png`, `icon-512.png` | App icons |
-| `xprclaw_project.zip` | Full source bundle (download) |
-| `xprclaw_whitepaper.pdf` | White Paper v1.0 |
-| `DEPLOY.md` | Hosting instructions (GitHub Pages, Netlify, Vercel, own server) |
-| `PRIVACY.md`, `TERMS.md` | Legal basics |
-| `.github/workflows/pages.yml` | Auto-deploy to GitHub Pages on push to `main` |
+**Live Waitlist:** https://melxisedek75.github.io/xprclaw/  
+**App Dashboard:** https://melxisedek75.github.io/xprclaw/app.html  
+**Docs:** [QUICKSTART.md](QUICKSTART.md) | [DEPLOYMENT.md](DEPLOYMENT.md)
 
 ---
 
-## Deploy in 5 minutes
+## Architecture
 
-```bash
-git init
-git add .
-git commit -m "Initial: download site + PWA + workflow"
-git branch -M main
-git remote add origin https://github.com/<your-user>/xprclaw.git
-git push -u origin main
+```
+┌─────────────────────────────────┐
+│  Frontend (GitHub Pages)        │
+│  ├─ index.html (landing)        │
+│  ├─ app.html (dashboard)        │
+│  └─ PWA + Service Worker        │
+└────────────┬────────────────────┘
+             │ POST /v1/simulate
+┌────────────▼────────────────────┐
+│  FastAPI Adapter (Docker)       │
+│  ├─ Decision engine             │
+│  ├─ Cache (in-memory or D1)     │
+│  └─ Simulator orchestrator      │
+└────────────┬────────────────────┘
+             │ HTTP
+┌────────────▼────────────────────┐
+│  MiroFish Simulator (Flask)     │
+│  ├─ Graph builder               │
+│  ├─ Multi-agent simulation      │
+│  └─ Verdict extraction          │
+└─────────────────────────────────┘
 ```
 
-Then in GitHub repo: **Settings → Pages → Source: GitHub Actions**. The included workflow publishes `index.html` + static assets automatically on every push.
+## What's Here
 
-Full hosting options (Netlify, Vercel, self-hosted) are in [DEPLOY.md](DEPLOY.md).
+| Component | Files | Purpose |
+|-----------|-------|---------|
+| **Frontend Landing** | `index.html` | Public-facing waitlist + app description |
+| **PWA Dashboard** | `app.html` | Dashboard with wallet connection + agent status |
+| **Backend Adapter** | `services/mirofish-adapter/` | FastAPI orchestrator for MiroFish + decision logic |
+| **Trading Bot** | `services/trading-bot/` | Node.js decision engine + client |
+| **Docker** | `docker-compose.mirofish.yml` | Local dev stack (adapter + MiroFish) |
+| **Config** | `manifest.json`, `sw.js` | PWA manifest + offline cache |
+| **Docs** | `QUICKSTART.md`, `DEPLOYMENT.md` | Setup guide + production deployment |
 
 ---
 
-## Local preview
+## Quick Start
 
-No build step required — zero-dependency static site.
-
+### 1. Frontend
 ```bash
-# Python
-python -m http.server 8000
+# Landing page (public waitlist)
+open https://melxisedek75.github.io/xprclaw/
 
-# or Node
-npx serve .
+# App dashboard (beta testing)
+open https://melxisedek75.github.io/xprclaw/app.html
+
+# Local dev
+npx http-server . -p 8000
 ```
 
-Then open `http://localhost:8000`.
+### 2. Backend (Local Docker)
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+docker-compose -f docker-compose.mirofish.yml up -d
 
-> PWA install requires HTTPS — won't work from `file://` or plain `http://` (except `localhost`). Deploy to GitHub Pages / Netlify / Vercel to test the full install flow.
+# Test
+curl http://localhost:8088/healthz
+```
+
+### 3. Testing
+```bash
+# Test decision engine
+cd services/trading-bot
+node decision-engine.test.js  # ✅ 10/10 tests pass
+
+# Test adapter
+cd services/mirofish-adapter
+python -m pytest tests/
+```
+
+**Full setup:** See [QUICKSTART.md](QUICKSTART.md)
 
 ---
 
-## Updating the app
+## Architecture Overview
 
-1. Edit `xprclaw_standalone.html` (or rebuild from the full source in `xprclaw_project.zip`).
-2. Bump the cache version in `sw.js`:
-   ```js
-   const CACHE_VERSION = 'gcsc-claw-v1.1';
-   ```
-3. Push — Service Worker fetches the new version on next open.
+**Agents (5 personas)**
+- Liquidity Data Analyzer (LDA)
+- Dynamic Asset Allocator (DAA)
+- KYC Agent (KYC-A)
+- Economic Flow Analyzer (EFA)
+- Research & Execution Agent (REA)
+
+**Simulator**
+- MiroFish multi-agent engine (Flask)
+- Market scenario modeling
+- Multi-round deliberation
+- Verdict extraction via LLM (Claude)
+
+**Adapter** (FastAPI)
+- Orchestrates graph building → simulation → verdict extraction
+- Decides: proceed | reduce | hold | abort
+- Confidence thresholds (default 0.55)
+- Caches via in-memory or Cloudflare D1
+
+**Trading Bot** (Node.js)
+- Decision engine merges agent opinions
+- Paper trading by default (safe)
+- Zero real transactions until manual override
+- Auditable decision log
 
 ---
 
-## Links
+## Development
 
-- GitHub (website): <https://github.com/Melxisedek75/gcsc-website>
-- Contact: <gcscdao@gmail.com>
-- White Paper: [xprclaw_whitepaper.pdf](xprclaw_whitepaper.pdf)
+### Stack
+- Frontend: Vanilla HTML/CSS/JS (no build required)
+- Backend: Python 3.12 + FastAPI + Pydantic v2
+- Bot: Node.js 18+ (no frameworks)
+- Container: Docker + Docker Compose
+- Cache: In-memory (dev) or Cloudflare D1 (prod)
+- LLM: Anthropic Claude (via adapter)
+
+### Testing
+```bash
+# Frontend (no tests needed for static site)
+
+# Backend
+cd services/mirofish-adapter
+python -m pytest tests/ -v
+
+# Bot
+cd services/trading-bot
+node decision-engine.test.js
+```
+
+### Deployment
+- **Frontend:** GitHub Pages (auto via workflow)
+- **Backend:** Railway, Render, or Fly.io (see DEPLOYMENT.md)
+- **D1 Cache:** Cloudflare D1 + wrangler migrations
 
 ---
 
-White Paper v1.0 — 2025–2026
+## Status & Roadmap
+
+### Week 0 (Done) ✅
+- [x] Landing page + waitlist form
+- [x] PWA app dashboard
+- [x] FastAPI adapter + decision engine
+- [x] Node.js trading bot (test suite)
+- [x] Docker Compose setup
+- [x] GitHub Pages auto-deploy
+
+### Week 1-2 (Next)
+- [ ] @proton/web-sdk integration in app.html
+- [ ] Real XPR testnet wallet connection
+- [ ] Deploy adapter to Railway
+- [ ] Live backend in app dashboard
+- [ ] Paper trading for 20-50 beta users
+
+### Week 3+
+- [ ] Production readiness (monitoring, auth, rate limits)
+- [ ] Real XPR mainnet support
+- [ ] Trading execution (post-approval)
+- [ ] Mobile optimization
+- [ ] API documentation + SDKs
+
+---
+
+## Contact
+
+- **Telegram:** https://t.me/gcsc_claw
+- **GitHub Issues:** https://github.com/Melxisedek75/xprclaw/issues
+- **Email:** rivnesergiy@gmail.com
+- **White Paper:** [xprclaw_whitepaper.pdf](xprclaw_whitepaper.pdf)
+
+---
+
+**Built with:** Python, Node.js, FastAPI, Docker, Anthropic Claude  
+**License:** See [TERMS.md](TERMS.md)  
+**Version:** 0.1.0 (Private Beta — Q2 2026)
