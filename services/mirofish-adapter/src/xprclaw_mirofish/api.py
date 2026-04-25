@@ -4,11 +4,13 @@ import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from xprclaw_mirofish import __version__
 from xprclaw_mirofish.cache import InMemoryCache, SimulationCache
 from xprclaw_mirofish.client import MiroFishClient
+from xprclaw_mirofish.config import AdapterConfig
 from xprclaw_mirofish.models import SimulationRequest, SimulationResult
 from xprclaw_mirofish.simulator import XPRSimulator
 
@@ -26,7 +28,8 @@ async def lifespan(app: FastAPI):  # type: ignore
     global _client, _cache, _simulator
 
     # Startup
-    _client = MiroFishClient()
+    config = AdapterConfig()
+    _client = MiroFishClient(base_url=config.mirofish_base_url, timeout=config.mirofish_timeout_seconds)
     backend = InMemoryCache(default_ttl_seconds=3600)
     _cache = SimulationCache(backend, default_ttl_seconds=3600)
     _simulator = XPRSimulator(_client)
@@ -47,6 +50,15 @@ app = FastAPI(
     description="Multi-agent simulator sidecar for autonomous trading decisions",
     version=__version__,
     lifespan=lifespan,
+)
+
+# Enable CORS for localhost development
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8000", "http://localhost:3000", "http://127.0.0.1:8000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

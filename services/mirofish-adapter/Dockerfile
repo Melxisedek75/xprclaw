@@ -1,27 +1,19 @@
-FROM python:3.12-slim as builder
-
-WORKDIR /build
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY pyproject.toml pyproject.toml
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -e . --no-build-isolation
-
 FROM python:3.12-slim
 
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -u 1000 xprclaw && \
     mkdir -p /app && \
     chown -R xprclaw:xprclaw /app
 
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir fastapi uvicorn httpx pydantic pydantic-settings tenacity structlog
 
-COPY --chown=xprclaw:xprclaw src/ src/
+COPY --chown=xprclaw:xprclaw src/xprclaw_mirofish/ xprclaw_mirofish/
 
 USER xprclaw
 

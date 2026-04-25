@@ -52,13 +52,14 @@ services:
     restart: unless-stopped
 
   mirofish:
-    image: mirofish/backend:latest
+    build:
+      context: services/mirofish-mock
+      dockerfile: Dockerfile
     container_name: xprclaw-mirofish
     ports:
       - "5001:5001"
     environment:
       FLASK_ENV: development
-      # Add MiroFish-specific config here
     networks:
       - xprclaw
     healthcheck:
@@ -68,10 +69,6 @@ services:
       retries: 3
       start_period: 40s
     restart: unless-stopped
-    # For local development, you may want to build from source:
-    # build:
-    #   context: path/to/mirofish-repo
-    #   dockerfile: Dockerfile
 
   # Optional: Redis cache (future optimization)
   # redis:
