@@ -579,20 +579,13 @@ footer{
     <p class="section-sub">We're inviting early testers in small batches. Drop your email and we'll send a personal invite with your testnet credentials, a 5-minute onboarding, and direct access to the team.</p>
 
     <!--
-      Waitlist form (Buttondown placeholder).
-      To activate:
-        1. Sign up free at https://buttondown.email
-        2. Replace `your-newsletter-name` below with your Buttondown handle
-      Alternative providers — swap the <form action>:
-        · ConvertKit: https://app.convertkit.com → Forms → HTML
-        · Mailchimp: audience → Signup forms → Embedded
-        · Formspree: https://formspree.io (sends to any email)
+      Waitlist form (Email collection via simple JS handler).
+      To activate: create a Google Form at forms.google.com, get the form action URL,
+      replace the placeholder below. Or use Buttondown/Mailchimp with your account.
     -->
     <form
-      action="https://buttondown.email/api/emails/embed-subscribe/your-newsletter-name"
-      method="post"
-      target="_blank"
-      onsubmit="window.open('https://buttondown.email/your-newsletter-name', 'popupwindow')"
+      action="javascript:void(0)"
+      onsubmit="handleWaitlistSubmit(event)"
       class="waitlist-form"
       style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:28px auto 14px;max-width:520px;"
     >
@@ -815,6 +808,30 @@ async function handleInstall() {
   // Fallback - just open the app + show manual instructions
   showToast('Manual Install', 'Look for "Install app" or "Add to Home Screen" in your browser menu.');
   document.getElementById('install').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ═══════════ WAITLIST EMAIL COLLECTION ═══════════
+function handleWaitlistSubmit(event) {
+  event.preventDefault();
+  const email = document.getElementById('waitlist-email').value.trim();
+
+  if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    showToast('Invalid Email', 'Please enter a valid email address.');
+    return;
+  }
+
+  // For MVP: store in localStorage (later: connect Buttondown, Formspree, or your own API)
+  // To activate real email service: update this function to POST to your backend
+  // Example: await fetch('https://api.buttondown.email/v1/subscribers', { ... })
+
+  let subscribers = JSON.parse(localStorage.getItem('xprclaw_waitlist') || '[]');
+  if (!subscribers.includes(email)) {
+    subscribers.push(email);
+    localStorage.setItem('xprclaw_waitlist', JSON.stringify(subscribers));
+  }
+
+  document.getElementById('waitlist-email').value = '';
+  showToast('✓ Waitlist', `You're in! We'll send your invite to ${email} when beta opens.`);
 }
 
 // ═══════════ FAQ TOGGLE ═══════════
