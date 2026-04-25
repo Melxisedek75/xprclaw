@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#0c0a1a"/>
+<meta name="description" content="GCSC CLAW — Private AI agents, autonomous trading, XPR Network. Connect your WebAuth wallet."/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="GCSC CLAW"/>
+
+<title>GCSC CLAW — Dashboard</title>
+
+<link rel="manifest" href="./manifest.json"/>
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"/>
+<link rel="apple-touch-icon" href="./icon-192.png"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --bg: #0c0a1a;
+  --bg2: #110e25;
+  --panel: #1a1535;
+  --border: rgba(139,92,246,0.18);
+  --purple: #7c3aed;
+  --lavender: #a78bfa;
+  --white: #f5f3ff;
+  --muted: #9d8fcb;
+  --mint: #34d399;
+  --pink: #e879f9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(12,10,26,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+button {
+  background: var(--purple);
+  color: var(--white);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background: var(--lavender);
+  transform: translateY(-1px);
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  padding: 90px 24px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.wallet-section {
+  background: linear-gradient(135deg, var(--panel) 0%, rgba(139,92,246,0.05) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.wallet-status {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.wallet-address {
+  font-family: 'Courier New', monospace;
+  background: rgba(0,0,0,0.3);
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  word-break: break-all;
+  font-size: 0.85rem;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card h3 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  color: var(--lavender);
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.loading {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--mint);
+  border-radius: 50%;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.error {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 8px;
+  padding: 12px;
+  color: #fca5a5;
+  font-size: 0.9rem;
+}
+
+.success {
+  background: rgba(52,211,153,0.1);
+  border: 1px solid rgba(52,211,153,0.3);
+  border-radius: 8px;
+  padding: 12px;
+  color: #86efac;
+  font-size: 0.9rem;
+}
+</style>
+
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <img src="./icon-192.png" style="width:32px;height:32px;border-radius:8px;" alt="GCSC CLAW"/>
+    <span>GCSC CLAW</span>
+  </div>
+  <div class="nav-actions">
+    <button id="walletBtn" onclick="connectWallet()">Connect Wallet</button>
+  </div>
+</nav>
+
+<main>
+  <div class="hero-section">
+    <h1>Dashboard</h1>
+    <p style="color: var(--muted); margin-bottom: 24px;">Private Beta — Q2 2026</p>
+
+    <div class="wallet-section">
+      <div class="wallet-status">
+        Wallet Status: <span id="walletStatus">Not Connected</span>
+        <span id="walletLoading" class="loading" style="display:none;"></span>
+      </div>
+      <button id="connectWalletBtn" onclick="connectWallet()" style="display:inline-block;">Connect WebAuth Wallet</button>
+      <div id="walletAddress" class="wallet-address" style="display:none;"></div>
+      <div id="walletError" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="card">
+      <h3>🤖 AI Agents</h3>
+      <p>Five autonomous agents (LDA, DAA, KYC-A, EFA, REA) analyzing market conditions and making trading decisions.</p>
+      <div style="margin-top:16px;padding:12px;background:rgba(139,92,246,0.1);border-radius:8px;font-size:0.85rem;color:var(--lavender);">
+        Status: <span id="agentStatus">Connecting to backend...</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 Simulator</h3>
+      <p>MiroFish multi-agent simulator running market scenarios. FastAPI adapter coordinates verdict extraction and decision logic.</p>
+      <div style="margin-top:16px;padding:12px;background:rgba(139,92,246,0.1);border-radius:8px;font-size:0.85rem;color:var(--lavender);">
+        Backend: <span id="adapterStatus">Checking health...</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚡ Trading Bot</h3>
+      <p>Paper trading mode by default. Zero real transactions until you explicitly enable execution. All decisions logged and auditable.</p>
+      <div style="margin-top:16px;padding:12px;background:rgba(52,211,153,0.1);border-radius:8px;font-size:0.85rem;color:#86efac;">
+        Mode: Paper Trading (Safe)
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:60px;text-align:center;padding:24px;border-top:1px solid var(--border);">
+    <p style="color:var(--muted);font-size:0.9rem;">
+      Questions? <a href="https://t.me/gcsc_claw" style="color:var(--lavender);text-decoration:none;">Join Telegram</a> or check the <a href="./DEPLOYMENT.md" style="color:var(--lavender);text-decoration:none;">deployment guide</a>.
+    </p>
+  </div>
+</main>
+
+<script>
+// TODO: Install @proton/web-sdk for real XPR integration
+// For now: mock wallet connection
+async function connectWallet() {
+  const btn = document.getElementById('connectWalletBtn');
+  const status = document.getElementById('walletStatus');
+  const addr = document.getElementById('walletAddress');
+  const error = document.getElementById('walletError');
+  const loading = document.getElementById('walletLoading');
+
+  btn.disabled = true;
+  loading.style.display = 'inline-block';
+  error.style.display = 'none';
+
+  try {
+    // Real implementation: await ProtonWebSDK.connect()
+    // For MVP: mock connection
+    await new Promise(r => setTimeout(r, 1200));
+
+    const mockAddr = 'xprtest' + Math.random().toString(36).substr(2, 9) + '111112222';
+    status.textContent = 'Connected';
+    status.style.color = 'var(--mint)';
+    addr.textContent = '📍 ' + mockAddr;
+    addr.style.display = 'block';
+    btn.textContent = 'Disconnect';
+
+  } catch (e) {
+    error.innerHTML = '<strong>Error:</strong> ' + (e.message || 'Failed to connect wallet');
+    error.style.display = 'block';
+    status.textContent = 'Error';
+    status.style.color = '#fca5a5';
+  } finally {
+    btn.disabled = false;
+    loading.style.display = 'none';
+  }
+}
+
+// Check adapter health
+async function checkAdapterHealth() {
+  try {
+    const resp = await fetch('http://localhost:8088/healthz', { mode: 'no-cors' });
+    if (resp.ok || resp.status === 0) {
+      document.getElementById('adapterStatus').textContent = 'Online ✓';
+      document.getElementById('adapterStatus').style.color = 'var(--mint)';
+    }
+  } catch (e) {
+    document.getElementById('adapterStatus').textContent = 'Offline (local dev: run docker-compose up)';
+    document.getElementById('adapterStatus').style.color = '#fca5a5';
+  }
+}
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+
+// Init on load
+window.addEventListener('load', () => {
+  setTimeout(checkAdapterHealth, 500);
+});
+</script>
+
+</body>
+</html>
