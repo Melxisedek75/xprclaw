@@ -258,6 +258,7 @@ h1 {
   </div>
 </main>
 
+<script src="./src/config.js"></script>
 <script src="./src/wallet.js"></script>
 <script>
 // Use wallet module from src/wallet.js
@@ -297,17 +298,21 @@ async function connectWallet() {
   }
 }
 
-// Check adapter health
+// Check adapter health using CONFIG
 async function checkAdapterHealth() {
   try {
-    const resp = await fetch('http://localhost:8088/healthz', { mode: 'no-cors' });
+    const url = window.getAdapterUrl(CONFIG.ADAPTER_HEALTH_ENDPOINT);
+    const resp = await fetch(url, { mode: 'no-cors', timeout: CONFIG.ADAPTER_TIMEOUT_MS });
     if (resp.ok || resp.status === 0) {
       document.getElementById('adapterStatus').textContent = 'Online ✓';
       document.getElementById('adapterStatus').style.color = 'var(--mint)';
+      console.log('Adapter health check passed:', url);
     }
   } catch (e) {
-    document.getElementById('adapterStatus').textContent = 'Offline (local dev: run docker-compose up)';
+    const devMsg = window.isDevelopment() ? 'local dev: run docker-compose up' : 'backend not available';
+    document.getElementById('adapterStatus').textContent = 'Offline (' + devMsg + ')';
     document.getElementById('adapterStatus').style.color = '#fca5a5';
+    console.warn('Adapter health check failed:', e.message);
   }
 }
 
