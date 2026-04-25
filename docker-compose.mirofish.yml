@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  # MiroFish backend simulator (external, not included)
+  # Expected to run on http://mirofish:5001
+  # docker run -p 5001:5001 mirofish/backend
+
+  xprclaw-mirofish-adapter:
+    build:
+      context: services/mirofish-adapter
+      dockerfile: Dockerfile
+    container_name: xprclaw-mirofish-adapter
+    ports:
+      - "8088:8088"
+    environment:
+      # FastAPI
+      LOG_LEVEL: info
+
+      # MiroFish backend (in same docker network, named 'mirofish')
+      MIROFISH_BASE_URL: http://mirofish:5001
+      MIROFISH_TIMEOUT_SECONDS: 300
+
+      # LLM (Anthropic)
+      LLM_PROVIDER: anthropic
+      LLM_API_KEY: ${ANTHROPIC_API_KEY}
+      LLM_MODEL: claude-3-sonnet-20240229
+
+      # Cloudflare D1 (optional: for cache backend)
+      CF_ACCOUNT_ID: ${CF_ACCOUNT_ID:-}
+      CF_API_TOKEN: ${CF_API_TOKEN:-}
+      D1_DATABASE_ID: ${D1_DATABASE_ID:-}
+      D1_CACHE_TABLE: mirofish_simulations
+
+      # Simulation
+      SIM_TIMEOUT_SECONDS: 300
+      SIM_MAX_AGENTS: 50
+      CACHE_EVICTION_MODE: lru
+      CACHE_MAX_AGE_SECONDS: 3600
+
+      # Environment
+      ENV: development
+    depends_on:
+      - mirofish
+    networks:
+      - xprclaw
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  mirofish:
+    image: mirofish/backend:latest
+    container_name: xprclaw-mirofish
+    ports:
+      - "5001:5001"
+    environment:
+      FLASK_ENV: development
+      # Add MiroFish-specific config here
+    networks:
+      - xprclaw
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    # For local development, you may want to build from source:
+    # build:
+    #   context: path/to/mirofish-repo
+    #   dockerfile: Dockerfile
+
+  # Optional: Redis cache (future optimization)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: xprclaw-redis
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - xprclaw
+  #   restart: unless-stopped
+
+networks:
+  xprclaw:
+    driver: bridge
+
+volumes:
+  # For D1 local simulation (if using SQLite file-based storage)
+  d1_data:
+    driver: local
