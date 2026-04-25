@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
 from xprclaw_mirofish import __version__
-from xprclaw_mirofish.cache import SimulationCache
+from xprclaw_mirofish.cache import InMemoryCache, SimulationCache
 from xprclaw_mirofish.client import MiroFishClient
 from xprclaw_mirofish.models import SimulationRequest, SimulationResult
 from xprclaw_mirofish.simulator import XPRSimulator
@@ -27,9 +27,10 @@ async def lifespan(app: FastAPI):  # type: ignore
 
     # Startup
     _client = MiroFishClient()
-    _cache = SimulationCache(default_ttl_seconds=3600)
+    backend = InMemoryCache(default_ttl_seconds=3600)
+    _cache = SimulationCache(backend, default_ttl_seconds=3600)
     _simulator = XPRSimulator(_client)
-    log.info(f"adapter_startup: mirofish_url={_client.base_url}")
+    log.info(f"adapter_startup: mirofish_url={_client.base_url}, cache_backend=in-memory")
 
     yield
 
