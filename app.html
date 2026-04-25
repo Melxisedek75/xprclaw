@@ -258,9 +258,9 @@ h1 {
   </div>
 </main>
 
+<script src="./src/wallet.js"></script>
 <script>
-// TODO: Install @proton/web-sdk for real XPR integration
-// For now: mock wallet connection
+// Use wallet module from src/wallet.js
 async function connectWallet() {
   const btn = document.getElementById('connectWalletBtn');
   const status = document.getElementById('walletStatus');
@@ -273,22 +273,24 @@ async function connectWallet() {
   error.style.display = 'none';
 
   try {
-    // Real implementation: await ProtonWebSDK.connect()
-    // For MVP: mock connection
-    await new Promise(r => setTimeout(r, 1200));
+    // Use real wallet module (or mock for MVP)
+    const session = await window.WalletModule.connectWallet();
 
-    const mockAddr = 'xprtest' + Math.random().toString(36).substr(2, 9) + '111112222';
     status.textContent = 'Connected';
     status.style.color = 'var(--mint)';
-    addr.textContent = '📍 ' + mockAddr;
+    addr.textContent = '📍 ' + session.accountName;
     addr.style.display = 'block';
     btn.textContent = 'Disconnect';
+
+    // Log session for debugging
+    console.log('Session established:', session);
 
   } catch (e) {
     error.innerHTML = '<strong>Error:</strong> ' + (e.message || 'Failed to connect wallet');
     error.style.display = 'block';
     status.textContent = 'Error';
     status.style.color = '#fca5a5';
+    console.error('Connection error:', e);
   } finally {
     btn.disabled = false;
     loading.style.display = 'none';
