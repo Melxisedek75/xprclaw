@@ -1201,12 +1201,16 @@ window.WalletService = (function() {
       }
 
       const sdk = window.ProtonWebSDK;
-      const ConnectWallet = sdk && (sdk.ConnectWallet || (sdk.default && sdk.default.ConnectWallet) || sdk.default);
+      // The SDK exports the ConnectWallet function as `default`
+      const ConnectWallet = (sdk && typeof sdk.default === 'function') ? sdk.default
+                          : (sdk && typeof sdk.ConnectWallet === 'function') ? sdk.ConnectWallet
+                          : null;
 
-      if (!ConnectWallet || typeof ConnectWallet !== 'function') {
+      if (!ConnectWallet) {
         console.warn('SDK keys:', sdk ? Object.keys(sdk) : 'not loaded');
-        throw new Error('Proton SDK ConnectWallet not found');
+        throw new Error('Proton SDK ConnectWallet function not found');
       }
+      console.log('Calling ConnectWallet…');
 
       const { link, session } = await ConnectWallet({
         linkOptions: {
