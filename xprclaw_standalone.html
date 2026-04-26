@@ -8,8 +8,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
-<!-- XPR Network Wallet SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@proton/web-sdk/dist/index.min.js"></script>
+<!-- XPR Network Wallet SDK (loaded as ESM module) -->
+<script type="module">
+  try {
+    const mod = await import('https://esm.sh/@proton/web-sdk@4.3.1');
+    window.ProtonWebSDK = mod;
+    window.dispatchEvent(new Event('proton-sdk-ready'));
+    console.log('✓ Proton Web SDK loaded', Object.keys(mod));
+  } catch (e) {
+    console.error('Failed to load Proton SDK:', e);
+  }
+</script>
 <style>/* ═══════════════════════════════════════════════════════════════
    GCSC CLAW · main.css
    Dark Violet Aesthetic · XPR Network
@@ -1183,10 +1192,21 @@ window.WalletService = (function() {
 
   async function connect(walletName) {
     try {
-      const sdk = window.ProtonWebSDK || window['@proton/web-sdk'];
-      const ConnectWallet = sdk && (sdk.ConnectWallet || sdk.default && sdk.default.ConnectWallet);
+      // Wait briefly for SDK to load if it's still pending
+      if (!window.ProtonWebSDK) {
+        await new Promise((res) => {
+          const timer = setTimeout(res, 3000);
+          window.addEventListener('proton-sdk-ready', () => { clearTimeout(timer); res(); }, { once: true });
+        });
+      }
 
-      if (!ConnectWallet) throw new Error('Proton SDK not loaded');
+      const sdk = window.ProtonWebSDK;
+      const ConnectWallet = sdk && (sdk.ConnectWallet || (sdk.default && sdk.default.ConnectWallet) || sdk.default);
+
+      if (!ConnectWallet || typeof ConnectWallet !== 'function') {
+        console.warn('SDK keys:', sdk ? Object.keys(sdk) : 'not loaded');
+        throw new Error('Proton SDK ConnectWallet not found');
+      }
 
       const { link, session } = await ConnectWallet({
         linkOptions: {
