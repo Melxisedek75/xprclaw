@@ -811,7 +811,7 @@ async function handleInstall() {
 }
 
 // ═══════════ WAITLIST EMAIL COLLECTION ═══════════
-function handleWaitlistSubmit(event) {
+async function handleWaitlistSubmit(event) {
   event.preventDefault();
   const email = document.getElementById('waitlist-email').value.trim();
 
@@ -820,18 +820,30 @@ function handleWaitlistSubmit(event) {
     return;
   }
 
-  // For MVP: store in localStorage (later: connect Buttondown, Formspree, or your own API)
-  // To activate real email service: update this function to POST to your backend
-  // Example: await fetch('https://api.buttondown.email/v1/subscribers', { ... })
+  try {
+    // Send to Formspree (sends email to rivnesergiy@gmail.com)
+    const response = await fetch('https://formspree.io/f/mlgavwnp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, type: 'waitlist' })
+    });
 
-  let subscribers = JSON.parse(localStorage.getItem('xprclaw_waitlist') || '[]');
-  if (!subscribers.includes(email)) {
-    subscribers.push(email);
-    localStorage.setItem('xprclaw_waitlist', JSON.stringify(subscribers));
+    if (response.ok) {
+      document.getElementById('waitlist-email').value = '';
+      showToast('✓ Waitlist', `You're in! Check your email at ${email} for the private beta link.`);
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch (err) {
+    // Fallback: store in localStorage if Formspree fails
+    let subscribers = JSON.parse(localStorage.getItem('xprclaw_waitlist') || '[]');
+    if (!subscribers.includes(email)) {
+      subscribers.push(email);
+      localStorage.setItem('xprclaw_waitlist', JSON.stringify(subscribers));
+    }
+    document.getElementById('waitlist-email').value = '';
+    showToast('✓ Waitlist', `You're in! We'll send your invite to ${email} when beta opens.`);
   }
-
-  document.getElementById('waitlist-email').value = '';
-  showToast('✓ Waitlist', `You're in! We'll send your invite to ${email} when beta opens.`);
 }
 
 // ═══════════ FAQ TOGGLE ═══════════
