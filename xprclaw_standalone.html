@@ -2778,12 +2778,16 @@ window.connectWallet = async function(name) {
   closeModal('connectModal');
   showToast('Connecting…', 'Establishing secure connection to XPR Network…');
   try {
-    await WalletService.connect(name);
+    const state = await WalletService.connect(name);
     const btn = document.getElementById('connectBtn');
-    btn.textContent = '● ' + MockData.user.wallet;
+    const addr = state.address || MockData.user.wallet;
+    btn.textContent = '● ' + addr.split('@')[0];
     btn.classList.add('connected');
     updateBalanceDisplay();
-    showToast('✓ Wallet Connected', name + ' connected to XPR Network. Welcome to GCSC CLAW.');
+    const isReal = state.wallet && !state.wallet.includes('demo');
+    showToast('✓ Wallet Connected', isReal
+      ? 'Connected as ' + addr + ' on XPR Testnet.'
+      : '⚠ Demo mode (SDK not loaded). Address: ' + addr);
   } catch(e) {
     showToast('Connection Failed', e.message);
   }
