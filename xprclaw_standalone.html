@@ -1197,11 +1197,13 @@ window.WalletService = (function() {
         transportOptions: {
           requestAccount: 'gcsctoken111',
           backButton: true,
+          walletType: 'webauth',
         },
         selectorOptions: {
           appName: 'GCSC CLAW',
           appLogo: 'https://melxisedek75.github.io/xprclaw/icon-192.png',
-          showSelector: walletName !== 'WebAuth',
+          showSelector: false,
+          walletType: 'webauth',
         },
       });
 
