@@ -1212,11 +1212,14 @@ window.WalletService = (function() {
       }
       console.log('Calling ConnectWallet…');
 
-      const { link, session } = await ConnectWallet({
+      console.log('1. ConnectWallet function:', ConnectWallet);
+      console.log('2. Calling with options...');
+
+      const result = await ConnectWallet({
         linkOptions: {
           chainId: '21dcae42c0182200e93f954a074011f9048a7f6c33f6f6a63ad52aeea7caa024',
           endpoints: ['https://testnet.xprnetwork.org'],
-          restoreSession: true,
+          restoreSession: false,
         },
         transportOptions: {
           requestAccount: 'gcsctoken111',
@@ -1226,10 +1229,13 @@ window.WalletService = (function() {
         selectorOptions: {
           appName: 'GCSC CLAW',
           appLogo: 'https://melxisedek75.github.io/xprclaw/icon-192.png',
-          showSelector: false,
-          walletType: 'webauth',
+          showSelector: true,
         },
       });
+
+      console.log('3. ConnectWallet returned:', result);
+      const { link, session } = result || {};
+      if (!session) throw new Error('No session returned');
 
       _link = link;
       _session = session;
