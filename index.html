@@ -568,6 +568,100 @@ footer{
   </div>
 </section>
 
+<!-- BOT STATUS WIDGET -->
+<section id="bot-status" style="background:var(--bg2);padding:60px 24px;">
+  <div class="container" style="max-width:900px;">
+    <span class="section-tag">Live Dashboard</span>
+    <h2 class="section-title">AI Bot <span>Status</span></h2>
+    <p class="section-sub">Real-time data from the GCSC CLAW trading engine. Paper mode — no real funds at risk.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:8px;">
+
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;">
+        <div style="font-family:var(--f-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:12px;">BOT STATUS</div>
+        <div id="bot-status-dot" style="width:12px;height:12px;border-radius:50%;background:#6b7280;margin:0 auto 10px;box-shadow:0 0 8px #6b7280;"></div>
+        <div id="bot-status-text" style="font-family:var(--f-display);font-weight:700;font-size:1.3rem;color:var(--white);">—</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:6px;">Paper Mode</div>
+      </div>
+
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;">
+        <div style="font-family:var(--f-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:12px;">TOTAL PnL</div>
+        <div id="bot-pnl" style="font-family:var(--f-display);font-weight:800;font-size:1.8rem;color:var(--mint);">—</div>
+        <div id="bot-daily-pnl" style="font-size:.82rem;color:var(--muted);margin-top:6px;">daily: —</div>
+      </div>
+
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;">
+        <div style="font-family:var(--f-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:12px;">WIN RATE</div>
+        <div id="bot-winrate" style="font-family:var(--f-display);font-weight:800;font-size:1.8rem;color:var(--lavender);">—</div>
+        <div id="bot-trades" style="font-size:.82rem;color:var(--muted);margin-top:6px;">trades: —</div>
+      </div>
+
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;">
+        <div style="font-family:var(--f-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:12px;">AI AGENTS</div>
+        <div id="bot-agents" style="font-family:var(--f-display);font-weight:800;font-size:1.8rem;color:var(--gold);">—</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-top:6px;">active / 5</div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:16px;">
+      <span id="bot-last-update" style="font-family:var(--f-mono);font-size:.72rem;color:var(--dim);">Connecting to backend...</span>
+    </div>
+  </div>
+</section>
+
+<script>
+// ═══════════ BOT STATUS WIDGET ═══════════
+const BOT_API = 'https://xprclaw-production.up.railway.app';
+async function fetchBotData() {
+  try {
+    const [statusRes, pnlRes] = await Promise.all([
+      fetch(BOT_API + '/bot/status'),
+      fetch(BOT_API + '/bot/pnl'),
+    ]);
+    const status = await statusRes.json();
+    const pnl = await pnlRes.json();
+
+    const dot = document.getElementById('bot-status-dot');
+    const txt = document.getElementById('bot-status-text');
+    if (status.status === 'running') {
+      dot.style.background = '#34d399';
+      dot.style.boxShadow = '0 0 10px #34d399';
+      txt.textContent = 'Running';
+      txt.style.color = '#34d399';
+    } else {
+      dot.style.background = '#f87171';
+      dot.style.boxShadow = '0 0 10px #f87171';
+      txt.textContent = status.status || 'Offline';
+    }
+
+    const pnlVal = pnl.total_pnl;
+    const pnlEl = document.getElementById('bot-pnl');
+    pnlEl.textContent = (pnlVal >= 0 ? '+' : '') + pnlVal + ' XPR';
+    pnlEl.style.color = pnlVal >= 0 ? 'var(--mint)' : '#f87171';
+    document.getElementById('bot-daily-pnl').textContent =
+      'daily: ' + (pnl.daily_pnl >= 0 ? '+' : '') + pnl.daily_pnl + ' XPR';
+
+    document.getElementById('bot-winrate').textContent =
+      Math.round(pnl.win_rate * 100) + '%';
+    document.getElementById('bot-trades').textContent =
+      'trades: ' + pnl.total_trades;
+
+    const activeAgents = Object.values(status.agents || {})
+      .filter(v => v === 'active').length;
+    document.getElementById('bot-agents').textContent = activeAgents + '/5';
+
+    document.getElementById('bot-last-update').textContent =
+      'Updated: ' + new Date().toLocaleTimeString();
+  } catch (e) {
+    document.getElementById('bot-status-text').textContent = 'Offline';
+    document.getElementById('bot-last-update').textContent =
+      'Backend unreachable — ' + new Date().toLocaleTimeString();
+  }
+}
+fetchBotData();
+setInterval(fetchBotData, 30000);
+</script>
+
 <!-- WAITLIST -->
 <section id="waitlist" style="background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);">
   <div class="container" style="max-width:720px;">
