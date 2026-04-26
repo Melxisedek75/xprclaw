@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+<!-- XPR Network Wallet SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@proton/web-sdk/dist/index.min.js"></script>
 <style>/* ═══════════════════════════════════════════════════════════════
    GCSC CLAW · main.css
    Dark Violet Aesthetic · XPR Network
@@ -1175,29 +1177,54 @@ window.WalletService = (function() {
    * Connect wallet (WebAuth, Proton Wallet, Metal Pay)
    * Production: uses @proton/web-sdk ConnectWallet()
    */
-  async function connect(walletName) {
-    // Simulate XPR Network connection flow
-    // In production this would be:
-    //
-    //   const { session, link } = await ConnectWallet({
-    //     linkOptions: {
-    //       endpoints: ['https://proton.eosusa.io'],
-    //       chainId: '384da888112027f0321850a169f737c33e53b388aad48b5adace4bab97f437e0',
-    //     },
-    //     transportOptions: { requestAccount: 'gcsctoken111' },
-    //     selectorOptions: { appName: 'GCSC CLAW' },
-    //   });
+  // Persistent link instance (needed for restore session + signing)
+  let _link = null;
+  let _session = null;
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        STATE.connected = true;
-        STATE.wallet = walletName;
-        STATE.address = MockData.user.wallet;
-        STATE.balance = MockData.user.xlawBalance;
-        emit();
-        resolve(STATE);
-      }, 1500);
-    });
+  async function connect(walletName) {
+    try {
+      const sdk = window.ProtonWebSDK || window['@proton/web-sdk'];
+      const ConnectWallet = sdk && (sdk.ConnectWallet || sdk.default && sdk.default.ConnectWallet);
+
+      if (!ConnectWallet) throw new Error('Proton SDK not loaded');
+
+      const { link, session } = await ConnectWallet({
+        linkOptions: {
+          chainId: '21dcae42c0182200e93f954a074011f9048a7f6c33f6f6a63ad52aeea7caa024',
+          endpoints: ['https://testnet.xprnetwork.org'],
+          restoreSession: true,
+        },
+        transportOptions: {
+          requestAccount: 'gcsctoken111',
+          backButton: true,
+        },
+        selectorOptions: {
+          appName: 'GCSC CLAW',
+          appLogo: 'https://melxisedek75.github.io/xprclaw/icon-192.png',
+          showSelector: walletName !== 'WebAuth',
+        },
+      });
+
+      _link = link;
+      _session = session;
+
+      STATE.connected = true;
+      STATE.wallet = walletName;
+      STATE.address = session.auth.actor + '@' + session.auth.permission;
+      STATE.balance = 0; // will be fetched separately
+      emit();
+      return STATE;
+
+    } catch (err) {
+      console.warn('Real wallet failed, using demo mode:', err.message);
+      // Fallback: demo mode so app stays usable even without Anchor installed
+      STATE.connected = true;
+      STATE.wallet = walletName + ' (demo)';
+      STATE.address = MockData.user.wallet;
+      STATE.balance = MockData.user.xlawBalance;
+      emit();
+      return STATE;
+    }
   }
 
   function disconnect() {
