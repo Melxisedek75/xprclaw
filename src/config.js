@@ -4,8 +4,8 @@
  */
 
 window.CONFIG = {
-  ADAPTER_URL: 'http://localhost:8088',
-  ADAPTER_HEALTH_ENDPOINT: '/healthz',
+  ADAPTER_URL: 'https://xprclaw-production.up.railway.app',
+  ADAPTER_HEALTH_ENDPOINT: '/health',
   XPR: {
     network: 'testnet',
     rpcUrl: 'https://testnet.xprnetwork.org',
