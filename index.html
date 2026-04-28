@@ -4,413 +4,746 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <!-- Sentry error monitoring -->
-<script
-  src="https://js.sentry-cdn.com/ef15e97ebc66eca2fbb6733f7a1ae045.min.js"
-  crossorigin="anonymous"
-></script>
-<meta name="theme-color" content="#0c0a1a"/>
-<meta name="description" content="Download GCSC CLAW — Self-Evolving AI Economic System on XPR Network. Install as Progressive Web App on iOS, Android, Desktop."/>
+<script src="https://js.sentry-cdn.com/ef15e97ebc66eca2fbb6733f7a1ae045.min.js" crossorigin="anonymous"></script>
+<meta name="theme-color" content="#06060f"/>
+<meta name="description" content="GCSC CLAW — Self-Evolving AI Economic System on XPR Network. Private AI agents, $XLAW staking, trading bot. Join the private beta."/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="GCSC CLAW"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-
 <meta property="og:title" content="GCSC CLAW — Self-Evolving AI on XPR Network"/>
-<meta property="og:description" content="Install GCSC CLAW as a PWA on your phone. Private AI agents, staking, trading bot, skill marketplace. Private beta — join the waitlist."/>
+<meta property="og:description" content="Private AI agents, $XLAW staking, trading bot. Private beta — join the waitlist."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://melxisedek75.github.io/xprclaw/"/>
 <meta property="og:image" content="https://melxisedek75.github.io/xprclaw/icon-512.png"/>
-<meta property="og:image:width" content="512"/>
-<meta property="og:image:height" content="512"/>
-<meta property="og:image:alt" content="GCSC CLAW logo"/>
 <meta property="og:site_name" content="GCSC CLAW"/>
-
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="GCSC CLAW — Self-Evolving AI on XPR Network"/>
-<meta name="twitter:description" content="Install GCSC CLAW as a PWA. Private AI agents, staking, trading bot. Private beta — join the waitlist."/>
+<meta name="twitter:description" content="Private AI agents, $XLAW staking, trading bot. Private beta — join the waitlist."/>
 <meta name="twitter:image" content="https://melxisedek75.github.io/xprclaw/icon-512.png"/>
-
 <link rel="canonical" href="https://melxisedek75.github.io/xprclaw/"/>
-
-<title>Download GCSC CLAW — Install on iOS, Android, Desktop</title>
-
+<title>GCSC CLAW — Self-Evolving AI on XPR Network</title>
 <link rel="manifest" href="./manifest.json"/>
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"/>
 <link rel="apple-touch-icon" href="./icon-192.png"/>
-
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-fRkr-f_Ugk9HyiI-58MnZ.js"></script>
-<script>
-  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
-</script>
-
+<script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --bg:#0c0a1a; --bg2:#110e25; --bg3:#16122e;
-  --panel:#1a1535; --panel2:#221a44;
-  --border:rgba(139,92,246,0.18); --border2:rgba(139,92,246,0.35);
-  --purple:#7c3aed; --violet:#8b5cf6; --lavender:#a78bfa;
-  --lilac:#c4b5fd; --pink:#e879f9; --mint:#34d399; --gold:#fbbf24;
-  --white:#f5f3ff; --muted:#9d8fcb; --dim:#6d5fa0;
---f-display:'Inter',sans-serif; --f-body:'Inter',sans-serif; --f-mono:'Space Mono',monospace;}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  background:var(--bg);color:var(--white);font-family:var(--f-body);
-  overflow-x:hidden;min-height:100vh;line-height:1.5;
+:root {
+  --bg: #06060f;
+  --bg2: #0a0a18;
+  --bg3: #0e0e20;
+  --panel: #111126;
+  --panel2: #161630;
+  --border: rgba(6,182,212,0.12);
+  --border2: rgba(6,182,212,0.28);
+  --cyan: #06b6d4;
+  --cyan2: #22d3ee;
+  --cyan3: #67e8f9;
+  --white: #f0f9ff;
+  --muted: #7a90a4;
+  --dim: #3d5060;
+  --green: #10b981;
+  --red: #f87171;
+  --f-sans: 'Inter', sans-serif;
+  --f-mono: 'Space Mono', monospace;
 }
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-}
-
-/* ─── NAV ─── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 32px;
-  background:rgba(12,10,26,0.85);backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-}
-.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:1.15rem;}
-.logo-img{
-  width:40px;height:40px;border-radius:10px;object-fit:cover;
-  box-shadow:0 0 14px rgba(232,121,249,0.35),0 0 4px rgba(139,92,246,0.4);
-  border:1px solid rgba(232,121,249,0.25);
-}
-.logo-xpr{color:var(--lavender);}
-.logo-claw{color:var(--white);}
-.nav-badges{display:flex;gap:8px;align-items:center;}
-.trust-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  font-family:var(--f-mono);font-size:.68rem;
-  color:var(--mint);background:rgba(52,211,153,0.08);
-  border:1px solid rgba(52,211,153,0.22);
-  padding:5px 10px;border-radius:100px;letter-spacing:.04em;
-}
-.trust-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 6px var(--mint);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* ─── MAIN ─── */
-main{position:relative;z-index:1;padding-top:74px;}
-
-/* HERO */
-.hero{
-  padding:60px 24px 50px;text-align:center;position:relative;
-  max-width:1000px;margin:0 auto;
-}
-.hero-logo{
-  width:140px;height:140px;border-radius:32px;object-fit:contain;
-  padding:14px;background:radial-gradient(circle at 30% 25%,rgba(232,121,249,0.18) 0%,rgba(12,10,26,0.6) 70%);
-  margin:0 auto 24px;display:block;
-  box-shadow:
-    0 0 50px rgba(232,121,249,0.55),
-    0 0 100px rgba(139,92,246,0.3),
-    0 0 4px rgba(232,121,249,0.7),
-    inset 0 2px 8px rgba(255,255,255,0.15),
-    inset 0 -4px 12px rgba(0,0,0,0.4);
-  border:1px solid rgba(232,121,249,0.4);
-  animation:logoGlow 3s ease-in-out infinite alternate, logoIn .8s ease both;
-}
-@keyframes logoGlow{
-  0%{box-shadow:0 0 40px rgba(232,121,249,0.45),0 0 80px rgba(139,92,246,0.25),0 0 4px rgba(232,121,249,0.6);}
-  100%{box-shadow:0 0 60px rgba(232,121,249,0.65),0 0 110px rgba(139,92,246,0.4),0 0 6px rgba(232,121,249,0.8);}
-}
-@keyframes logoIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-
-.hero-verified{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(139,92,246,0.1);border:1px solid var(--border2);
-  border-radius:100px;padding:7px 18px;font-size:.78rem;
-  font-family:var(--f-mono);color:var(--lavender);
-  margin-bottom:22px;letter-spacing:.04em;
-  animation:fadeUp .7s .1s ease both;
-}
-.verified-check{color:var(--mint);font-weight:700;}
-
-.hero-title{
-  font-family:var(--f-display);font-weight:900;
-  font-size:clamp(2.8rem,7vw,4.5rem);
-  line-height:1.0;letter-spacing:-.035em;margin-bottom:16px;
-  animation:fadeUp .7s .2s ease both;
-}
-.hero-title span{
-  background:linear-gradient(90deg,#4ade80 0%,#60a5fa 40%,#a78bfa 70%,#8b5cf6 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  background-size:200% auto;animation:shimmer 4s linear infinite;
-}
-@keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
-
-.hero-sub{
-  font-size:clamp(1.05rem,2.3vw,1.25rem);
-  color:var(--muted);max-width:620px;margin:0 auto 36px;
-  line-height:1.55;font-weight:400;
-  animation:fadeUp .7s .3s ease both;
-}
-.hero-sub strong{color:var(--lavender);font-weight:500;}
-
-/* INSTALL BUTTON */
-.install-main{
-  animation:fadeUp .7s .4s ease both;
-  display:flex;flex-direction:column;align-items:center;gap:14px;
-}
-.btn-install{
-  display:inline-flex;align-items:center;gap:12px;
-  background:linear-gradient(135deg,var(--purple) 0%,var(--pink) 100%);
-  border:none;color:#fff;padding:18px 42px;border-radius:16px;
-  cursor:pointer;font-weight:700;font-size:1.08rem;
-  font-family:var(--f-display);
-  box-shadow:0 0 32px rgba(139,92,246,0.5),0 6px 20px rgba(0,0,0,0.3);
-  transition:all .3s;position:relative;overflow:hidden;
-}
-.btn-install::after{
-  content:'';position:absolute;inset:-50%;
-  background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.15) 50%,transparent 60%);
-  transform:translateX(-100%) rotate(45deg);transition:transform .5s;
-}
-.btn-install:hover::after{transform:translateX(100%) rotate(45deg);}
-.btn-install:hover{
-  box-shadow:0 0 50px rgba(232,121,249,0.6),0 6px 30px rgba(0,0,0,0.4);
-  transform:translateY(-2px);
-}
-.btn-install svg{width:22px;height:22px;}
-.install-note{font-size:.84rem;color:var(--muted);font-family:var(--f-mono);}
-
-/* BROWSER / PLATFORMS */
-.platforms{
-  display:flex;justify-content:center;gap:28px;margin-top:30px;
-  flex-wrap:wrap;animation:fadeUp .7s .5s ease both;
-}
-.platform{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem;}
-.platform-icon{
-  width:26px;height:26px;display:flex;align-items:center;justify-content:center;
-  border:1px solid var(--border2);border-radius:6px;
-  background:rgba(139,92,246,0.08);color:var(--lavender);font-size:.75rem;
-  font-family:var(--f-mono);font-weight:700;
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--f-sans);
+  overflow-x: hidden;
+  min-height: 100vh;
+  line-height: 1.6;
 }
 
-/* ─── SECTIONS ─── */
-section{padding:60px 24px;position:relative;}
-.container{max-width:1100px;margin:0 auto;}
-.section-tag{
-  font-family:var(--f-mono);font-size:.72rem;
-  color:var(--violet);letter-spacing:.15em;text-transform:uppercase;
-  margin-bottom:10px;display:block;text-align:center;
-}
-.section-title{
-  font-family:var(--f-display);font-weight:900;
-  font-size:clamp(1.8rem,4vw,2.8rem);
-  line-height:1.1;letter-spacing:-.03em;margin-bottom:14px;text-align:center;
-}
-.section-title span{
-  background:linear-gradient(90deg,#4ade80 0%,#60a5fa 40%,#a78bfa 70%,#8b5cf6 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  background-size:200% auto;animation:shimmer 4s linear infinite;
-}
-.section-sub{color:var(--muted);max-width:580px;margin:0 auto 40px;line-height:1.55;font-size:1rem;font-weight:400;text-align:center;
-}
-.section-sub{color:var(--muted);max-width:560px;margin:0 auto 40px;line-height:1.7;font-size:.98rem;font-weight:300;text-align:center;}
-
-/* ─── TRUST BAR ─── */
-.trust-bar{
-  background:rgba(17,14,37,0.6);backdrop-filter:blur(12px);
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  padding:24px;
-}
-.trust-row{
-  max-width:1100px;margin:0 auto;
-  display:flex;justify-content:space-around;flex-wrap:wrap;gap:16px;text-align:center;
-}
-.trust-item{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:140px;}
-.trust-num{
-  font-family:var(--f-display);font-weight:800;font-size:1.6rem;
-  background:linear-gradient(135deg,var(--lavender),var(--pink));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.trust-label{font-size:.74rem;color:var(--muted);font-family:var(--f-mono);letter-spacing:.04em;}
-
-/* ─── INSTALL INSTRUCTIONS ─── */
-.install-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:18px;
-}
-.install-card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:20px;padding:28px;position:relative;overflow:hidden;
-  transition:all .3s;
-}
-.install-card:hover{border-color:var(--border2);transform:translateY(-3px);}
-.install-card-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
-.device-icon{
-  width:48px;height:48px;border-radius:12px;
-  background:linear-gradient(135deg,rgba(124,58,237,0.25),rgba(232,121,249,0.15));
-  border:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.5rem;flex-shrink:0;
-}
-.install-card h3{font-family:var(--f-display);font-weight:700;font-size:1.15rem;}
-.install-card .os-tag{font-size:.72rem;color:var(--muted);font-family:var(--f-mono);letter-spacing:.04em;}
-.steps{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.steps li{
-  display:flex;gap:12px;font-size:.88rem;line-height:1.55;
-  color:var(--muted);align-items:flex-start;
-}
-.step-num{
-  flex-shrink:0;width:22px;height:22px;border-radius:50%;
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--f-mono);font-weight:700;font-size:.72rem;color:#fff;
-}
-.steps strong{color:var(--white);font-weight:600;}
-.step-icon{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:18px;height:18px;vertical-align:middle;margin:0 2px;
-  color:var(--lavender);
+/* grid overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(6,182,212,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6,182,212,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
-/* ─── FEATURES ─── */
-.features-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:18px;margin-top:20px;
-}
-.feature-card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:16px;padding:24px;transition:all .3s;
-}
-.feature-card:hover{border-color:var(--border2);transform:translateY(-2px);}
-.feature-icon{
-  width:40px;height:40px;border-radius:10px;
-  background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(232,121,249,0.1));
-  border:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;margin-bottom:14px;
-}
-.feature-title{font-family:var(--f-display);font-weight:700;font-size:1rem;margin-bottom:6px;}
-.feature-desc{font-size:.85rem;color:var(--muted);line-height:1.6;font-weight:300;}
-
-/* ─── FAQ ─── */
-.faq-section{background:var(--bg2);}
-.faq-list{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:10px;}
-.faq-item{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:14px;overflow:hidden;transition:border-color .2s;
-}
-.faq-item:hover{border-color:var(--border2);}
-.faq-q{
-  padding:18px 22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
-  font-family:var(--f-display);font-weight:600;font-size:.98rem;gap:12px;
-}
-.faq-q::after{
-  content:'+';font-size:1.5rem;color:var(--lavender);transition:transform .25s;flex-shrink:0;
-}
-.faq-item.open .faq-q::after{transform:rotate(45deg);}
-.faq-a{
-  max-height:0;overflow:hidden;padding:0 22px;
-  color:var(--muted);font-size:.9rem;line-height:1.65;
-  transition:max-height .3s ease,padding .3s ease;
-}
-.faq-item.open .faq-a{max-height:400px;padding:0 22px 20px;}
-
-/* ─── SECURITY ─── */
-.security-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:14px;margin-top:20px;
-}
-.security-card{
-  background:rgba(52,211,153,0.04);border:1px solid rgba(52,211,153,0.2);
-  border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px;
-}
-.security-card-icon{
-  width:38px;height:38px;border-radius:10px;
-  background:rgba(52,211,153,0.12);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;color:var(--mint);flex-shrink:0;
-}
-.security-card-title{font-family:var(--f-display);font-weight:700;font-size:.92rem;margin-bottom:2px;}
-.security-card-desc{font-size:.78rem;color:var(--muted);line-height:1.5;}
-
-/* ─── DOWNLOAD OPTIONS ─── */
-.download-options{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:18px;margin-top:20px;
-}
-.dl-option{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:16px;padding:24px;text-align:center;transition:all .3s;
-  position:relative;overflow:hidden;
-}
-.dl-option:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 10px 36px rgba(139,92,246,0.15);}
-.dl-option.recommended{border-color:var(--violet);box-shadow:0 0 30px rgba(139,92,246,0.2);}
-.dl-badge{
-  position:absolute;top:12px;right:12px;
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  font-size:.66rem;padding:3px 10px;border-radius:100px;
-  font-family:var(--f-mono);letter-spacing:.08em;font-weight:700;
-}
-.dl-icon-big{
-  width:58px;height:58px;border-radius:16px;
-  background:linear-gradient(135deg,rgba(124,58,237,0.25),rgba(232,121,249,0.15));
-  border:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.8rem;margin:0 auto 14px;
-}
-.dl-title{font-family:var(--f-display);font-weight:700;font-size:1.1rem;margin-bottom:4px;}
-.dl-size{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);margin-bottom:14px;letter-spacing:.04em;}
-.dl-btn{
-  width:100%;background:rgba(139,92,246,0.12);border:1px solid var(--border2);color:var(--lavender);
-  padding:11px;border-radius:11px;cursor:pointer;font-weight:700;font-size:.88rem;
-  font-family:var(--f-display);transition:all .25s;text-decoration:none;display:block;
-}
-.dl-btn:hover{background:rgba(139,92,246,0.25);}
-.dl-option.recommended .dl-btn{
-  background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;
-  box-shadow:0 0 18px rgba(139,92,246,0.35);
+/* glow top */
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(6,182,212,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* ─── FOOTER ─── */
-footer{
-  padding:40px 24px 24px;border-top:1px solid var(--border);background:var(--bg2);
-  text-align:center;
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  background: rgba(6,6,15,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
 }
-.footer-logo-row{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:1.05rem;margin-bottom:12px;}
-.footer-logo-row img{width:32px;height:32px;border-radius:8px;}
-.footer-links{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin:16px 0 20px;}
-.footer-links a{color:var(--muted);font-size:.85rem;text-decoration:none;transition:color .2s;}
-.footer-links a:hover{color:var(--lavender);}
-.footer-legal{font-size:.78rem;color:var(--dim);font-family:var(--f-mono);max-width:720px;margin:0 auto;line-height:1.65;}
-.footer-legal a{color:var(--muted);}
-.copyright{margin-top:14px;font-size:.74rem;color:var(--dim);}
-
-/* ─── TOAST ─── */
-.toast{
-  position:fixed;bottom:24px;right:24px;z-index:300;
-  background:var(--panel);border:1px solid var(--border2);
-  border-radius:12px;padding:14px 20px;font-size:.86rem;
-  box-shadow:0 0 30px rgba(139,92,246,0.3);
-  transform:translateX(140%);transition:transform .3s;
-  max-width:320px;line-height:1.5;
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--white);
 }
-.toast.show{transform:translateX(0);}
-.toast-title{font-family:var(--f-display);font-weight:700;margin-bottom:3px;color:var(--lavender);}
+.nav-logo img {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+}
+.nav-logo span { color: var(--cyan); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.btn-nav {
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: var(--f-sans);
+}
+.btn-nav-ghost {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--cyan);
+}
+.btn-nav-ghost:hover { background: rgba(6,182,212,0.08); }
+.btn-nav-solid {
+  background: var(--cyan);
+  border: 1px solid var(--cyan);
+  color: #000;
+}
+.btn-nav-solid:hover { background: var(--cyan2); }
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+/* live badge */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  color: var(--green);
+  background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(16,185,129,0.2);
+  padding: 4px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.04em;
+}
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-/* ─── MOBILE ─── */
-@media(max-width:640px){
-  nav{padding:12px 18px;}
-  .nav-badges{display:none;}
-  .hero{padding:40px 18px 30px;}
-  .hero-logo{width:110px;height:110px;}
-  .btn-install{padding:15px 28px;font-size:.98rem;width:100%;max-width:360px;justify-content:center;}
-  .trust-row{justify-content:space-around;}
-  .trust-item{min-width:100px;}
-  .trust-num{font-size:1.3rem;}
-  section{padding:48px 18px;}
-  .platforms{gap:16px;}
+/* ── MAIN ── */
+main { position: relative; z-index: 1; padding-top: 73px; }
+
+/* ── HERO ── */
+.hero {
+  padding: 100px 24px 80px;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(6,182,212,0.08);
+  border: 1px solid var(--border2);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--cyan3);
+  letter-spacing: 0.08em;
+  margin-bottom: 32px;
+  animation: fadeUp 0.6s ease both;
+}
+.hero-title {
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  margin-bottom: 24px;
+  animation: fadeUp 0.6s 0.1s ease both;
+}
+.hero-title .accent {
+  color: var(--cyan);
+  position: relative;
+}
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--muted);
+  max-width: 560px;
+  margin: 0 auto 48px;
+  line-height: 1.65;
+  animation: fadeUp 0.6s 0.2s ease both;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: var(--cyan);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--f-sans);
+  transition: all 0.2s;
+  box-shadow: 0 0 30px rgba(6,182,212,0.35);
+}
+.btn-primary:hover {
+  background: var(--cyan2);
+  box-shadow: 0 0 45px rgba(6,182,212,0.5);
+  transform: translateY(-2px);
+}
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--f-sans);
+  transition: all 0.2s;
+}
+.btn-secondary:hover {
+  background: rgba(6,182,212,0.06);
+  border-color: var(--cyan);
+}
+.hero-note {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  color: var(--dim);
+  margin-top: 18px;
+  animation: fadeUp 0.6s 0.4s ease both;
+}
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,10,24,0.6);
+  backdrop-filter: blur(12px);
+  padding: 28px 24px;
+}
+.stats-row {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+  text-align: center;
+}
+.stat-item {}
+.stat-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--cyan);
+  font-family: var(--f-sans);
+  letter-spacing: -0.03em;
+}
+.stat-label {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ── SECTION ── */
+section { padding: 80px 24px; position: relative; }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-tag {
+  display: block;
+  text-align: center;
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  color: var(--cyan);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-title {
+  text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.section-sub {
+  text-align: center;
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 560px;
+  margin: 0 auto 56px;
+  line-height: 1.65;
+}
+
+/* ── FEATURES GRID ── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.feature-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.feature-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-4px);
+  background: var(--panel2);
+}
+.feature-card:hover::before { opacity: 1; }
+.feature-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: rgba(6,182,212,0.1);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+.feature-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+.feature-desc {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.feature-tag {
+  display: inline-block;
+  margin-top: 16px;
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--cyan);
+  background: rgba(6,182,212,0.08);
+  border: 1px solid var(--border2);
+  padding: 3px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.06em;
+}
+
+/* ── BOT LIVE ── */
+.bot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 40px;
+}
+.bot-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+}
+.bot-card-label {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.bot-card-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--cyan);
+}
+.bot-card-sub {
+  font-size: 0.78rem;
+  color: var(--dim);
+  margin-top: 6px;
+  font-family: var(--f-mono);
+}
+.bot-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.bot-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s infinite;
+}
+.bot-status-text {
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  color: var(--green);
+}
+.bot-update {
+  text-align: center;
+  margin-top: 16px;
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  color: var(--dim);
+}
+
+/* ── WAITLIST ── */
+.waitlist-section {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+}
+.waitlist-box {
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-radius: 24px;
+  padding: 48px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.waitlist-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 300px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+.waitlist-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.waitlist-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 14px 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: var(--f-sans);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.waitlist-input:focus { border-color: var(--cyan); }
+.waitlist-input::placeholder { color: var(--dim); }
+.btn-waitlist {
+  padding: 14px 28px;
+  background: var(--cyan);
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-family: var(--f-sans);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-waitlist:hover { background: var(--cyan2); transform: translateY(-1px); }
+.waitlist-note {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--dim);
+  margin-top: 14px;
+}
+.waitlist-note a { color: var(--cyan); text-decoration: none; }
+
+/* ── INSTALL ── */
+.install-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.install-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  transition: all 0.25s;
+}
+.install-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-3px);
+}
+.install-card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.device-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: rgba(6,182,212,0.1);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+.install-card-title { font-weight: 700; font-size: 1rem; }
+.install-card-os {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--cyan);
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+.install-steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.install-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.step-num {
+  min-width: 22px; height: 22px;
+  border-radius: 6px;
+  background: rgba(6,182,212,0.12);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--cyan);
+  font-weight: 700;
+}
+
+/* ── FAQ ── */
+.faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+.faq-item {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.faq-q {
+  padding: 18px 24px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.2s;
+}
+.faq-q:hover { color: var(--cyan); }
+.faq-q::after { content: '+'; font-size: 1.2rem; color: var(--muted); transition: transform 0.2s; }
+.faq-q.open::after { transform: rotate(45deg); }
+.faq-a {
+  display: none;
+  padding: 0 24px 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  border-top: 1px solid var(--border);
+}
+.faq-a strong { color: var(--white); }
+.faq-a code {
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  background: rgba(6,182,212,0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--cyan3);
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 24px 32px;
+  background: var(--bg2);
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+.footer-brand .nav-logo { margin-bottom: 12px; }
+.footer-brand p { color: var(--muted); font-size: 0.85rem; max-width: 280px; line-height: 1.6; }
+.footer-cols { display: flex; gap: 48px; flex-wrap: wrap; }
+.footer-col h4 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+.footer-col a {
+  display: block;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--cyan); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-social { display: flex; gap: 10px; }
+.social-btn {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.social-btn:hover { border-color: var(--border2); color: var(--cyan); }
+.footer-copy { font-size: 0.8rem; color: var(--dim); font-family: var(--f-mono); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--panel2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 16px 20px;
+  min-width: 260px;
+  max-width: 360px;
+  z-index: 9999;
+  transform: translateY(120%);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; color: var(--cyan); }
+.toast-msg { font-size: 0.82rem; color: var(--muted); }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 60px 20px 50px; }
+  .waitlist-box { padding: 32px 24px; }
+  .footer-top { flex-direction: column; }
+  .footer-cols { gap: 32px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
 }
 </style>
 </head>
@@ -418,13 +751,19 @@ footer{
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">
-    <img class="logo-img" src="data:image/jpeg;base64,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" alt="GCSC CLAW"/>
-    <span><span class="logo-xpr">GCSC</span><span class="logo-claw">CLAW</span></span>
-  </div>
-  <div class="nav-badges">
-    <span class="trust-badge"><span class="trust-dot"></span>XPR TESTNET</span>
-    <span class="trust-badge" style="color:var(--pink);background:rgba(232,121,249,0.08);border-color:rgba(232,121,249,0.3);">PRIVATE BETA</span>
+  <a href="#" class="nav-logo">
+    <img src="./icon-192.png" alt="GCSC CLAW"/>
+    GCSC<span>CLAW</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#bot">Live Bot</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-cta">
+    <div class="live-badge"><div class="live-dot"></div>TESTNET LIVE</div>
+    <a href="#waitlist" class="btn-nav btn-nav-solid">Join Waitlist</a>
   </div>
 </nav>
 
@@ -432,190 +771,295 @@ footer{
 
 <!-- HERO -->
 <section class="hero">
-  <img class="hero-logo" src="data:image/jpeg;base64,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" alt="GCSC CLAW"/>
-  <div class="hero-verified">
-    <span class="verified-check">✓</span>
-    <span>Deployed on XPR Testnet · Contract gcsctoken111 · Private Beta Q2 2026</span>
-  </div>
-  <h1 class="hero-title">Install <span>GCSC CLAW</span><br>on your device</h1>
+  <div class="hero-badge">✦ PRIVATE BETA · Q2 2026 · XPR NETWORK</div>
+  <h1 class="hero-title">
+    AI agents that<br/>
+    <span class="accent">trade while you sleep.</span>
+  </h1>
   <p class="hero-sub">
-    Self-evolving AI economic system on <strong>XPR Network</strong>.
-    Private AI agents, $XLAW staking, skill marketplace, and trading tools —
-    all in a single app that works <strong>offline</strong> on iOS, Android, and desktop.
+    GCSC CLAW is a self-evolving AI economic system on XPR Network.
+    Deploy private agents, stake $XLAW, and let the bot do the work.
   </p>
-
-  <div class="install-main">
-    <button class="btn-install" id="installBtn" onclick="handleInstall()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v14m0 0l-5-5m5 5l5-5M5 21h14"/></svg>
-      <span id="installBtnText">Install App</span>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="handleInstall()" id="installBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v13M7 11l5 5 5-5"/><path d="M3 19h18"/></svg>
+      <span id="installBtnText">Install App — Free</span>
     </button>
-    <div class="install-note" id="installNote">Free · 144 KB · No account required</div>
+    <a href="#waitlist" class="btn-secondary">Join Waitlist →</a>
+  </div>
+  <p class="hero-note" id="installNote">PWA · Works on iOS, Android, Desktop · No app store needed</p>
+</section>
 
-    <a href="#waitlist" class="btn-secondary" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:12px 22px;font-family:var(--f-display);font-weight:600;font-size:.95rem;color:var(--lavender);background:rgba(139,92,246,0.08);border:1px solid var(--border2);border-radius:100px;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='rgba(139,92,246,0.16)'" onmouseout="this.style.background='rgba(139,92,246,0.08)'">
-      <span>✉️</span>
-      <span>Or join the private-beta waitlist</span>
-      <span style="opacity:.6;">→</span>
-    </a>
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">AI Agents</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Bot Uptime</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$XLAW</div>
+      <div class="stat-label">Utility Token</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">XPR</div>
+      <div class="stat-label">Network</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">0%</div>
+      <div class="stat-label">Platform Fee (Beta)</div>
+    </div>
+  </div>
+</div>
 
-    <div class="platforms">
-      <div class="platform"><span class="platform-icon">📱</span><span>iOS 14+</span></div>
-      <div class="platform"><span class="platform-icon">🤖</span><span>Android 8+</span></div>
-      <div class="platform"><span class="platform-icon">💻</span><span>Windows · macOS · Linux</span></div>
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <span class="section-tag">What's inside</span>
+    <h2 class="section-title">Everything you need to<br/>run AI-powered trading</h2>
+    <p class="section-sub">Five specialized AI agents work in parallel, analyzing markets and executing strategies on XPR Network around the clock.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">LDA — Liquidity Detection Agent</div>
+        <div class="feature-desc">Monitors order books and liquidity pools in real time. Identifies optimal entry and exit points before price moves.</div>
+        <span class="feature-tag">LIVE · PAPER MODE</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">DAA — Data Analysis Agent</div>
+        <div class="feature-desc">Processes on-chain data, news feeds, and social signals. Generates sentiment scores and market regime labels every minute.</div>
+        <span class="feature-tag">LIVE · PAPER MODE</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <div class="feature-title">REA — Risk Engine Agent</div>
+        <div class="feature-desc">Enforces position limits, stop-losses, and drawdown caps. Automatically pauses trading if risk thresholds are breached.</div>
+        <span class="feature-tag">LIVE · PAPER MODE</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <div class="feature-title">KYC-A — Compliance Agent</div>
+        <div class="feature-desc">Validates wallet addresses against on-chain reputation scores. Blocks interactions with flagged contracts automatically.</div>
+        <span class="feature-tag">LIVE · PAPER MODE</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">EFA — Execution Agent</div>
+        <div class="feature-desc">Submits signed transactions to XPR Network at optimal gas and slippage. Handles retries, nonce management, and confirmation tracking.</div>
+        <span class="feature-tag">LIVE · PAPER MODE</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <div class="feature-title">AI Secretary</div>
+        <div class="feature-desc">Your on-chain assistant. Ask it about your portfolio, bot performance, or market conditions — it responds with real data from the chain.</div>
+        <span class="feature-tag">BETA</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- TRUST BAR -->
-<div class="trust-bar">
-  <div class="trust-row">
-    <div class="trust-item"><div class="trust-num">144 KB</div><div class="trust-label">APP SIZE</div></div>
-    <div class="trust-item"><div class="trust-num">~2s</div><div class="trust-label">INSTALL TIME</div></div>
-    <div class="trust-item"><div class="trust-num">100%</div><div class="trust-label">OFFLINE CAPABLE</div></div>
-    <div class="trust-item"><div class="trust-num">0</div><div class="trust-label">TRACKING · ZERO DATA</div></div>
+<!-- BOT LIVE -->
+<section id="bot" style="background: var(--bg2);">
+  <div class="container">
+    <span class="section-tag">Live Dashboard</span>
+    <h2 class="section-title">Bot running right now</h2>
+    <p class="section-sub">Real data from the Railway backend. Updated every 30 seconds. Paper trading — no real funds at risk.</p>
+    <div class="bot-status-row">
+      <div class="bot-dot" id="bot-status-dot"></div>
+      <span class="bot-status-text" id="bot-status-text">Connecting...</span>
+    </div>
+    <div class="bot-grid">
+      <div class="bot-card">
+        <div class="bot-card-label">XPR Price</div>
+        <div class="bot-card-value" id="bot-xpr-price">—</div>
+        <div class="bot-card-sub">live · coingecko</div>
+      </div>
+      <div class="bot-card">
+        <div class="bot-card-label">Total PnL</div>
+        <div class="bot-card-value" id="bot-pnl">—</div>
+        <div class="bot-card-sub" id="bot-daily-pnl">daily: —</div>
+      </div>
+      <div class="bot-card">
+        <div class="bot-card-label">Win Rate</div>
+        <div class="bot-card-value" id="bot-winrate">—</div>
+        <div class="bot-card-sub" id="bot-trades">trades: —</div>
+      </div>
+      <div class="bot-card">
+        <div class="bot-card-label">AI Agents</div>
+        <div class="bot-card-value" id="bot-agents">—</div>
+        <div class="bot-card-sub">active / 5</div>
+      </div>
+    </div>
+    <div class="bot-update" id="bot-last-update">Connecting to backend...</div>
   </div>
-</div>
+</section>
 
-<!-- INSTALL INSTRUCTIONS -->
+<!-- WAITLIST -->
+<section id="waitlist" class="waitlist-section">
+  <div class="container">
+    <div class="waitlist-box">
+      <span class="section-tag">Private Beta Waitlist</span>
+      <h2 class="section-title" style="font-size:clamp(1.6rem,3.5vw,2.2rem);margin-bottom:12px;">Be among the <span style="color:var(--cyan)">first 50</span> users</h2>
+      <p style="color:var(--muted);font-size:0.95rem;line-height:1.65;">We invite early testers in small batches. Drop your email and we'll send a personal invite with testnet credentials and a 5-minute onboarding.</p>
+      <form action="https://formspree.io/f/mlgavwnp" method="POST" class="waitlist-form" onsubmit="handleWaitlistSubmit(event)">
+        <input type="email" name="email" class="waitlist-input" placeholder="you@company.com" required/>
+        <button type="submit" class="btn-waitlist">Get my invite →</button>
+      </form>
+      <p class="waitlist-note">No spam. One email per milestone. <a href="./PRIVACY.md">Privacy Policy</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
 <section id="install">
   <div class="container">
-    <span class="section-tag">Installation Guide</span>
-    <h2 class="section-title">Install in under <span>60 seconds</span></h2>
-    <p class="section-sub">Choose your device below. No app store needed — install directly from this page.</p>
-
+    <span class="section-tag">How to install</span>
+    <h2 class="section-title">Install in 60 seconds</h2>
+    <p class="section-sub">GCSC CLAW is a Progressive Web App. No App Store, no waiting — install directly from your browser on any device.</p>
     <div class="install-grid">
-
-      <!-- iOS -->
-      <div class="install-card">
-        <div class="install-card-head">
-          <div class="device-icon">📱</div>
-          <div>
-            <h3>iPhone / iPad</h3>
-            <div class="os-tag">iOS 14+ · SAFARI REQUIRED</div>
-          </div>
-        </div>
-        <ol class="steps">
-          <li><span class="step-num">1</span><span>Open this page in <strong>Safari</strong> (not Chrome).</span></li>
-          <li><span class="step-num">2</span><span>Tap the <strong>Share</strong> button <span class="step-icon">⬆️</span> at the bottom of Safari.</span></li>
-          <li><span class="step-num">3</span><span>Scroll and tap <strong>"Add to Home Screen"</strong>.</span></li>
-          <li><span class="step-num">4</span><span>Tap <strong>"Add"</strong> — GCSC CLAW appears on your home screen.</span></li>
-        </ol>
-      </div>
-
-      <!-- Android -->
       <div class="install-card">
         <div class="install-card-head">
           <div class="device-icon">🤖</div>
           <div>
-            <h3>Android</h3>
-            <div class="os-tag">ANDROID 8+ · CHROME / BRAVE</div>
+            <div class="install-card-title">Android</div>
+            <div class="install-card-os">ANDROID 8+ · CHROME / BRAVE</div>
           </div>
         </div>
-        <ol class="steps">
-          <li><span class="step-num">1</span><span>Tap the <strong>Install App</strong> button above.</span></li>
-          <li><span class="step-num">2</span><span>If no prompt appears, tap the <strong>⋮ menu</strong> in Chrome.</span></li>
-          <li><span class="step-num">3</span><span>Select <strong>"Install app"</strong> or <strong>"Add to Home Screen"</strong>.</span></li>
-          <li><span class="step-num">4</span><span>Confirm — the app installs like a regular Android app.</span></li>
+        <ol class="install-steps">
+          <li><span class="step-num">1</span><span>Open this page in Chrome or Brave</span></li>
+          <li><span class="step-num">2</span><span>Tap the ⋮ menu in the top-right corner</span></li>
+          <li><span class="step-num">3</span><span>Select "Add to Home Screen"</span></li>
+          <li><span class="step-num">4</span><span>Confirm — app installs like a native app</span></li>
         </ol>
       </div>
-
-      <!-- Desktop -->
       <div class="install-card">
         <div class="install-card-head">
-          <div class="device-icon">💻</div>
+          <div class="device-icon">🍎</div>
           <div>
-            <h3>Desktop</h3>
-            <div class="os-tag">WINDOWS · MACOS · LINUX</div>
+            <div class="install-card-title">iPhone / iPad</div>
+            <div class="install-card-os">IOS 16.4+ · SAFARI</div>
           </div>
         </div>
-        <ol class="steps">
-          <li><span class="step-num">1</span><span>Use <strong>Chrome, Edge, or Brave</strong>.</span></li>
-          <li><span class="step-num">2</span><span>Look for the <strong>install icon</strong> <span class="step-icon">⊕</span> in the address bar.</span></li>
-          <li><span class="step-num">3</span><span>Click it and confirm <strong>"Install"</strong>.</span></li>
-          <li><span class="step-num">4</span><span>GCSC CLAW opens as a standalone desktop app.</span></li>
+        <ol class="install-steps">
+          <li><span class="step-num">1</span><span>Open this page in Safari (not Chrome)</span></li>
+          <li><span class="step-num">2</span><span>Tap the Share button at the bottom</span></li>
+          <li><span class="step-num">3</span><span>Select "Add to Home Screen"</span></li>
+          <li><span class="step-num">4</span><span>Tap "Add" — icon appears on your home screen</span></li>
         </ol>
       </div>
-
+      <div class="install-card">
+        <div class="install-card-head">
+          <div class="device-icon">🖥️</div>
+          <div>
+            <div class="install-card-title">Desktop</div>
+            <div class="install-card-os">WINDOWS · MAC · LINUX · CHROME / EDGE</div>
+          </div>
+        </div>
+        <ol class="install-steps">
+          <li><span class="step-num">1</span><span>Open this page in Chrome or Edge</span></li>
+          <li><span class="step-num">2</span><span>Click the install icon in the address bar (⊕)</span></li>
+          <li><span class="step-num">3</span><span>Click "Install" in the dialog</span></li>
+          <li><span class="step-num">4</span><span>App opens in its own window, offline-ready</span></li>
+        </ol>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section style="background:var(--bg2);">
+<!-- FAQ -->
+<section id="faq" style="background:var(--bg2);">
   <div class="container">
-    <span class="section-tag">What's Inside</span>
-    <h2 class="section-title">Full platform, <span>one tap away</span></h2>
-    <p class="section-sub">Everything the web app has, installed directly on your device. Works offline. No sign-up.</p>
-    <div class="features-grid">
-      <div class="feature-card"><div class="feature-icon">⚡</div><div class="feature-title">Deploy AI Agents</div><div class="feature-desc">Five specialized agents (LDA, DAA, KYC-A, EFA, REA) on XPR Network.</div></div>
-      <div class="feature-card"><div class="feature-icon">💬</div><div class="feature-title">AI Secretary</div><div class="feature-desc">Chat with your personal AI for contracts, compliance, and reminders.</div></div>
-      <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">Trading Bot UI</div><div class="feature-desc">Monitor your Python day-trading bot with live PnL, signals, risk gates.</div></div>
-      <div class="feature-card"><div class="feature-icon">💎</div><div class="feature-title">$XLAW Staking</div><div class="feature-desc">Lock tokens for 12% APY. Distributed from real platform revenue.</div></div>
-      <div class="feature-card"><div class="feature-icon">🏪</div><div class="feature-title">Skill Marketplace</div><div class="feature-desc">Buy and publish reusable AI workflows. Earn 20% per use.</div></div>
-      <div class="feature-card"><div class="feature-icon">🔐</div><div class="feature-title">WebAuth Wallet</div><div class="feature-desc">Biometric + NFC wallet connection. No seed phrases to leak.</div></div>
+    <span class="section-tag">FAQ</span>
+    <h2 class="section-title">Common questions</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is this a real app or just a website?</div>
+        <div class="faq-a">GCSC CLAW is a <strong>Progressive Web App (PWA)</strong> — a modern standard supported by Apple, Google, and Microsoft. Once installed, it behaves like a native app: home screen icon, standalone window, offline support, push notifications.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Why not the App Store or Google Play?</div>
+        <div class="faq-a">PWAs install directly from the web — no store approval, no delays, no commissions. Native iOS/Android versions are on the roadmap. You always get the latest version automatically.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is it safe to install?</div>
+        <div class="faq-a">Yes. PWAs run in the browser's security sandbox. We don't track you, don't require an account, and all code is open-source on <strong>GitHub</strong>. Uninstall anytime by removing the icon.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Do I need a crypto wallet?</div>
+        <div class="faq-a">No. You can explore all features without a wallet. A wallet is only needed to stake $XLAW, deploy agents on-chain, or trade real funds. Supported: <strong>WebAuth</strong>, Proton Wallet, Metal Pay.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What does the trading bot do?</div>
+        <div class="faq-a">The bot uses a hybrid ML + LLM architecture — trend-following, mean-reversion, regime detection, and news filtering. Currently runs in <strong>paper trading mode</strong> (no real funds). Real trading mode requires manual activation. Algorithmic trading carries real financial risk.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What is $XLAW?</div>
+        <div class="faq-a">$XLAW is the utility token of GCSC CLAW on XPR Network. It's used to pay for AI agent execution, staking rewards, governance voting, and marketplace skill purchases. Contract: <code>gcsctoken111</code>.</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SECURITY -->
-<section id="security">
-  <div class="container">
-    <span class="section-tag">Safety & Transparency</span>
-    <h2 class="section-title">Built with <span>zero trust</span> required</h2>
-    <p class="section-sub">We don't ask you to trust us — we ask you to verify. Here's why this install is safe.</p>
-    <div class="security-grid">
-      <div class="security-card"><div class="security-card-icon">✓</div><div><div class="security-card-title">No tracking</div><div class="security-card-desc">Zero analytics, zero cookies, zero data collection.</div></div></div>
-      <div class="security-card"><div class="security-card-icon">✓</div><div><div class="security-card-title">Open source</div><div class="security-card-desc">All code on GitHub. Inspect before you install.</div></div></div>
-      <div class="security-card"><div class="security-card-icon">✓</div><div><div class="security-card-title">Client-side only</div><div class="security-card-desc">Runs entirely in your browser. No backend access to your data.</div></div></div>
-      <div class="security-card"><div class="security-card-icon">✓</div><div><div class="security-card-title">HTTPS required</div><div class="security-card-desc">Browsers only install PWAs from verified HTTPS origins.</div></div></div>
-      <div class="security-card"><div class="security-card-icon">✓</div><div><div class="security-card-title">Sandboxed</div><div class="security-card-desc">Runs in your browser's security sandbox. No OS-level access.</div></div></div>
-      <div class="security-card"><div class="security-card-icon">✓</div><div><div class="security-card-title">Uninstall anytime</div><div class="security-card-desc">Remove from your device in one tap. Leaves no traces.</div></div></div>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="margin-bottom:12px;display:inline-flex;">
+          <img src="./icon-192.png" alt="GCSC CLAW"/>
+          GCSC<span>CLAW</span>
+        </a>
+        <p>Self-Evolving AI Economic System on XPR Network. $XLAW utility token. Private Beta 2026.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#bot">Live Bot</a>
+          <a href="#install">Install</a>
+          <a href="./xprclaw_standalone.html">Open App</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="./xprclaw_whitepaper.pdf" download>White Paper</a>
+          <a href="https://github.com/Melxisedek75/xprclaw" target="_blank" rel="noopener">GitHub</a>
+          <a href="#faq">FAQ</a>
+          <a href="mailto:gcscdao@gmail.com">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="./PRIVACY.md">Privacy Policy</a>
+          <a href="./TERMS.md">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-social">
+        <a href="https://twitter.com/gcscdao" target="_blank" rel="noopener" class="social-btn">𝕏 Twitter</a>
+        <a href="#" class="social-btn">✈ Telegram</a>
+        <a href="#" class="social-btn">💬 Discord</a>
+        <a href="https://github.com/Melxisedek75/xprclaw" target="_blank" rel="noopener" class="social-btn">⌬ GitHub</a>
+      </div>
+      <div class="footer-copy">© 2025–2026 GCSC DAO · Not financial advice · gcscdao@gmail.com</div>
     </div>
   </div>
-</section>
+</footer>
 
-<!-- BOT STATUS WIDGET -->
-<section id="bot-status" style="background:var(--bg2);padding:60px 24px;">
-  <div class="container" style="max-width:900px;">
-    <span class="section-tag">Live Dashboard</span>
-    <h2 class="section-title">AI Bot <span>Status</span></h2>
-    <p class="section-sub">Real-time data from the GCSC CLAW trading engine. Paper mode — no real funds at risk.</p>
+</main>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:8px;">
-
-      <div style="background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;">
-        <div style="font-family:var(--f-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:12px;">BOT STATUS</div>
-        <div id="bot-status-dot" style="width:12px;height:12px;border-radius:50%;background:#6b7280;margin:0 auto 10px;box-shadow:0 0 8px #6b7280;"></div>
-        <div id="bot-status-text" style="font-family:var(--f-display);font-weight:700;font-size:1.3rem;color:var(--white);">—</div>
-        <div style="font-size:.78rem;color:var(--muted);margin-top:6px;">Paper Mode</div>
-      </div>
-
-      <div style="background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;">
-        <div style="font-family:var(--f-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:12px;">TOTAL PnL</div>
-        <div id="bot-pnl" style="font-family:var(--f-display);font-weight:800;font-size:1.8rem;color:var(--mint);">—</div>
-        <div id="bot-daily-pnl" style="font-size:.82rem;color:var(--muted);margin-top:6px;">daily: —</div>
-      </div>
-
-      <div style="background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;">
-        <div style="font-family:var(--f-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:12px;">WIN RATE</div>
-        <div id="bot-winrate" style="font-family:var(--f-display);font-weight:800;font-size:1.8rem;color:var(--lavender);">—</div>
-        <div id="bot-trades" style="font-size:.82rem;color:var(--muted);margin-top:6px;">trades: —</div>
-      </div>
-
-      <div style="background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;text-align:center;">
-        <div style="font-family:var(--f-mono);font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-bottom:12px;">AI AGENTS</div>
-        <div id="bot-agents" style="font-family:var(--f-display);font-weight:800;font-size:1.8rem;color:var(--gold);">—</div>
-        <div style="font-size:.78rem;color:var(--muted);margin-top:6px;">active / 5</div>
-      </div>
-
-    </div>
-    <div style="text-align:center;margin-top:16px;">
-      <span id="bot-last-update" style="font-family:var(--f-mono);font-size:.72rem;color:var(--dim);">Connecting to backend...</span>
-    </div>
-  </div>
-</section>
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-title" id="toastTitle"></div>
+  <div class="toast-msg" id="toastMsg"></div>
+</div>
 
 <script>
-// ═══════════ BOT STATUS WIDGET ═══════════
+// ═══ BOT STATUS ═══
 const BOT_API = 'https://xprclaw-production.up.railway.app';
 async function fetchBotData() {
   try {
@@ -629,239 +1073,81 @@ async function fetchBotData() {
     const dot = document.getElementById('bot-status-dot');
     const txt = document.getElementById('bot-status-text');
     if (status.status === 'running') {
-      dot.style.background = '#34d399';
-      dot.style.boxShadow = '0 0 10px #34d399';
-      txt.textContent = 'Running';
-      txt.style.color = '#34d399';
+      dot.style.background = '#10b981';
+      dot.style.boxShadow = '0 0 10px #10b981';
+      txt.textContent = 'Bot Running';
+      txt.style.color = '#10b981';
     } else {
       dot.style.background = '#f87171';
       dot.style.boxShadow = '0 0 10px #f87171';
       txt.textContent = status.status || 'Offline';
+      txt.style.color = '#f87171';
     }
 
-    const pnlVal = pnl.total_pnl;
+    const priceEl = document.getElementById('bot-xpr-price');
+    if (pnl.xpr_price_usd) {
+      priceEl.textContent = '$' + pnl.xpr_price_usd.toFixed(6);
+    }
+
+    const pnlVal = pnl.total_pnl_xpr;
     const pnlEl = document.getElementById('bot-pnl');
     pnlEl.textContent = (pnlVal >= 0 ? '+' : '') + pnlVal + ' XPR';
-    pnlEl.style.color = pnlVal >= 0 ? 'var(--mint)' : '#f87171';
+    pnlEl.style.color = pnlVal >= 0 ? '#10b981' : '#f87171';
+
     document.getElementById('bot-daily-pnl').textContent =
-      'daily: ' + (pnl.daily_pnl >= 0 ? '+' : '') + pnl.daily_pnl + ' XPR';
+      'daily: ' + (pnl.daily_pnl_xpr >= 0 ? '+' : '') + pnl.daily_pnl_xpr + ' XPR';
 
     document.getElementById('bot-winrate').textContent =
       Math.round(pnl.win_rate * 100) + '%';
     document.getElementById('bot-trades').textContent =
       'trades: ' + pnl.total_trades;
 
-    const activeAgents = Object.values(status.agents || {})
-      .filter(v => v === 'active').length;
+    const activeAgents = Object.values(status.agents || {}).filter(v => v === 'active').length;
     document.getElementById('bot-agents').textContent = activeAgents + '/5';
 
     document.getElementById('bot-last-update').textContent =
       'Updated: ' + new Date().toLocaleTimeString();
   } catch (e) {
     document.getElementById('bot-status-text').textContent = 'Offline';
+    document.getElementById('bot-status-dot').style.background = '#f87171';
     document.getElementById('bot-last-update').textContent =
-      'Backend unreachable — ' + new Date().toLocaleTimeString();
+      'Backend unreachable · ' + new Date().toLocaleTimeString();
   }
 }
 fetchBotData();
 setInterval(fetchBotData, 30000);
-</script>
 
-<!-- WAITLIST -->
-<section id="waitlist" style="background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);">
-  <div class="container" style="max-width:720px;">
-    <span class="section-tag">Private Beta Waitlist</span>
-    <h2 class="section-title">Be among the <span>first 50</span> users</h2>
-    <p class="section-sub">We're inviting early testers in small batches. Drop your email and we'll send a personal invite with your testnet credentials, a 5-minute onboarding, and direct access to the team.</p>
+// ═══ FAQ ═══
+function toggleFaq(el) {
+  const answer = el.nextElementSibling;
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-q.open').forEach(q => {
+    q.classList.remove('open');
+    q.nextElementSibling.style.display = 'none';
+  });
+  if (!isOpen) {
+    el.classList.add('open');
+    answer.style.display = 'block';
+  }
+}
 
-    <!--
-      Waitlist form (Email collection via simple JS handler).
-      To activate: create a Google Form at forms.google.com, get the form action URL,
-      replace the placeholder below. Or use Buttondown/Mailchimp with your account.
-    -->
-    <form
-      action="javascript:void(0)"
-      onsubmit="handleWaitlistSubmit(event)"
-      class="waitlist-form"
-      style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:28px auto 14px;max-width:520px;"
-    >
-      <input
-        type="email"
-        name="email"
-        id="waitlist-email"
-        required
-        placeholder="you@company.com"
-        aria-label="Email address"
-        style="flex:1;min-width:240px;padding:14px 18px;background:var(--panel);border:1px solid var(--border2);border-radius:12px;color:var(--white);font-family:var(--f-body);font-size:1rem;outline:none;transition:border-color .2s;"
-        onfocus="this.style.borderColor='var(--violet)'"
-        onblur="this.style.borderColor='var(--border2)'"
-      />
-      <button
-        type="submit"
-        style="padding:14px 26px;background:linear-gradient(135deg,var(--purple),var(--pink));border:none;border-radius:12px;color:var(--white);font-family:var(--f-display);font-weight:700;font-size:1rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,92,246,0.35);transition:transform .15s;"
-        onmouseover="this.style.transform='translateY(-1px)'"
-        onmouseout="this.style.transform='translateY(0)'"
-      >Get my invite</button>
-    </form>
-    <p style="text-align:center;font-size:.82rem;color:var(--muted);font-family:var(--f-mono);margin-top:6px;">
-      No spam. One email per product milestone. Unsubscribe in one click.
-      See our <a href="./PRIVACY.md" style="color:var(--lavender);text-decoration:underline;">Privacy Policy</a>.
-    </p>
-  </div>
-</section>
-
-<!-- DOWNLOAD OPTIONS -->
-<section style="background:var(--bg2);">
-  <div class="container">
-    <span class="section-tag">Additional Downloads</span>
-    <h2 class="section-title">Prefer the <span>source code?</span></h2>
-    <p class="section-sub">For developers, auditors, and self-hosters. Run your own instance on any device or server.</p>
-    <div class="download-options">
-      <div class="dl-option recommended">
-        <div class="dl-badge">RECOMMENDED</div>
-        <div class="dl-icon-big">📱</div>
-        <div class="dl-title">PWA Install</div>
-        <div class="dl-size">~144 KB · instant install</div>
-        <a class="dl-btn" onclick="handleInstall()">Install Now</a>
-      </div>
-      <div class="dl-option">
-        <div class="dl-icon-big">📄</div>
-        <div class="dl-title">Single HTML File</div>
-        <div class="dl-size">144 KB · offline-ready</div>
-        <a class="dl-btn" href="./xprclaw_standalone.html" download>Download HTML</a>
-      </div>
-      <div class="dl-option">
-        <div class="dl-icon-big">📦</div>
-        <div class="dl-title">Full Source (ZIP)</div>
-        <div class="dl-size">54 KB · 17 files · with backend</div>
-        <a class="dl-btn" href="./xprclaw_project.zip" download>Download ZIP</a>
-      </div>
-      <div class="dl-option">
-        <div class="dl-icon-big">📘</div>
-        <div class="dl-title">White Paper (PDF)</div>
-        <div class="dl-size">45 KB · 18 sections</div>
-        <a class="dl-btn" href="./xprclaw_whitepaper.pdf" download>Download PDF</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="faq-section" id="faq">
-  <div class="container">
-    <span class="section-tag">FAQ</span>
-    <h2 class="section-title">Common <span>questions</span></h2>
-    <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Is this a real app or just a website?</div>
-        <div class="faq-a">GCSC CLAW is a <strong>Progressive Web App (PWA)</strong> — a modern web standard supported by Apple, Google, and Microsoft. Once installed, it behaves exactly like a native app: appears on your home screen, runs in its own window, works offline, and can send notifications. PWAs are used in production by Twitter, Spotify, Uber, Starbucks, and many others.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Why not the App Store or Google Play?</div>
-        <div class="faq-a">PWAs install directly from the web — no app store approval, no delays, no developer fees, no store commissions. Native iOS/Android versions are on our roadmap, but PWA offers the same experience today with faster updates and full transparency. You always have the latest version.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Is it safe to install?</div>
-        <div class="faq-a">Yes. PWAs run in your browser's security sandbox — they cannot access your OS, files, contacts, or other apps. We don't track you, we don't require an account, and all code is open-source on GitHub. You can review every line before installing. Uninstall anytime by removing from your home screen.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Does it work offline?</div>
-        <div class="faq-a">Yes. After first install, the entire app is cached locally. You can open it, browse all pages, review contracts, and use the AI Secretary even with no internet. Transactions on XPR Network require connectivity when you submit them.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Do I need a crypto wallet to use it?</div>
-        <div class="faq-a">No. You can explore all features (dashboard, chat, trading bot UI, marketplace) without a wallet. A wallet is only needed to actually stake $XLAW, deploy an agent on-chain, or purchase skills. Supported: WebAuth, Proton Wallet, Metal Pay.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What does the trading bot do?</div>
-        <div class="faq-a">The app includes a UI to <strong>monitor</strong> a Python day-trading bot that runs as a separate backend service. The bot uses a hybrid ML + LLM architecture (trend-following, mean-reversion, regime detection, news filtering). Source code is in the ZIP under <code>backend/trading-bot/</code>. <strong>Warning:</strong> algorithmic trading carries real financial risk. Shadow-trade for at least 2 weeks before running live.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">What if my browser doesn't show an install button?</div>
-        <div class="faq-a">Not all browsers support PWA install prompts. If the button doesn't work: <strong>iOS</strong> — use Safari and the Share menu. <strong>Android</strong> — use Chrome or Brave and the ⋮ menu. <strong>Desktop</strong> — use Chrome, Edge, or Brave. If you still have trouble, download the HTML file and open it directly.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo-row">
-    <img src="data:image/jpeg;base64,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" alt="GCSC CLAW"/>
-    <span><span class="logo-xpr">GCSC</span><span class="logo-claw">CLAW</span></span>
-  </div>
-  <div class="footer-links">
-    <a href="#install">Install Guide</a>
-    <a href="#waitlist">Waitlist</a>
-    <a href="#security">Security</a>
-    <a href="#faq">FAQ</a>
-    <a href="./xprclaw_whitepaper.pdf" download>White Paper</a>
-    <a href="https://github.com/Melxisedek75/xprclaw" target="_blank" rel="noopener">GitHub</a>
-    <a href="./PRIVACY.md">Privacy</a>
-    <a href="./TERMS.md">Terms</a>
-    <a href="mailto:gcscdao@gmail.com">Contact</a>
-  </div>
-  <!-- Social links — replace # with your accounts once created -->
-  <div class="footer-social" style="display:flex;justify-content:center;gap:18px;margin:18px 0 6px;flex-wrap:wrap;">
-    <a href="https://twitter.com/gcscdao" target="_blank" rel="noopener" aria-label="Twitter / X" style="color:var(--lavender);font-family:var(--f-mono);font-size:.85rem;text-decoration:none;border:1px solid var(--border2);padding:6px 14px;border-radius:100px;transition:all .2s;" title="Follow @gcscdao">𝕏 Twitter</a>
-    <a href="#" aria-label="Telegram" style="color:var(--muted);font-family:var(--f-mono);font-size:.85rem;text-decoration:none;border:1px solid var(--border);padding:6px 14px;border-radius:100px;" title="Coming soon">✈ Telegram</a>
-    <a href="#" aria-label="Discord" style="color:var(--muted);font-family:var(--f-mono);font-size:.85rem;text-decoration:none;border:1px solid var(--border);padding:6px 14px;border-radius:100px;" title="Coming soon">💬 Discord</a>
-    <a href="https://github.com/Melxisedek75/xprclaw" target="_blank" rel="noopener" style="color:var(--muted);font-family:var(--f-mono);font-size:.85rem;text-decoration:none;border:1px solid var(--border);padding:6px 14px;border-radius:100px;">⌬ GitHub</a>
-  </div>
-  <div class="footer-legal">
-    GCSC CLAW is a decentralized AI economic system on XPR Network. $XLAW is a utility token used to pay for AI execution, staking, and governance.
-    This is <strong>not financial advice</strong>. Cryptocurrencies and algorithmic trading carry substantial risk, including total loss of capital.
-    During Private Beta most features run on XPR Testnet with mock data clearly labelled in-app.
-    Smart contracts: gcsctoken111, gcscstake111, gcscmember11.
-    Audits: CertiK + Hacken (planned).
-  </div>
-  <div class="copyright">© 2025–2026 GCSC DAO · gcscdao@gmail.com · White Paper v1.0</div>
-</footer>
-
-</main>
-
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <div class="toast-title" id="toastTitle"></div>
-  <div id="toastMsg"></div>
-</div>
-
-<script>
-// ═══════════ PWA INSTALL LOGIC ═══════════
+// ═══ PWA INSTALL ═══
 let deferredPrompt = null;
-let isStandalone = false;
-let platform = 'other';
-
-// Detect platform
 const ua = navigator.userAgent.toLowerCase();
 const isIOS = /iphone|ipad|ipod/.test(ua);
-const isAndroid = /android/.test(ua);
-const isMac = /mac/.test(ua) && !isIOS;
-const isWindows = /windows/.test(ua);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-// Detect if already installed (standalone mode)
-isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-               window.navigator.standalone === true;
-
-// Listen for the beforeinstallprompt event (Android/Desktop Chrome/Edge)
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  const btn = document.getElementById('installBtn');
   const txt = document.getElementById('installBtnText');
   if (txt) txt.textContent = 'Install App Now';
-  btn?.classList.add('ready');
 });
-
-// On successful install
 window.addEventListener('appinstalled', () => {
   deferredPrompt = null;
-  showToast('✓ Installed', 'GCSC CLAW is now on your device. Open it from your home screen.');
-  const txt = document.getElementById('installBtnText');
-  if (txt) txt.textContent = 'Installed ✓';
+  showToast('✓ Installed!', 'GCSC CLAW is now on your device.');
 });
 
-// Update button text based on context
 if (isStandalone) {
   setTimeout(() => {
     const txt = document.getElementById('installBtnText');
@@ -877,96 +1163,52 @@ if (isStandalone) {
 }
 
 async function handleInstall() {
-  // Already installed - open the app
-  if (isStandalone) {
-    window.location.href = './xprclaw_standalone.html';
-    return;
-  }
-
-  // iOS - show instructions (no native prompt available)
+  if (isStandalone) { window.location.href = './xprclaw_standalone.html'; return; }
   if (isIOS) {
-    showToast('iOS Install', 'Tap the Share button in Safari, then "Add to Home Screen". See the guide below.');
+    showToast('iOS Install', 'In Safari: tap Share → Add to Home Screen');
     document.getElementById('install').scrollIntoView({ behavior: 'smooth' });
     return;
   }
-
-  // Android/Desktop with native prompt
   if (deferredPrompt) {
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      showToast('Installing...', 'GCSC CLAW is being added to your device.');
-    }
+    if (outcome === 'accepted') showToast('Installing...', 'GCSC CLAW is being added to your device.');
     deferredPrompt = null;
-    return;
+  } else {
+    document.getElementById('install').scrollIntoView({ behavior: 'smooth' });
   }
-
-  // Fallback - just open the app + show manual instructions
-  showToast('Manual Install', 'Look for "Install app" or "Add to Home Screen" in your browser menu.');
-  document.getElementById('install').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ═══════════ WAITLIST EMAIL COLLECTION ═══════════
-async function handleWaitlistSubmit(event) {
-  event.preventDefault();
-  const email = document.getElementById('waitlist-email').value.trim();
-
-  if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-    showToast('Invalid Email', 'Please enter a valid email address.');
-    return;
-  }
-
+// ═══ WAITLIST ═══
+async function handleWaitlistSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const email = form.querySelector('input[type=email]').value;
   try {
-    // Send to Formspree (sends email to rivnesergiy@gmail.com)
-    const response = await fetch('https://formspree.io/f/mlgavwnp', {
+    const res = await fetch(form.action, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, type: 'waitlist' })
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email }),
     });
-
-    if (response.ok) {
-      document.getElementById('waitlist-email').value = '';
-      showToast('✓ Waitlist', `You're in! Check your email at ${email} for the private beta link.`);
+    if (res.ok) {
+      showToast('✓ You\'re on the list!', 'We\'ll send your invite to ' + email);
+      form.reset();
     } else {
-      throw new Error('Submission failed');
+      showToast('Error', 'Please try again or email gcscdao@gmail.com');
     }
-  } catch (err) {
-    // Fallback: store in localStorage if Formspree fails
-    let subscribers = JSON.parse(localStorage.getItem('xprclaw_waitlist') || '[]');
-    if (!subscribers.includes(email)) {
-      subscribers.push(email);
-      localStorage.setItem('xprclaw_waitlist', JSON.stringify(subscribers));
-    }
-    document.getElementById('waitlist-email').value = '';
-    showToast('✓ Waitlist', `You're in! We'll send your invite to ${email} when beta opens.`);
+  } catch {
+    showToast('Error', 'Please try again or email gcscdao@gmail.com');
   }
 }
 
-// ═══════════ FAQ TOGGLE ═══════════
-function toggleFaq(el) {
-  el.parentElement.classList.toggle('open');
-}
-
-// ═══════════ TOAST ═══════════
-let toastTimer;
+// ═══ TOAST ═══
 function showToast(title, msg) {
   const t = document.getElementById('toast');
   document.getElementById('toastTitle').textContent = title;
   document.getElementById('toastMsg').textContent = msg;
   t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
-}
-
-// ═══════════ REGISTER SERVICE WORKER ═══════════
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {
-      // SW registration failed — app still works without offline cache
-    });
-  });
+  setTimeout(() => t.classList.remove('show'), 4000);
 }
 </script>
-
 </body>
 </html>
